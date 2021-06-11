@@ -1,23 +1,90 @@
 from os import popen, system
 from ..tools import findAllWithRe, sleep
 from random import randint
+from ..mysql import Retrieve, Update
+
+
+def getOnlineDevices():
+    res = popen('adb devices').read()
+    res = findAllWithRe(res, r'(.+)\tdevice')
+    for i in range(len(res)):
+        res[i] = res[i].replace(':5555', '')
+    return res
 
 
 class ADB:
 
-    def __init__(self, device):
+    def __init__(self, deviceSN):
         """
-        :param device: Device IP or Device ID
+        :param deviceSN:
         """
-        self.device = device
-        self.cmd = 'adb -s %s ' % device
+        self.deviceSN = deviceSN
+        self.device = Retrieve(deviceSN)
+        self.cmd = 'adb -s %s ' % self.device.ID
+        self.usb()
+        IPv4Address = self.getIPv4Address()
+        if not IPv4Address == self.device.IP:
+            Update(deviceSN).updateIP(IPv4Address)
+            self.device = Retrieve(deviceSN)
+        self.tcpip()
+        self.reconnect()
+        self.cmd = 'adb -s %s ' % self.device.IP
 
-    def connect(self):
-        system(self.cmd + 'connect')
+    def pressKey(self, keycode):
+        print('正在让%s按下%s键' % (self.deviceSN, keycode))
+        system(self.cmd + 'shell input keyevent ' + keycode)
+        sleep(1)
 
+    def pressHomeKey(self):
+        self.pressKey('KEYCODE_HOME')
+
+    def pressMenuKey(self):
+        self.pressKey('KEYCODE_MENU')
+
+    def usb(self, timeout=2):
+        """
+        restart adbd listening on USB
+        :return:
+        """
+        system(self.cmd + 'usb')
+        sleep(timeout)
+        if self.device.ID not in getOnlineDevices():
+            self.usb(timeout + 1)
+
+    def tcpip(self):
+        """
+        restart adbd listening on TCP on PORT
+        :return:
+        """
+        system(self.cmd + 'tcpip 5555')
+        sleep(1)
+
+    def connect(self, timeout=1):
+        """
+        connect to a device via TCP/IP [default port=5555]
+        :return:
+        """
+        system('adb connect %s' % self.device.IP)
+        sleep(timeout)
+        if self.device.IP not in getOnlineDevices():
+            self.connect(timeout + 1)
+
+    def disconnect(self):
+        """
+        disconnect from given TCP/IP device [default port=5555], or all
+        :return:
+        """
+        system('adb disconnect %s' % self.device.IP)
+        sleep(3)
+
+    def reconnect(self):
+        self.disconnect()
+        self.connect()
 
     def tap(self, x, y):
+        print('正在让%s点击(%d,%d)' % (self.deviceSN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
+        sleep(1)
 
     def start(self, Activity, wait=True):
         cmd = 'shell am start '

@@ -1,5 +1,6 @@
-from .mysql import Config, Retrieve
+from .mysql import Retrieve, Update
 
 __all__ = [
-    "Config", "Retrieve"
+    "Retrieve",
+    "Update"
 ]
