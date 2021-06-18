@@ -29,6 +29,15 @@ class ADB:
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
+        if 'com.android.settings/com.android.settings.Settings$UsbDetailsActivity' in self.getCurrentFocus():
+            self.pressBackKey()
+
+    def getCurrentFocus(self):
+        r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
+        r = r.replace("  mCurrentFocus=Window{", '')
+        r = r[:-2]
+        print(r)
+        return r
 
     def pressKey(self, keycode):
         print('正在让%s按下%s键' % (self.deviceSN, keycode))
@@ -40,6 +49,9 @@ class ADB:
 
     def pressMenuKey(self):
         self.pressKey('KEYCODE_MENU')
+
+    def pressBackKey(self):
+        self.pressKey('KEYCODE_BACK')
 
     def usb(self, timeout=2):
         """
@@ -116,10 +128,11 @@ class ADB:
             duration = randint(1000, 1500)
         self.swipe(x, y, x, y, duration)
 
-    def reboot(self, interval=60):
-        system(self.cmd + 'reboot')
-        print('已向设备%s下达重启指令' % self.device)
-        sleep(interval)
+    def reboot(self):
+        popen(self.cmd + 'reboot')
+        print('已向设备%s下达重启指令' % self.device.SN)
+        sleep(60)
+        self.__init__(self.device.SN)
 
     def getIPv4Address(self):
         rd = popen(self.cmd + 'shell ifconfig wlan0').read()
