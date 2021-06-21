@@ -34,6 +34,7 @@ class Retrieve:
         self.SN = SN
         self.IP = self.query('IP')
         self.ID = self.query('ID')
+        self.Model = self.query('Model')
 
     def query(self, field):
         cmd = 'select `%s` from `INFO` where `SN` = %s' % (field, self.SN)
@@ -57,3 +58,6 @@ class Update:
 
     def updateIP(self, ip):
         print(self.query('IP', ip))
+
+    def updateModel(self, model):
+        print(self.query('Model', model))

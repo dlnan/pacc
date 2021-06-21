@@ -2,6 +2,7 @@ from os import popen, system
 from ..tools import findAllWithRe, sleep
 from random import randint
 from ..mysql import Retrieve, Update
+from datetime import datetime
 
 
 def getOnlineDevices():
@@ -13,24 +14,29 @@ def getOnlineDevices():
 
 
 class ADB:
+    rebootPerHourRecord = [-1]
 
     def __init__(self, deviceSN):
         """
         :param deviceSN:
         """
-        self.deviceSN = deviceSN
         self.device = Retrieve(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.ID
         self.usb()
-        IPv4Address = self.getIPv4Address()
-        if not IPv4Address == self.device.IP:
-            Update(deviceSN).updateIP(IPv4Address)
+        if not self.getIPv4Address() == self.device.IP:
+            Update(deviceSN).updateIP(self.getIPv4Address())
+            self.device = Retrieve(deviceSN)
+        if not self.getModel() == self.device.Model:
+            Update(deviceSN).updateModel(self.getModel())
             self.device = Retrieve(deviceSN)
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
         if 'com.android.settings' in self.getCurrentFocus():
             self.tap(353, 1470)
+
+    def getModel(self):
+        return popen(self.cmd + 'shell getprop ro.product.model').read()
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
@@ -94,7 +100,7 @@ class ADB:
         self.connect()
 
     def tap(self, x, y, interval=1):
-        print('正在让%s点击(%d,%d)' % (self.deviceSN, x, y))
+        print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
 
@@ -136,10 +142,15 @@ class ADB:
         sleep(69)
         self.__init__(self.device.SN)
 
-    def rebootWithHours(self, hours):
-        for hour in hours:
-            print(hour)
-            pass
+    def rebootPerHour(self):
+        if not datetime.now().hour == self.rebootPerHourRecord[0]:
+            self.rebootPerHourRecord = [datetime.now().hour]
+        if self.device.SN not in self.rebootPerHourRecord:
+            print('按每小时重启一次的计划重启' + self.device.SN)
+            self.reboot()
+            self.rebootPerHourRecord.append(self.device.SN)
+            return True
+        return False
 
     def getIPv4Address(self):
         rd = popen(self.cmd + 'shell ifconfig wlan0').read()
