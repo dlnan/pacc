@@ -16,7 +16,7 @@ class DYFD(Project):
             if self.adbIns.rebootPerHour():
                 self.adbIns.tap(912, 1755, 9)  # 打开抖音福袋
                 self.adbIns.tap(579, 1575, 3)  # 启动悬浮窗
-                self.adbIns.tap(1072, 581)  # 展开悬浮窗
+                self.adbIns.tap(1072, 581, 3)  # 展开悬浮窗
                 self.adbIns.tap(441, 589)  # 启动
             sleep(60*60)
 
