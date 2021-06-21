@@ -15,6 +15,7 @@ class HZDYX(Project):
         sleep(6)
         self.adbIns.tap(798, 2159)
         self.adbIns.tap(287, 1492)
+
         super(HZDYX, self).__init__('202')
         self.adbIns.reboot()
         self.adbIns.start(self.scriptName)

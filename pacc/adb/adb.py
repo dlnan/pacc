@@ -29,8 +29,8 @@ class ADB:
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
-        if 'com.android.settings/com.android.settings.Settings$UsbDetailsActivity' in self.getCurrentFocus():
-            self.pressBackKey()
+        if 'com.android.settings' in self.getCurrentFocus():
+            self.tap(353, 1470)
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
@@ -93,16 +93,18 @@ class ADB:
         self.disconnect()
         self.connect()
 
-    def tap(self, x, y):
+    def tap(self, x, y, interval=1):
         print('正在让%s点击(%d,%d)' % (self.deviceSN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
-        sleep(1)
+        sleep(interval)
 
     def start(self, Activity, wait=True):
         cmd = 'shell am start '
         if wait:
             cmd += '-W '
-        system(self.cmd + cmd + Activity)
+        cmd = self.cmd + cmd + Activity
+        system(cmd)
+        print(cmd)
 
     def swipe(self, x1, y1, x2, y2, duration=-1):
         """
@@ -131,8 +133,13 @@ class ADB:
     def reboot(self):
         popen(self.cmd + 'reboot')
         print('已向设备%s下达重启指令' % self.device.SN)
-        sleep(60)
+        sleep(69)
         self.__init__(self.device.SN)
+
+    def rebootWithHours(self, hours):
+        for hour in hours:
+            print(hour)
+            pass
 
     def getIPv4Address(self):
         rd = popen(self.cmd + 'shell ifconfig wlan0').read()

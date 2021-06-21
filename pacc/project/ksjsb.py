@@ -2,6 +2,7 @@ from random import randint
 from .project import Project
 
 
+
 class KSJSB(Project):
 
     def __init__(self, deviceSN):
