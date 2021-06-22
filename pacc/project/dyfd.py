@@ -18,5 +18,5 @@ class DYFD(Project):
                 self.adbIns.tap(579, 1575, 3)  # 启动悬浮窗
                 self.adbIns.tap(1072, 581, 3)  # 展开悬浮窗
                 self.adbIns.tap(441, 589)  # 启动
-            sleep(60*60)
+            sleep(1200)
 

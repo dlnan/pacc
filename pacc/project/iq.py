@@ -16,4 +16,4 @@ class IQ(Project):
         while True:
             if self.adbIns.rebootPerHour():
                 self.adbIns.tap(130, 235)
-            sleep(60*60)
+            sleep(1200)

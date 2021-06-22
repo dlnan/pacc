@@ -141,7 +141,7 @@ class ADB:
     def reboot(self):
         popen(self.cmd + 'reboot')
         print('已向设备%s下达重启指令' % self.device.SN)
-        sleep(69)
+        sleep(96)
         self.__init__(self.device.SN)
 
     def rebootPerHour(self):

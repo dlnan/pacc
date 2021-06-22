@@ -30,5 +30,5 @@ class HZDYX(Project):
                         i.adbIns.tap(161, 1084)
                 if 'com.ruiqugames.chinesechar' not in i.adbIns.getCurrentFocus():
                     i.adbIns.start(cls.programName)
-            sleep(30)
+            sleep(1200)
 
