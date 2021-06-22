@@ -33,20 +33,23 @@ class ADB:
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
         if 'com.android.settings' in self.getCurrentFocus():
-            self.tap(353, 1470)
+            if self.device.Model == 'M2007J22C':
+                self.pressBackKey()
+            elif self.device.Model == 'JAT-TL00':
+                self.tap(353, 1470)
 
     def getModel(self):
-        return popen(self.cmd + 'shell getprop ro.product.model').read()
+        return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
-        r = r.replace("  mCurrentFocus=Window{", '')
-        r = r[:-2]
+        r = r.replace("  mCurrentFocus=Window{", '')[:-2]
         print(r)
         return r
 
+
     def pressKey(self, keycode):
-        print('正在让%s按下%s键' % (self.deviceSN, keycode))
+        print('正在让%s按下%s键' % (self.device.SN, keycode))
         system(self.cmd + 'shell input keyevent ' + keycode)
         sleep(1)
 
