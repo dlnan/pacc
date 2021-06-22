@@ -47,7 +47,6 @@ class ADB:
         print(r)
         return r
 
-
     def pressKey(self, keycode):
         print('正在让%s按下%s键' % (self.device.SN, keycode))
         system(self.cmd + 'shell input keyevent ' + keycode)

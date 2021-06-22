@@ -16,7 +16,7 @@ class HZDYX(Project):
 
     @classmethod
     def mainloop(cls):
-        cls.instances.append(HZDYX('201'))
+        # cls.instances.append(HZDYX('201'))
         cls.instances.append(HZDYX('202'))
         while True:
             for i in cls.instances:
