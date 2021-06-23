@@ -106,6 +106,11 @@ class ADB:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
 
+    def taps(self, instructions):
+        for x, y, interval, tip in instructions:
+            print(tip)
+            self.tap(x, y, interval)
+
     def start(self, Activity, wait=True):
         cmd = 'shell am start '
         if wait:
@@ -141,16 +146,22 @@ class ADB:
     def reboot(self):
         popen(self.cmd + 'reboot')
         print('已向设备%s下达重启指令' % self.device.SN)
-        sleep(96)
+        sleep(86)
         self.__init__(self.device.SN)
 
-    def rebootPerHour(self):
+    def rebootPerHour(self, tip='小时'):
         if not datetime.now().hour == self.rebootPerHourRecord[0]:
             self.rebootPerHourRecord = [datetime.now().hour]
         if self.device.SN not in self.rebootPerHourRecord:
-            print('按每小时重启一次的计划重启' + self.device.SN)
+            print('按每' + tip + '重启一次的计划重启' + self.device.SN)
             self.reboot()
             self.rebootPerHourRecord.append(self.device.SN)
+            return True
+        return False
+
+    def rebootPerDay(self, hours=[0]):
+        if datetime.now().hour in hours:
+            self.rebootPerHour(tip='天')
             return True
         return False
 
@@ -159,17 +170,15 @@ class ADB:
         IPv4Address = findAllWithRe(rd, r'inet addr:(\d+.\d+.\d+.\d+)  Bcast:.+')
         if len(IPv4Address) == 1:
             IPv4Address = IPv4Address[0]
-        # print(IPv4Address)
         return IPv4Address
 
     def getIPv6Address(self):
         rd = popen(self.cmd + 'shell ifconfig wlan0').read()
-        # print(rd)
         IPv6Address = findAllWithRe(rd, r'inet6 addr: (.+:.+:.+)/64 Scope: Global')
-        if len(IPv6Address) <= 2:
+        if 0 < len(IPv6Address) <= 2:
             IPv6Address = IPv6Address[0]
             print('设备%s的公网IPv6地址为：%s' % (self.device, IPv6Address))
         else:
-            print('%s的公网IPv6地址数大于2，正在尝试重新获取')
+            print('%s的公网IPv6地址数大于2或小于0，正在尝试重新获取')
             self.reboot()
             self.getIPv6Address()
