@@ -6,7 +6,7 @@ class Config:
     conn = None
     cs = None
 
-    def __init__(self, host='127.0.0.1', port=3306, database='acdb', user='root',
+    def __init__(self, host='10.1.1.1', port=3306, database='acdb', user='root',
                  password=os.getenv('MySQLPW'), charset='utf8'):
         Config.conn = connect(host=host, port=port, database=database,
                               user=user, password=password, charset=charset)
