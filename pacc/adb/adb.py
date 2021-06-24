@@ -22,6 +22,7 @@ class ADB:
         """
         self.device = Retrieve(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.ID
+        self.usbErrCnt = 0
         self.usb()
         if not self.getIPv4Address() == self.device.IP:
             Update(deviceSN).updateIP(self.getIPv4Address())
@@ -69,7 +70,15 @@ class ADB:
         system(self.cmd + 'usb')
         sleep(timeout)
         if self.device.ID not in getOnlineDevices():
+            self.usbErrCnt += 1
+            if self.usbErrCnt >= 16:
+                self.restartADB()
             self.usb(timeout + 1)
+
+    def restartADB(self):
+        system('adb kill-server')
+        system('adb start-server')
+        self.usbErrCnt = 0
 
     def tcpip(self):
         """
