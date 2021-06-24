@@ -36,8 +36,6 @@ class ADB:
         if 'com.android.settings' in self.getCurrentFocus():
             if self.device.Model == 'M2007J22C':
                 self.pressBackKey()
-            elif self.device.Model == 'JAT-TL00':
-                self.tap(353, 1470)
 
     def getModel(self):
         return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
@@ -72,9 +70,9 @@ class ADB:
         if self.device.ID in getOnlineDevices():
             return
         self.usbErrCnt += 1
-        if self.usbErrCnt >= 16:
+        if self.usbErrCnt >= 6:
             if self.device.IP in getOnlineDevices():
-                self.reboot()
+                self.rebootByIP()
                 self.usbErrCnt = 0
         self.usb(timeout + 1)
 
@@ -156,10 +154,18 @@ class ADB:
         self.swipe(x, y, x, y, duration)
 
     def reboot(self):
-        popen(self.cmd + 'reboot')
+        self.rebootByIP()
+
+    def rebootByCMD(self, cmd):
+        popen(cmd)
         print('已向设备%s下达重启指令' % self.device.SN)
         sleep(86)
         self.__init__(self.device.SN)
+
+    def rebootByIP(self):
+        if self.device.IP not in getOnlineDevices():
+            self.__init__()
+        self.rebootByCMD('adb -s ' + self.device.IP + ' reboot')
 
     def rebootPerHour(self, tip='小时'):
         if not datetime.now().hour == self.rebootPerHourRecord[0]:
