@@ -69,11 +69,14 @@ class ADB:
         """
         system(self.cmd + 'usb')
         sleep(timeout)
-        if self.device.ID not in getOnlineDevices():
-            self.usbErrCnt += 1
-            if self.usbErrCnt >= 16:
-                self.restartADB()
-            self.usb(timeout + 1)
+        if self.device.ID in getOnlineDevices():
+            return
+        self.usbErrCnt += 1
+        if self.usbErrCnt >= 16:
+            if self.device.IP in getOnlineDevices():
+                self.reboot()
+                self.usbErrCnt = 0
+        self.usb(timeout + 1)
 
     def restartADB(self):
         system('adb kill-server')
