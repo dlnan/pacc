@@ -12,11 +12,15 @@ class DYFD(Project):
         super(DYFD, self).__init__('401')
 
     def mainloop(self):
+        instructions = [
+            (912, 1755, 9, '打开抖音福袋'),
+            (579, 1575, 3, '启动悬浮窗'),
+            (1072, 581, 3, '展开悬浮窗'),
+            (913, 1768, 9, '启动滴滴助手'),
+            (441, 591, 2, '启动'),
+        ]
         while True:
             if self.adbIns.rebootPerHour():
-                self.adbIns.tap(912, 1755, 9)  # 打开抖音福袋
-                self.adbIns.tap(579, 1575, 3)  # 启动悬浮窗
-                self.adbIns.tap(1072, 581, 3)  # 展开悬浮窗
-                self.adbIns.tap(441, 589)  # 启动
+                self.adbIns.taps(instructions)
             sleep(1200)
 
