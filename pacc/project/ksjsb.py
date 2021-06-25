@@ -1,9 +1,11 @@
 from random import randint
 from .project import Project
-
+from ..tools import sleep
 
 
 class KSJSB(Project):
+
+    programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
 
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
@@ -18,6 +20,7 @@ class KSJSB(Project):
         x2 = randint(200, 700)
         y2 = randint(552, 709)
         self.adbIns.swipe(x1, y1, x2, y2)
+        sleep(r)
 
     def openApp(self):
         super(KSJSB, self).openApp('com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity')
@@ -25,5 +28,7 @@ class KSJSB(Project):
     def mainloop(self):
         self.freeMemory()
         self.openApp()
+        while True:
+            self.randomSwipe()
 
 

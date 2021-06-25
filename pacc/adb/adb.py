@@ -68,12 +68,14 @@ class ADB:
         system(self.cmd + 'usb')
         sleep(timeout)
         if self.device.ID in getOnlineDevices():
+            self.usbErrCnt = 0
             return
         self.usbErrCnt += 1
+        print(self.usbErrCnt)
         if self.usbErrCnt >= 6:
             if self.device.IP in getOnlineDevices():
-                self.rebootByIP()
-                self.usbErrCnt = 0
+                popen('adb -s ' + self.device.IP + ' usb')
+                sleep(3)
         self.usb(timeout + 1)
 
     def restartADB(self):
@@ -140,7 +142,9 @@ class ADB:
         """
         if duration == -1:
             duration = randint(300, 500)
-        system(self.cmd + 'shell input swipe %d %d %d %d %d' % (x1, y1, x2, y2, duration))
+        cmd = self.cmd + 'shell input swipe %d %d %d %d %d' % (x1, y1, x2, y2, duration)
+        system(cmd)
+        print(cmd)
 
     def longPress(self, x, y, duration=-1):
         """
