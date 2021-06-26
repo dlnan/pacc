@@ -7,6 +7,8 @@ from datetime import datetime
 class KSJSB(Project):
 
     programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
+    liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
+    verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
 
     def __init__(self, deviceSN):
         self.startTime = datetime.now()
@@ -28,10 +30,15 @@ class KSJSB(Project):
         super(KSJSB, self).openApp('com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity')
 
     def mainloop(self):
+        self.adbIns.reboot()
         self.freeMemory()
         self.openApp()
         while True:
             self.randomSwipe()
             print('已运行：', datetime.now() - self.startTime, sep='')
+            if self.liveStreaming in self.adbIns.getCurrentFocus():
+                self.adbIns.reboot()
+                self.freeMemory()
+                self.openApp()
 
 
