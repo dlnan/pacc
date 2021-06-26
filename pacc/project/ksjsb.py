@@ -1,14 +1,15 @@
 from random import randint
 from .project import Project
-from ..tools import sleep
+from ..tools import sleep, EMail
 from datetime import datetime
 
 
 class KSJSB(Project):
 
     programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
-    liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
     verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
+    liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
+    userProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'
 
     def __init__(self, deviceSN):
         self.startTime = datetime.now()
@@ -36,9 +37,10 @@ class KSJSB(Project):
         while True:
             self.randomSwipe()
             print('已运行：', datetime.now() - self.startTime, sep='')
-            if self.liveStreaming in self.adbIns.getCurrentFocus():
+            if (self.liveStreaming or self.userProfileActivity)\
+                    in self.adbIns.getCurrentFocus():
                 self.adbIns.reboot()
                 self.freeMemory()
                 self.openApp()
-
-
+            elif self.verificationCode in self.adbIns.getCurrentFocus():
+                EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()

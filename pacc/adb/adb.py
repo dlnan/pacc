@@ -168,7 +168,7 @@ class ADB:
 
     def rebootByIP(self):
         if self.device.IP not in getOnlineDevices():
-            self.__init__()
+            self.__init__(self.device.SN)
         self.rebootByCMD('adb -s ' + self.device.IP + ' reboot')
 
     def rebootPerHour(self, tip='小时'):
