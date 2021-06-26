@@ -1,2 +1,4 @@
 PyMySQL
 setuptools
+mysql-connector-python
+easyocr
