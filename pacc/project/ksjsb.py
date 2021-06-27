@@ -39,9 +39,9 @@ class KSJSB(Project):
         self.openApp()
 
     @classmethod
-    def mainloop(cls):
-        cls.instances.append(cls('302'))
-        cls.instances.append(cls('303'))
+    def mainloop(cls, devicesSN=['301', '302', '303']):
+        for deviceSN in devicesSN:
+            cls.instances.append(cls(deviceSN))
         for i in cls.instances:
             i.start()
         while True:
