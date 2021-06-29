@@ -1,5 +1,5 @@
 from os import popen, system
-from ..tools import findAllWithRe, sleep
+from ..tools import findAllWithRe, sleep, EMail
 from random import randint
 from ..mysql import Retrieve, Update
 from datetime import datetime
@@ -21,18 +21,19 @@ class ADB:
         :param deviceSN:
         """
         self.device = Retrieve(deviceSN)
+        if self.device.ID not in getOnlineDevices():
+            EMail(self.device.SN).sendOfflineError()
         self.cmd = 'adb -s %s ' % self.device.ID
-        self.usbErrCnt = 0
-        self.usb()
         if not self.getIPv4Address() == self.device.IP:
             Update(deviceSN).updateIP(self.getIPv4Address())
             self.device = Retrieve(deviceSN)
+        if self.device.IP not in getOnlineDevices():
+            self.tcpip()
+            self.reconnect()
+        self.cmd = 'adb -s %s ' % self.device.IP
         if not self.getModel() == self.device.Model:
             Update(deviceSN).updateModel(self.getModel())
             self.device = Retrieve(deviceSN)
-        self.tcpip()
-        self.reconnect()
-        self.cmd = 'adb -s %s ' % self.device.IP
         if 'com.android.settings' in self.getCurrentFocus():
             if self.device.Model == 'M2007J22C':
                 self.pressBackKey()
@@ -67,16 +68,6 @@ class ADB:
         """
         system(self.cmd + 'usb')
         sleep(timeout)
-        if self.device.ID in getOnlineDevices():
-            self.usbErrCnt = 0
-            return
-        self.usbErrCnt += 1
-        print(self.usbErrCnt)
-        if self.usbErrCnt >= 6:
-            if self.device.IP in getOnlineDevices():
-                popen('adb -s ' + self.device.IP + ' usb')
-                sleep(3)
-        self.usb(timeout + 1)
 
     def restartADB(self):
         system('adb kill-server')

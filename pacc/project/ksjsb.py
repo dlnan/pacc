@@ -39,9 +39,7 @@ class KSJSB(Project):
         self.openApp()
 
     @classmethod
-    def mainloop(cls, devicesSN=['301', '302', '303']):
-        for deviceSN in devicesSN:
-            cls.instances.append(cls(deviceSN))
+    def watchVideo(cls):
         for i in cls.instances:
             i.start()
         while True:
@@ -57,3 +55,9 @@ class KSJSB(Project):
                 elif i.verificationCode in i.adbIns.getCurrentFocus():
                     EMail(i.adbIns.device.SN).sendVerificationCodeAlarm()
             sleep(st)
+
+    @classmethod
+    def mainloop(cls, devicesSN=['301', '302', '303']):
+        for deviceSN in devicesSN:
+            cls.instances.append(cls(deviceSN))
+        cls.watchVideo()
