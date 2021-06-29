@@ -13,6 +13,11 @@ def getOnlineDevices():
     return res
 
 
+def restartADB():
+    system('adb kill-server')
+    system('adb start-server')
+
+
 class ADB:
     rebootPerHourRecord = [-1]
 
@@ -67,11 +72,6 @@ class ADB:
         """
         system(self.cmd + 'usb')
         sleep(timeout)
-
-    def restartADB(self):
-        system('adb kill-server')
-        system('adb start-server')
-        self.usbErrCnt = 0
 
     def tcpip(self):
         """
@@ -153,7 +153,7 @@ class ADB:
     def rebootByCMD(self, cmd):
         popen(cmd)
         print('已向设备%s下达重启指令' % self.device.SN)
-        sleep(86)
+        sleep(96)
         self.__init__(self.device.SN)
 
     def rebootByIP(self):

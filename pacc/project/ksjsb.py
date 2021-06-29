@@ -5,7 +5,6 @@ from datetime import datetime
 
 
 class KSJSB(Project):
-
     programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
     verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
     liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
@@ -40,16 +39,18 @@ class KSJSB(Project):
 
     @classmethod
     def watchVideo(cls):
-        for i in cls.instances:
-            i.start()
         while True:
+            for i in cls.instances:
+                if i.adbIns.rebootPerHour():
+                    i.freeMemory()
+                    i.openApp()
             st = randint(3, 9)
             for i in cls.instances:
                 i.randomSwipe()
                 i.sleepTime -= st
             print('已运行：', datetime.now() - cls.startTime, sep='')
             for i in cls.instances:
-                if (i.liveStreaming or i.userProfileActivity)\
+                if (i.liveStreaming or i.userProfileActivity) \
                         in i.adbIns.getCurrentFocus():
                     i.start()
                 elif i.verificationCode in i.adbIns.getCurrentFocus():
