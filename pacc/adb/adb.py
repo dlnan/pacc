@@ -27,9 +27,8 @@ class ADB:
         if not self.getIPv4Address() == self.device.IP:
             Update(deviceSN).updateIP(self.getIPv4Address())
             self.device = Retrieve(deviceSN)
-        if self.device.IP not in getOnlineDevices():
-            self.tcpip()
-            self.reconnect()
+        self.tcpip()
+        self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
         if not self.getModel() == self.device.Model:
             Update(deviceSN).updateModel(self.getModel())
