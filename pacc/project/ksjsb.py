@@ -27,7 +27,7 @@ class KSJSB(Project):
         x2 = randint(500, 560)
         y2 = randint(360, 560)
         self.adbIns.swipe(x1, y1, x2, y2)
-        self.sleepTime += randint(6, 30)
+        self.sleepTime += randint(3, 15)
 
     def openApp(self):
         super(KSJSB, self).openApp('com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity')
