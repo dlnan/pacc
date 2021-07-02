@@ -7,6 +7,7 @@ from datetime import datetime
 class KSJSB(Project):
     programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
     verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
+    shopping = 'kuaishou.nebula/com.kuaishou.merchant.basic.MerchantYodaWebViewActivity'
     liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
     userProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'
     instances = []
@@ -50,7 +51,7 @@ class KSJSB(Project):
                 i.sleepTime -= st
             print('已运行：', datetime.now() - cls.startTime, sep='')
             for i in cls.instances:
-                if (i.liveStreaming or i.userProfileActivity) \
+                if (cls.liveStreaming or cls.userProfileActivity or cls.shopping) \
                         in i.adbIns.getCurrentFocus():
                     i.start()
                 elif i.verificationCode in i.adbIns.getCurrentFocus():
