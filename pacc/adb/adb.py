@@ -1,5 +1,5 @@
 from os import popen, system
-from ..tools import findAllWithRe, sleep, EMail
+from ..tools import findAllWithRe, sleep, EMail, createDir
 from random import randint
 from ..mysql import Retrieve, Update
 from datetime import datetime
@@ -13,11 +13,6 @@ def getOnlineDevices():
     return res
 
 
-def restartADB():
-    system('adb kill-server')
-    system('adb start-server')
-
-
 class ADB:
     rebootPerHourRecord = [-1]
 
@@ -26,6 +21,7 @@ class ADB:
         :param deviceSN:
         """
         self.device = Retrieve(deviceSN)
+        self.reconnectOffline()
         if self.device.ID not in getOnlineDevices():
             EMail(self.device.SN).sendOfflineError()
         self.cmd = 'adb -s %s ' % self.device.ID
@@ -44,6 +40,13 @@ class ADB:
 
     def getModel(self):
         return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
+
+    def getCurrentUIHierarchy(self):
+        system(self.cmd + 'shell uiautomator dump')
+        CurrentUIHierarchyDirName = 'CurrentUIHierarchy'
+        createDir(CurrentUIHierarchyDirName)
+        system('%s pull /sdcard/window_dump.xml %s/%s.xml' % (
+            self.cmd, CurrentUIHierarchyDirName, self.device.SN))
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
@@ -70,7 +73,9 @@ class ADB:
         restart adbd listening on USB
         :return:
         """
-        system(self.cmd + 'usb')
+        cmd = self.cmd + 'usb'
+        system(cmd)
+        print(cmd)
         sleep(timeout)
 
     def tcpip(self):
@@ -102,6 +107,13 @@ class ADB:
     def reconnect(self):
         self.disconnect()
         self.connect()
+
+    def reconnectOffline(self):
+        """
+        reset offline/unauthorized devices to force reconnect
+        :return:
+        """
+        system('adb reconnect offline')
 
     def tap(self, x, y, interval=1):
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
