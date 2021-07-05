@@ -2,6 +2,11 @@ from random import randint
 from .project import Project
 from ..tools import sleep, EMail
 from datetime import datetime
+from enum import Enum
+
+
+class ResourceID(Enum):
+    left_btn = 'com.kuaishou.nebula:id/left_btn'
 
 
 class KSJSB(Project):
@@ -10,6 +15,7 @@ class KSJSB(Project):
     shopping = 'kuaishou.nebula/com.kuaishou.merchant.basic.MerchantYodaWebViewActivity'
     liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
     userProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'
+    recentsActivity = 'com.android.systemui/com.android.systemui.recents.RecentsActivity'
     instances = []
     startTime = datetime.now()
 
@@ -51,7 +57,8 @@ class KSJSB(Project):
                 i.sleepTime -= st
             print('已运行：', datetime.now() - cls.startTime, sep='')
             for i in cls.instances:
-                if (cls.liveStreaming or cls.userProfileActivity or cls.shopping) \
+                if (cls.liveStreaming or cls.userProfileActivity or cls.shopping or
+                    cls.recentsActivity)\
                         in i.adbIns.getCurrentFocus():
                     i.start()
                 elif i.verificationCode in i.adbIns.getCurrentFocus():

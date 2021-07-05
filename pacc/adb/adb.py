@@ -1,8 +1,11 @@
-from os import popen, system
+from os import popen, system, remove
+from os.path import exists
 from ..tools import findAllWithRe, sleep, EMail, createDir
 from random import randint
 from ..mysql import Retrieve, Update
 from datetime import datetime
+from xml.dom import minidom
+from html import unescape
 
 
 def getOnlineDevices():
@@ -13,6 +16,14 @@ def getOnlineDevices():
     return res
 
 
+def reconnectOffline():
+    """
+    reset offline/unauthorized devices to force reconnect
+    :return:
+    """
+    system('adb reconnect offline')
+
+
 class ADB:
     rebootPerHourRecord = [-1]
 
@@ -20,8 +31,8 @@ class ADB:
         """
         :param deviceSN:
         """
+        reconnectOffline()
         self.device = Retrieve(deviceSN)
-        self.reconnectOffline()
         if self.device.ID not in getOnlineDevices():
             EMail(self.device.SN).sendOfflineError()
         self.cmd = 'adb -s %s ' % self.device.ID
@@ -43,10 +54,24 @@ class ADB:
 
     def getCurrentUIHierarchy(self):
         system(self.cmd + 'shell uiautomator dump')
-        CurrentUIHierarchyDirName = 'CurrentUIHierarchy'
-        createDir(CurrentUIHierarchyDirName)
-        system('%s pull /sdcard/window_dump.xml %s/%s.xml' % (
-            self.cmd, CurrentUIHierarchyDirName, self.device.SN))
+        currentUIHierarchyDirName = 'CurrentUIHierarchy'
+        createDir(currentUIHierarchyDirName, removeOldDir=False)
+        currentUIHierarchyFileName = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
+        if exists(currentUIHierarchyFileName):
+            remove(currentUIHierarchyFileName)
+        system('%s pull /sdcard/window_dump.xml %s' % (
+            self.cmd, currentUIHierarchyFileName))
+        xml = open(currentUIHierarchyFileName, 'r', encoding='utf-8').read()
+        xml = minidom.parseString(xml)
+        xml = xml.toprettyxml()
+        xml = unescape(xml)
+        with open(currentUIHierarchyFileName, 'w', encoding='utf-8') as f:
+            f.writelines(xml)
+        print(xml)
+
+
+
+
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
@@ -107,13 +132,6 @@ class ADB:
     def reconnect(self):
         self.disconnect()
         self.connect()
-
-    def reconnectOffline(self):
-        """
-        reset offline/unauthorized devices to force reconnect
-        :return:
-        """
-        system('adb reconnect offline')
 
     def tap(self, x, y, interval=1):
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
