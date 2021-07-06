@@ -57,13 +57,23 @@ class KSJSB(Project):
                 i.sleepTime -= st
             print('已运行：', datetime.now() - cls.startTime, sep='')
             for i in cls.instances:
-                if (cls.liveStreaming or cls.userProfileActivity or cls.shopping or
-                    cls.recentsActivity)\
-                        in i.adbIns.getCurrentFocus():
+                if cls.shouldRestart(i.adbIns.getCurrentFocus()):
                     i.start()
                 elif i.verificationCode in i.adbIns.getCurrentFocus():
                     EMail(i.adbIns.device.SN).sendVerificationCodeAlarm()
             sleep(st)
+
+    @classmethod
+    def shouldRestart(cls, currentFocus):
+        if cls.liveStreaming in currentFocus:
+            return True
+        elif cls.userProfileActivity in currentFocus:
+            return True
+        elif cls.shopping in currentFocus:
+            return True
+        elif cls.recentsActivity in currentFocus:
+            return True
+        return False
 
     @classmethod
     def mainloop(cls, devicesSN=['301', '302', '303']):
