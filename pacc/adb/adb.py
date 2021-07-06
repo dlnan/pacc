@@ -27,16 +27,17 @@ def reconnectOffline():
 class ADB:
     rebootPerHourRecord = [-1]
 
-    def __init__(self, deviceSN):
+    def __init__(self, deviceSN, offlineCnt=1):
         """
         :param deviceSN:
         """
         reconnectOffline()
         self.device = Retrieve(deviceSN)
         if self.device.ID not in getOnlineDevices():
-            EMail(self.device.SN).sendOfflineError()
-            sleep(600)
-            self.__init__(deviceSN)
+            if not offlineCnt % 20:
+                EMail(self.device.SN).sendOfflineError()
+            sleep(30)
+            self.__init__(deviceSN, offlineCnt+1)
         self.cmd = 'adb -s %s ' % self.device.ID
         if not self.getIPv4Address() == self.device.IP:
             Update(deviceSN).updateIP(self.getIPv4Address())
