@@ -35,6 +35,8 @@ class ADB:
         self.device = Retrieve(deviceSN)
         if self.device.ID not in getOnlineDevices():
             EMail(self.device.SN).sendOfflineError()
+            sleep(600)
+            self.__init__(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.ID
         if not self.getIPv4Address() == self.device.IP:
             Update(deviceSN).updateIP(self.getIPv4Address())
@@ -68,10 +70,6 @@ class ADB:
         with open(currentUIHierarchyFileName, 'w', encoding='utf-8') as f:
             f.writelines(xml)
         print(xml)
-
-
-
-
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
