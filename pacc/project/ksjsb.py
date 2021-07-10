@@ -1,15 +1,16 @@
 from random import randint
 from .project import Project
-from ..tools import sleep, EMail
+from ..tools import sleep, EMail, xtd
 from datetime import datetime
-from enum import Enum
 
 
-class ResourceID(Enum):
-    left_btn = 'com.kuaishou.nebula:id/left_btn'
+class ResourceID:
+    left_btn = 'com.kuaishou.nebula:id/left_btn'  # 主界面左上角菜单项
+    red_packet_anim = 'com.kuaishou.nebula:id/red_packet_anim'  # 主界面右上方红包图标
 
 
 class KSJSB(Project):
+    rID = ResourceID()
     programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
     verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
     shopping = 'kuaishou.nebula/com.kuaishou.merchant.basic.MerchantYodaWebViewActivity'
@@ -22,6 +23,21 @@ class KSJSB(Project):
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
         self.sleepTime = 0
+
+    def getXMLData(self):
+        return xtd('CurrentUIHierarchy/%s.xml' % self.adbIns.device.SN)
+
+    def getGoldCoins(self):
+        d = self.getXMLData()
+        d = d['hierarchy']['node']['node']['node']['node']['node']['node']['node'][1]
+        d = d['node']['node']['node'][1]['node'][0]
+        return d['node'][0]['@text']
+
+    def getCashCoupons(self):
+        d = self.getXMLData()
+        d = d['hierarchy']['node']['node']['node']['node']['node']['node']['node'][1]
+        d = d['node']['node']['node'][1]['node'][1]
+        return d['node'][0]['@text']
 
     def tapFreeButton(self):
         super(KSJSB, self).tapFreeButton(540, 1706)

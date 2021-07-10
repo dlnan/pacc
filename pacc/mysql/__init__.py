@@ -1,6 +1,7 @@
-from .mysql import Retrieve, Update
+from .retrieve import RetrieveBaseInfo
+from .update import UpdateBaseInfo
 
 __all__ = [
-    "Retrieve",
-    "Update"
+    "RetrieveBaseInfo",
+    "UpdateBaseInfo"
 ]

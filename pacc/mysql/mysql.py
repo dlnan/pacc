@@ -40,37 +40,3 @@ def commit():
         sleep(30)
         Config()
         commit()
-
-
-class Retrieve:
-    def __init__(self, SN):
-        self.SN = SN
-        self.IP = self.query('IP')
-        self.ID = self.query('ID')
-        self.Model = self.query('Model')
-
-    def query(self, field):
-        cmd = 'select `%s` from `INFO` where `SN` = %s' % (field, self.SN)
-        res = query(cmd)
-        if len(res) == 1:
-            res = res[0]
-        return res
-
-
-class Update:
-
-    def __init__(self, SN):
-        self.SN = SN
-
-    def query(self, field, value):
-        cmd = 'update `INFO` set `%s` = "%s" where `SN` = "%s"' % (field, value, self.SN)
-        print(cmd)
-        res = query(cmd)
-        commit()
-        return res
-
-    def updateIP(self, ip):
-        print(self.query('IP', ip))
-
-    def updateModel(self, model):
-        print(self.query('Model', model))

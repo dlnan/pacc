@@ -1,11 +1,10 @@
 from os import popen, system, remove
 from os.path import exists
-from ..tools import findAllWithRe, sleep, EMail, createDir
+from ..tools import findAllWithRe, sleep, EMail, createDir, prettyXML
 from random import randint
-from ..mysql import Retrieve, Update
+from ..mysql import RetrieveBaseInfo, UpdateBaseInfo
 from datetime import datetime
-from xml.dom import minidom
-from html import unescape
+from .uia import UIAutomator
 
 
 def getOnlineDevices():
@@ -16,14 +15,6 @@ def getOnlineDevices():
     return res
 
 
-def reconnectOffline():
-    """
-    reset offline/unauthorized devices to force reconnect
-    :return:
-    """
-    system('adb reconnect offline')
-
-
 class ADB:
     rebootPerHourRecord = [-1]
 
@@ -31,8 +22,8 @@ class ADB:
         """
         :param deviceSN:
         """
-        reconnectOffline()
-        self.device = Retrieve(deviceSN)
+        system('adb reconnect offline')
+        self.device = RetrieveBaseInfo(deviceSN)
         if self.device.ID not in getOnlineDevices():
             if not offlineCnt % 20:
                 EMail(self.device.SN).sendOfflineError()
@@ -40,14 +31,15 @@ class ADB:
             self.__init__(deviceSN, offlineCnt+1)
         self.cmd = 'adb -s %s ' % self.device.ID
         if not self.getIPv4Address() == self.device.IP:
-            Update(deviceSN).updateIP(self.getIPv4Address())
-            self.device = Retrieve(deviceSN)
+            UpdateBaseInfo(deviceSN).updateIP(self.getIPv4Address())
+            self.device = RetrieveBaseInfo(deviceSN)
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
+        self.uIA = UIAutomator(self.device.IP)
         if not self.getModel() == self.device.Model:
-            Update(deviceSN).updateModel(self.getModel())
-            self.device = Retrieve(deviceSN)
+            UpdateBaseInfo(deviceSN).updateModel(self.getModel())
+            self.device = RetrieveBaseInfo(deviceSN)
         if 'com.android.settings' in self.getCurrentFocus():
             if self.device.Model == 'M2007J22C':
                 self.pressBackKey()
@@ -59,17 +51,12 @@ class ADB:
         system(self.cmd + 'shell uiautomator dump')
         currentUIHierarchyDirName = 'CurrentUIHierarchy'
         createDir(currentUIHierarchyDirName, removeOldDir=False)
-        currentUIHierarchyFileName = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
-        if exists(currentUIHierarchyFileName):
-            remove(currentUIHierarchyFileName)
+        currentUIHierarchyFilePath = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
+        if exists(currentUIHierarchyFilePath):
+            remove(currentUIHierarchyFilePath)
         system('%s pull /sdcard/window_dump.xml %s' % (
-            self.cmd, currentUIHierarchyFileName))
-        xml = open(currentUIHierarchyFileName, 'r', encoding='utf-8').read()
-        xml = minidom.parseString(xml)
-        xml = xml.toprettyxml()
-        xml = unescape(xml)
-        with open(currentUIHierarchyFileName, 'w', encoding='utf-8') as f:
-            f.writelines(xml)
+            self.cmd, currentUIHierarchyFilePath))
+        xml = prettyXML(currentUIHierarchyFilePath)
         print(xml)
 
     def getCurrentFocus(self):
