@@ -36,7 +36,7 @@ class ADB:
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
-        self.uIA = UIAutomator(self.device.IP)
+        # self.uIA = UIAutomator(self.device.IP)
         if not self.getModel() == self.device.Model:
             UpdateBaseInfo(deviceSN).updateModel(self.getModel())
             self.device = RetrieveBaseInfo(deviceSN)
