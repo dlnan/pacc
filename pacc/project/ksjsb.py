@@ -104,6 +104,6 @@ class KSJSB(Project):
         while True:
             st = randint(3, 9)
             for i in cls.instances:
-                i.watchVideo()
+                i.watchVideo(st)
             print('已运行：', datetime.now() - cls.startTime, sep='')
             sleep(st)
