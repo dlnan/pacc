@@ -48,16 +48,22 @@ class ADB:
         return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
 
     def getCurrentUIHierarchy(self):
-        system(self.cmd + 'shell uiautomator dump')
+        cmd = self.cmd + 'shell rm /sdcard/window_dump.xml'
+        system(cmd)
+        cmd = self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml'
+        system(cmd)
+        print(cmd)
+        sleep(6)
         currentUIHierarchyDirName = 'CurrentUIHierarchy'
         createDir(currentUIHierarchyDirName, removeOldDir=False)
         currentUIHierarchyFilePath = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
         if exists(currentUIHierarchyFilePath):
             remove(currentUIHierarchyFilePath)
-        system('%s pull /sdcard/window_dump.xml %s' % (
-            self.cmd, currentUIHierarchyFilePath))
+        cmd = '%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath)
+        system(cmd)
+        print(cmd)
         xml = prettyXML(currentUIHierarchyFilePath)
-        print(xml)
+        # print(xml)
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()

@@ -2,6 +2,7 @@ from random import randint
 from .project import Project
 from ..tools import sleep, EMail, xtd
 from datetime import datetime
+from ..mysql import RetrieveKSJSB, UpdateKSJSB
 
 
 class ResourceID:
@@ -9,9 +10,12 @@ class ResourceID:
     red_packet_anim = 'com.kuaishou.nebula:id/red_packet_anim'  # 主界面右上方红包图标
 
 
+class Activity:
+    HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
+
+
 class KSJSB(Project):
     rID = ResourceID()
-    programName = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
     verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
     shopping = 'kuaishou.nebula/com.kuaishou.merchant.basic.MerchantYodaWebViewActivity'
     liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
@@ -23,8 +27,20 @@ class KSJSB(Project):
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
         self.sleepTime = 0
+        self.dbr = RetrieveKSJSB(deviceSN)
+
+    def updateGoldCoins(self):
+        self.reopenApp()
+        self.clickByRID(ResourceID.red_packet_anim)
+        goldCoins = self.getGoldCoins()
+        cashCoupons = self.getCashCoupons()
+        if not goldCoins == self.dbr.goldCoins:
+            UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
+        if not cashCoupons == self.dbr.cashCoupons:
+            UpdateKSJSB(self.adbIns.device.SN).updateCashCoupons(cashCoupons)
 
     def getXMLData(self):
+        self.adbIns.getCurrentUIHierarchy()
         return xtd('CurrentUIHierarchy/%s.xml' % self.adbIns.device.SN)
 
     def getGoldCoins(self):
@@ -39,9 +55,6 @@ class KSJSB(Project):
         d = d['node']['node']['node'][1]['node'][1]
         return d['node'][0]['@text']
 
-    def tapFreeButton(self):
-        super(KSJSB, self).tapFreeButton(540, 1706)
-
     def randomSwipe(self):
         if self.sleepTime > 0:
             return
@@ -53,41 +66,34 @@ class KSJSB(Project):
         self.sleepTime += randint(3, 15)
 
     def openApp(self):
-        super(KSJSB, self).openApp('com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity')
+        super(KSJSB, self).openApp(Activity.HomeActivity)
 
-    def start(self):
-        self.adbIns.reboot()
+    def reopenApp(self, reboot=False, sleepTime=6):
+        if reboot:
+            self.adbIns.reboot()
         self.freeMemory()
         self.openApp()
+        sleep(sleepTime)
 
-    @classmethod
-    def watchVideo(cls):
-        while True:
-            for i in cls.instances:
-                if i.adbIns.rebootPerHour():
-                    i.freeMemory()
-                    i.openApp()
-            st = randint(3, 9)
-            for i in cls.instances:
-                i.randomSwipe()
-                i.sleepTime -= st
-            print('已运行：', datetime.now() - cls.startTime, sep='')
-            for i in cls.instances:
-                if cls.shouldRestart(i.adbIns.getCurrentFocus()):
-                    i.start()
-                elif i.verificationCode in i.adbIns.getCurrentFocus():
-                    EMail(i.adbIns.device.SN).sendVerificationCodeAlarm()
-            sleep(st)
+    def watchVideo(self, st):
+        if self.adbIns.rebootPerHour():
+            self.reopenApp(True)
+        self.randomSwipe()
+        self.sleepTime -= st
+        currentFocus = self.adbIns.getCurrentFocus()
+        if self.shouldRestart(currentFocus):
+            self.reopenApp(True)
+        elif self.verificationCode in currentFocus:
+            EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
 
-    @classmethod
-    def shouldRestart(cls, currentFocus):
-        if cls.liveStreaming in currentFocus:
+    def shouldRestart(self, currentFocus):
+        if self.liveStreaming in currentFocus:
             return True
-        elif cls.userProfileActivity in currentFocus:
+        elif self.userProfileActivity in currentFocus:
             return True
-        elif cls.shopping in currentFocus:
+        elif self.shopping in currentFocus:
             return True
-        elif cls.recentsActivity in currentFocus:
+        elif self.recentsActivity in currentFocus:
             return True
         return False
 
@@ -95,4 +101,9 @@ class KSJSB(Project):
     def mainloop(cls, devicesSN=['301', '302', '303']):
         for deviceSN in devicesSN:
             cls.instances.append(cls(deviceSN))
-        cls.watchVideo()
+        while True:
+            st = randint(3, 9)
+            for i in cls.instances:
+                i.watchVideo()
+            print('已运行：', datetime.now() - cls.startTime, sep='')
+            sleep(st)
