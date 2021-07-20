@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='pacc',  # 包名
-    version='0.0.37',  # 版本
+    version='0.0.38',  # 版本
     packages=find_packages(),  # 目录下所有文件
     description='Python Android Cluster Control 为使用Python对安卓集群控制进行支持',  # 描述信息
     long_description="""该Python模块用于通过USB或Wifi对Android集群进行控制，集成了ADB、UIAutomator、数据库、中央控制系统、图像识别、验证码破解、人工智能、自然语言处理等功能。
-    目前最新版的是0.0.37，已集成的功能如下：
+    目前最新版的是0.0.38，已集成的功能如下：
     1. ADB（安卓调试桥）
     2. MySQL数据库
     已实现的中央监控系统如下：

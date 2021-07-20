@@ -77,7 +77,7 @@ class KSJSB(Project):
 
     def watchVideo(self, st):
         if self.adbIns.rebootPerHour():
-            self.reopenApp(True)
+            self.reopenApp()
         self.randomSwipe()
         self.sleepTime -= st
         currentFocus = self.adbIns.getCurrentFocus()
