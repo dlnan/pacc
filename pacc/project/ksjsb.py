@@ -81,10 +81,10 @@ class KSJSB(Project):
         self.randomSwipe()
         self.sleepTime -= st
         currentFocus = self.adbIns.getCurrentFocus()
-        if self.shouldRestart(currentFocus):
+        if self.shouldRestart(currentFocus) or self.verificationCode in currentFocus:
             self.reopenApp(True)
-        elif self.verificationCode in currentFocus:
-            EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
+        # elif self.verificationCode in currentFocus:
+        #     EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
 
     def shouldRestart(self, currentFocus):
         if self.liveStreaming in currentFocus:
