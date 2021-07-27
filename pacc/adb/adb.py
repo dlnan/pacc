@@ -175,7 +175,7 @@ class ADB:
     def rebootByCMD(self, cmd):
         popen(cmd)
         print('已向设备%s下达重启指令' % self.device.SN)
-        sleep(96)
+        sleep(69)
         self.__init__(self.device.SN)
 
     def rebootByIP(self):
