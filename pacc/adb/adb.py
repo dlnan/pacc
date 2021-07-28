@@ -30,13 +30,16 @@ class ADB:
             sleep(30)
             self.__init__(deviceSN, offlineCnt+1)
         self.cmd = 'adb -s %s ' % self.device.ID
+        if not self.getIPv4Address():
+            print(self.getIPv4Address())
+            self.__init__(deviceSN)
         if not self.getIPv4Address() == self.device.IP:
             UpdateBaseInfo(deviceSN).updateIP(self.getIPv4Address())
             self.device = RetrieveBaseInfo(deviceSN)
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
-        # self.uIA = UIAutomator(self.device.IP)
+        self.uIA = UIAutomator(self.device.IP)
         if not self.getModel() == self.device.Model:
             UpdateBaseInfo(deviceSN).updateModel(self.getModel())
             self.device = RetrieveBaseInfo(deviceSN)
