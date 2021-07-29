@@ -18,12 +18,6 @@ class Activity:
     MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
 
 
-def shouldReopen(currentFocus):
-    if Activity.MiniAppActivity0 in currentFocus:
-        return True
-    return False
-
-
 class KSJSB(Project):
     instances = []
     startTime = datetime.now()
@@ -79,13 +73,18 @@ class KSJSB(Project):
         self.openApp()
         sleep(sleepTime)
 
+    def shouldReopen(self):
+        currentFocus = self.adbIns.getCurrentFocus()
+        if Activity.MiniAppActivity0 in currentFocus:
+            return True
+        return False
+
     def watchVideo(self, st):
         if self.adbIns.rebootPerHour():
             self.reopenApp()
         self.randomSwipe()
         self.sleepTime -= st
-        currentFocus = self.adbIns.getCurrentFocus()
-        if shouldReopen(currentFocus) or self.verificationCode in currentFocus:
+        if self.shouldReopen():
             self.reopenApp()
         # elif self.verificationCode in currentFocus:
         #     EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
