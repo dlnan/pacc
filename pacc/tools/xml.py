@@ -1,14 +1,5 @@
 from xml.dom import minidom
 from html import unescape
-import xmltodict
-
-
-def xtd(xmlFilePath):
-    """
-    :param xmlFilePath:
-    :return: dict
-    """
-    return xmltodict.parse(open(xmlFilePath, 'r', encoding='utf-8').read())
 
 
 def prettyXML(filePath):

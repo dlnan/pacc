@@ -1,6 +1,6 @@
 from random import randint
 from .project import Project
-from ..tools import sleep, EMail, xtd
+from ..tools import sleep
 from datetime import datetime
 from ..mysql import RetrieveKSJSB, UpdateKSJSB
 
@@ -8,19 +8,23 @@ from ..mysql import RetrieveKSJSB, UpdateKSJSB
 class ResourceID:
     left_btn = 'com.kuaishou.nebula:id/left_btn'  # 主界面左上角菜单项
     red_packet_anim = 'com.kuaishou.nebula:id/red_packet_anim'  # 主界面右上方红包图标
+    iv_close_common_dialog = 'com.kuaishou.nebula:id/iv_close_common_dialog'  # 主界面右上方关闭奥运夺冠瞬间界面
+    animated_image = 'com.kuaishou.nebula:id/animated_image'  # 主界面左上方关闭奥运福娃按钮
+    positive = 'com.kuaishou.nebula:id/positive'  # 主界面中间青少年模式，我知道了
 
 
 class Activity:
-    HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'
+    HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'  # 主界面
+    MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
+
+
+def shouldReopen(currentFocus):
+    if Activity.MiniAppActivity0 in currentFocus:
+        return True
+    return False
 
 
 class KSJSB(Project):
-    rID = ResourceID()
-    verificationCode = 'com.kuaishou.nebula/com.yxcorp.gifshow.webview.KwaiYodaWebViewActivity'
-    shopping = 'kuaishou.nebula/com.kuaishou.merchant.basic.MerchantYodaWebViewActivity'
-    liveStreaming = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'
-    userProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'
-    recentsActivity = 'com.android.systemui/com.android.systemui.recents.RecentsActivity'
     instances = []
     startTime = datetime.now()
 
@@ -41,7 +45,7 @@ class KSJSB(Project):
 
     def getXMLData(self):
         self.adbIns.getCurrentUIHierarchy()
-        return xtd('CurrentUIHierarchy/%s.xml' % self.adbIns.device.SN)
+        # return xtd('CurrentUIHierarchy/%s.xml' % self.adbIns.device.SN)
 
     def getGoldCoins(self):
         d = self.getXMLData()
@@ -81,21 +85,10 @@ class KSJSB(Project):
         self.randomSwipe()
         self.sleepTime -= st
         currentFocus = self.adbIns.getCurrentFocus()
-        if self.shouldReopen(currentFocus) or self.verificationCode in currentFocus:
+        if shouldReopen(currentFocus) or self.verificationCode in currentFocus:
             self.reopenApp()
         # elif self.verificationCode in currentFocus:
         #     EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
-
-    def shouldReopen(self, currentFocus):
-        if self.liveStreaming in currentFocus:
-            return True
-        elif self.userProfileActivity in currentFocus:
-            return True
-        elif self.shopping in currentFocus:
-            return True
-        elif self.recentsActivity in currentFocus:
-            return True
-        return False
 
     @classmethod
     def mainloop(cls, devicesSN=['301', '302', '303']):

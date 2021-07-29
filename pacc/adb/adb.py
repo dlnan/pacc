@@ -1,6 +1,5 @@
-from os import popen, system, remove
-from os.path import exists
-from ..tools import findAllWithRe, sleep, EMail, createDir, prettyXML
+from os import popen, system
+from ..tools import findAllWithRe, sleep, EMail
 from random import randint
 from ..mysql import RetrieveBaseInfo, UpdateBaseInfo
 from datetime import datetime
@@ -32,6 +31,7 @@ class ADB:
         self.cmd = 'adb -s %s ' % self.device.ID
         if not self.getIPv4Address():
             print(self.getIPv4Address())
+            sleep(3)
             self.__init__(deviceSN)
         if not self.getIPv4Address() == self.device.IP:
             UpdateBaseInfo(deviceSN).updateIP(self.getIPv4Address())
@@ -39,7 +39,7 @@ class ADB:
         self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
-        self.uIA = UIAutomator(self.device.IP)
+        self.uIA = UIAutomator(deviceSN)
         if not self.getModel() == self.device.Model:
             UpdateBaseInfo(deviceSN).updateModel(self.getModel())
             self.device = RetrieveBaseInfo(deviceSN)
@@ -49,24 +49,6 @@ class ADB:
 
     def getModel(self):
         return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
-
-    def getCurrentUIHierarchy(self):
-        cmd = self.cmd + 'shell rm /sdcard/window_dump.xml'
-        system(cmd)
-        cmd = self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml'
-        system(cmd)
-        print(cmd)
-        sleep(6)
-        currentUIHierarchyDirName = 'CurrentUIHierarchy'
-        createDir(currentUIHierarchyDirName, removeOldDir=False)
-        currentUIHierarchyFilePath = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
-        if exists(currentUIHierarchyFilePath):
-            remove(currentUIHierarchyFilePath)
-        cmd = '%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath)
-        system(cmd)
-        print(cmd)
-        xml = prettyXML(currentUIHierarchyFilePath)
-        # print(xml)
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
@@ -128,15 +110,10 @@ class ADB:
         self.disconnect()
         self.connect()
 
-    def tap(self, x, y, interval=1):
-        print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
-        system(self.cmd + 'shell input tap %d %d' % (x, y))
-        sleep(interval)
-
     def taps(self, instructions):
         for x, y, interval, tip in instructions:
             print(tip)
-            self.tap(x, y, interval)
+            self.uIA.tap(x, y, interval)
 
     def start(self, Activity, wait=True):
         cmd = 'shell am start '
