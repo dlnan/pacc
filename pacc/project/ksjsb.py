@@ -8,6 +8,8 @@ from ..mysql import RetrieveKSJSB, UpdateKSJSB
 class ResourceID:
     left_btn = 'com.kuaishou.nebula:id/left_btn'  # 主界面左上角菜单项
     red_packet_anim = 'com.kuaishou.nebula:id/red_packet_anim'  # 主界面右上方红包图标
+    cycle_progress = 'com.kuaishou.nebula:id/cycle_progress'  # 金币进度
+    gold_egg_anim = 'com.kuaishou.nebula:id/gold_egg_anim'  # 金蛋
     iv_close_common_dialog = 'com.kuaishou.nebula:id/iv_close_common_dialog'  # 主界面右上方关闭奥运夺冠瞬间界面
     animated_image = 'com.kuaishou.nebula:id/animated_image'  # 主界面左上方关闭奥运福娃按钮
     positive = 'com.kuaishou.nebula:id/positive'  # 主界面中间青少年模式，我知道了
@@ -16,6 +18,7 @@ class ResourceID:
 class Activity:
     HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'  # 主界面
     MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
+    PhotoDetailActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'  # 直播
 
 
 class KSJSB(Project):
@@ -76,6 +79,8 @@ class KSJSB(Project):
     def shouldReopen(self):
         currentFocus = self.adbIns.getCurrentFocus()
         if Activity.MiniAppActivity0 in currentFocus:
+            return True
+        elif Activity.PhotoDetailActivity in currentFocus:
             return True
         return False
 

@@ -22,13 +22,6 @@ class UIAutomator:
         system(self.cmd + 'shell screencap -p /sdcard/screencap.png')
         system(self.cmd + 'pull /sdcard/screencap.png CurrentUIHierarchy/%s.png' % self.device.SN)
 
-    @classmethod
-    def getCP(cls, bounds="[243,270][330,357]"):
-        x1, y1, x2, y2 = findAllNumsWithRe(bounds)
-        x = average(x1, x2)
-        y = average(y1, y2)
-        return x, y
-
     def clickByPoint(self, point):
         x, y = point
         self.tap(x, y)
@@ -39,40 +32,46 @@ class UIAutomator:
         sleep(interval)
 
     def click(self, resourceID):
-        pass
+        self.tap(self.getCP(resourceID))
+
+    def getCP(self, resourceID):
+        x1, y1, x2, y2 = findAllNumsWithRe(self.getBounds(resourceID))
+        x = average(x1, x2)
+        y = average(y1, y2)
+        return x, y
 
     def getBounds(self, resourceID):
-        pass
+        return self.getDict(resourceID)['@bounds']
 
-    def getDict(self):
+    def getDict(self, resourceID):
         dic = xmltodict.parse(self.xml)
-        self.node = Node('com.kuaishou.nebula:id/animated_image')
-        self.depthFirstSearch(dic)
+        self.node = Node(resourceID)
+        return self.depthFirstSearch(dic)
 
     def isTargetNode(self, dic):
         if type(dic) in (str, list):
             return False
         if '@resource-id' not in dic.keys():
             return False
-        # print(type(dic), dic['@resource-id'], sep='\n', end='\n\n\n\n')
         if dic['@resource-id'] == self.node.resourceID:
-            print(dic['@resource-id'])
             return True
         return False
 
     def depthFirstSearch(self, dic):
         if type(dic) == collections.OrderedDict:
             if self.isTargetNode(dic):
-                print(dic)
+                return dic
             for i in dic.keys():
                 if self.isTargetNode(dic[i]):
-                    print(i)
-                self.depthFirstSearch(dic[i])
+                    return dic[i]
+                res = self.depthFirstSearch(dic[i])
+                if res:
+                    return res
         elif type(dic) == list:
             for i in dic:
-                self.depthFirstSearch(i)
-        elif type(dic) == str:
-            pass
+                res = self.depthFirstSearch(i)
+                if res:
+                    return res
 
     @property
     def xml(self):
