@@ -10,7 +10,7 @@ class Project:
 
     def tapFreeButton(self):
         if 'MI 4' in self.adbIns.device.Model:
-            self.uIAIns.tap(540, 1706)
+            self.uIAIns.tap((540, 1706))
 
     def openApp(self, activity):
         self.adbIns.start(activity)
