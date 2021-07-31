@@ -79,8 +79,6 @@ class KSJSB(Project):
             return True
         elif Activity.TopicDetailActivity in currentFocus:
             return True
-        elif self.uIAIns.getDict(ResourceID.tab_text):
-            return True
         return False
 
     def watchVideo(self):
@@ -91,6 +89,8 @@ class KSJSB(Project):
                 self.reopenApp()
         except FileNotFoundError as e:
             print(e)
+        if self.uIAIns.getDict(ResourceID.tab_text):
+            self.adbIns.pressBackKey()
         self.sleepTime = self.sleepTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
