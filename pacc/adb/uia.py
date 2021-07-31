@@ -89,4 +89,9 @@ class UIAutomator:
             remove(currentUIHierarchyFilePath)
         cmd = '%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath)
         system(cmd)
-        return prettyXML(currentUIHierarchyFilePath)
+        try:
+            xml = prettyXML(currentUIHierarchyFilePath)
+        except FileNotFoundError as e:
+            print(e)
+            return self.getCurrentUIHierarchy()
+        return xml
