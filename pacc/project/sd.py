@@ -17,10 +17,10 @@ class SD(Project):
 
     def check(self):
         try:
-            # self.uIAIns.click(ResourceID.button2)
-            # dic = self.uIAIns.getDict(ResourceID.mec_connect_state)
-            # if dic and dic['@text'] == '正在连接服务器...':
-            self.reopenApp()
+            self.uIAIns.click(ResourceID.button2)
+            dic = self.uIAIns.getDict(ResourceID.mec_connect_state)
+            if dic and dic['@text'] == '正在连接服务器...':
+                self.reopenApp()
         except FileNotFoundError as e:
             print(e)
             self.check()

@@ -2,6 +2,10 @@ from ..adb import ADB, UIAutomator
 from datetime import datetime
 
 
+class ResourceID:
+    clearAnimView = 'com.android.systemui:id/clearAnimView'  # 内存清理图标
+
+
 class Project:
 
     def __init__(self, deviceSN):
@@ -18,7 +22,7 @@ class Project:
 
     def tapFreeButton(self):
         if 'MI 4' in self.adbIns.device.Model:
-            self.uIAIns.tap((540, 1706))
+            self.uIAIns.click(ResourceID.clearAnimView)
 
     def reopenApp(self):
         pass
