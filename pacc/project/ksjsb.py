@@ -95,16 +95,12 @@ class KSJSB(Project):
         if self.adbIns.rebootPerHour():
             self.reopenApp()
         try:
-            self.randomSwipe()
+            if self.shouldReopen():
+                self.reopenApp()
         except FileNotFoundError as e:
             print(e)
-            self.sleepTime = -1
-            self.randomSwipe()
-        self.sleepTime -= st
-        if self.shouldReopen():
             self.reopenApp()
-        # elif self.verificationCode in currentFocus:
-        #     EMail(self.adbIns.device.SN).sendVerificationCodeAlarm()
+        self.sleepTime -= st
 
     @classmethod
     def mainloop(cls, devicesSN=['301', '302', '303']):
