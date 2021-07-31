@@ -35,7 +35,10 @@ class UIAutomator:
         self.tap(self.getCP(resourceID))
 
     def getCP(self, resourceID):
-        x1, y1, x2, y2 = findAllNumsWithRe(self.getBounds(resourceID))
+        bounds = self.getBounds(resourceID)
+        if not bounds:
+            return False
+        x1, y1, x2, y2 = findAllNumsWithRe(bounds)
         x = average(x1, x2)
         y = average(y1, y2)
         return x, y
@@ -78,10 +81,8 @@ class UIAutomator:
         return self.getCurrentUIHierarchy()
 
     def getCurrentUIHierarchy(self):
-        cmd = self.cmd + 'shell rm /sdcard/window_dump.xml'
-        system(cmd)
-        cmd = self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml'
-        system(cmd)
+        system(self.cmd + 'shell rm /sdcard/window_dump.xml')
+        system(self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml')
         currentUIHierarchyDirName = 'CurrentUIHierarchy'
         createDir(currentUIHierarchyDirName)
         currentUIHierarchyFilePath = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
