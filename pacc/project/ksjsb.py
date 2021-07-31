@@ -91,7 +91,6 @@ class KSJSB(Project):
                 self.reopenApp()
         except FileNotFoundError as e:
             print(e)
-            self.reopenApp()
         self.sleepTime = self.sleepTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
