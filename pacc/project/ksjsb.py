@@ -45,21 +45,11 @@ class KSJSB(Project):
         if not cashCoupons == self.dbr.cashCoupons:
             UpdateKSJSB(self.adbIns.device.SN).updateCashCoupons(cashCoupons)
 
-    def getXMLData(self):
-        self.adbIns.getCurrentUIHierarchy()
-        # return xtd('CurrentUIHierarchy/%s.xml' % self.adbIns.device.SN)
-
     def getGoldCoins(self):
-        d = self.getXMLData()
-        d = d['hierarchy']['node']['node']['node']['node']['node']['node']['node'][1]
-        d = d['node']['node']['node'][1]['node'][0]
-        return d['node'][0]['@text']
+        pass
 
     def getCashCoupons(self):
-        d = self.getXMLData()
-        d = d['hierarchy']['node']['node']['node']['node']['node']['node']['node'][1]
-        d = d['node']['node']['node'][1]['node'][1]
-        return d['node'][0]['@text']
+        pass
 
     def randomSwipe(self):
         if self.sleepTime > 0:
@@ -104,14 +94,14 @@ class KSJSB(Project):
             self.reopenApp()
         self.sleepTime = self.sleepTime + self.lastTime - time()
         self.lastTime = time()
+        self.randomSwipe()
 
     @classmethod
-    def mainloop(cls, devicesSN=['301', '302', '303']):
+    def mainloop(cls, devicesSN):
         for deviceSN in devicesSN:
             cls.instances.append(cls(deviceSN))
         while True:
-            st = randint(3, 9)
             for i in cls.instances:
                 i.watchVideo()
             print('已运行：', datetime.now() - cls.startTime, sep='')
-            sleep(st)
+            sleep(1)
