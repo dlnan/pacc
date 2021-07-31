@@ -4,6 +4,7 @@ from os import system, remove
 from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
 from os.path import exists
 import xmltodict
+import xml
 
 
 class Node:
@@ -51,7 +52,10 @@ class UIAutomator:
         return self.getDict(resourceID)['@bounds']
 
     def getDict(self, resourceID):
-        dic = xmltodict.parse(self.xml)
+        try:
+            dic = xmltodict.parse(self.xml)
+        except xml.parsers.expat.ExpatError:
+            self.getDict(resourceID)
         self.node = Node(resourceID)
         return self.depthFirstSearch(dic)
 
