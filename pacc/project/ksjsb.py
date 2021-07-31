@@ -21,6 +21,7 @@ class Activity:
     HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'  # 主界面
     MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
     PhotoDetailActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'  # 直播
+    TopicDetailActivity = 'com.kuaishou.nebula/com.yxcorp.plugin.tag.topic.TopicDetailActivity'  # 每日书单
 
 
 class KSJSB(Project):
@@ -83,6 +84,8 @@ class KSJSB(Project):
         if Activity.MiniAppActivity0 in currentFocus:
             return True
         elif Activity.PhotoDetailActivity in currentFocus:
+            return True
+        elif Activity.TopicDetailActivity in currentFocus:
             return True
         elif self.uIAIns.getDict(ResourceID.tab_text):
             return True

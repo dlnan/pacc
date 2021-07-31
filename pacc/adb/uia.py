@@ -32,7 +32,11 @@ class UIAutomator:
         sleep(interval)
 
     def click(self, resourceID):
-        self.tap(self.getCP(resourceID))
+        cP = self.getCP(resourceID)
+        if not cP:
+            return False
+        self.tap(cP)
+        return True
 
     def getCP(self, resourceID):
         bounds = self.getBounds(resourceID)
