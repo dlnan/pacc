@@ -13,7 +13,6 @@
 								</node>
 							</node>
 							<node NAF="true" index="1" text="" resource-id="com.dd.rclient:id/auto_wait_btn" class="android.view.View" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[240,384][840,984]"/>
-							<node index="2" text="正在连接服务器..." resource-id="com.dd.rclient:id/mec_connect_state" class="android.widget.TextView" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[353,1134][728,1199]"/>
 							<node index="3" text="退出程序" resource-id="com.dd.rclient:id/btn_exit_app" class="android.widget.TextView" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[104,1349][488,1474]"/>
 							<node index="4" text="后台运行" resource-id="com.dd.rclient:id/btn_run_on_background" class="android.widget.TextView" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[592,1349][976,1474]"/>
 							<node index="5" text="注意事项: 
