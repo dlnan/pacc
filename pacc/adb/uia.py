@@ -94,13 +94,13 @@ class UIAutomator:
         currentUIHierarchyDirName = 'CurrentUIHierarchy'
         createDir(currentUIHierarchyDirName)
         currentUIHierarchyFilePath = '%s/%s.xml' % (currentUIHierarchyDirName, self.device.SN)
+        print(currentUIHierarchyFilePath)
         if exists(currentUIHierarchyFilePath):
             remove(currentUIHierarchyFilePath)
-        cmd = '%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath)
-        system(cmd)
+        system('%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath))
         try:
-            xml = prettyXML(currentUIHierarchyFilePath)
+            xmlData = prettyXML(currentUIHierarchyFilePath)
         except FileNotFoundError as e:
             print(e)
             return self.getCurrentUIHierarchy()
-        return xml
+        return xmlData
