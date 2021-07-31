@@ -2,6 +2,7 @@ from random import randint
 from .project import Project
 from ..tools import sleep
 from datetime import datetime
+from time import time
 from ..mysql import RetrieveKSJSB, UpdateKSJSB
 
 
@@ -31,6 +32,7 @@ class KSJSB(Project):
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
         self.sleepTime = 0
+        self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
 
     def updateGoldCoins(self):
@@ -91,7 +93,7 @@ class KSJSB(Project):
             return True
         return False
 
-    def watchVideo(self, st):
+    def watchVideo(self):
         if self.adbIns.rebootPerHour():
             self.reopenApp()
         try:
@@ -100,7 +102,8 @@ class KSJSB(Project):
         except FileNotFoundError as e:
             print(e)
             self.reopenApp()
-        self.sleepTime -= st
+        self.sleepTime = self.sleepTime + self.lastTime - time()
+        self.lastTime = time()
 
     @classmethod
     def mainloop(cls, devicesSN=['301', '302', '303']):
@@ -109,6 +112,6 @@ class KSJSB(Project):
         while True:
             st = randint(3, 9)
             for i in cls.instances:
-                i.watchVideo(st)
+                i.watchVideo()
             print('已运行：', datetime.now() - cls.startTime, sep='')
             sleep(st)

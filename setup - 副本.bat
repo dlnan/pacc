@@ -7,6 +7,4 @@ git push -f origin main
 python -m pip install --upgrade pip
 pip install --upgrade pacc
 pip install --upgrade pacc
-timeout /t 6
 pip install --upgrade pacc
-pause
