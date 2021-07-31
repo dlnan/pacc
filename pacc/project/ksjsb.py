@@ -81,16 +81,21 @@ class KSJSB(Project):
             return True
         return False
 
+    def shouldPressBackKey(self):
+        if self.uIAIns.getDict(ResourceID.tab_text):
+            return True
+        return False
+
     def watchVideo(self):
         if self.adbIns.rebootPerHour():
             self.reopenApp()
+        if self.shouldReopen():
+            self.reopenApp()
         try:
-            if self.shouldReopen():
-                self.reopenApp()
+            if self.shouldPressBackKey():
+                self.adbIns.pressBackKey()
         except FileNotFoundError as e:
             print(e)
-        if self.uIAIns.getDict(ResourceID.tab_text):
-            self.adbIns.pressBackKey()
         self.sleepTime = self.sleepTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
