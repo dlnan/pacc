@@ -4,7 +4,6 @@ from os import system, remove
 from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
 from os.path import exists
 import xmltodict
-import xml
 
 
 class Node:

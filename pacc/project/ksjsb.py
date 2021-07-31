@@ -1,3 +1,4 @@
+import xml
 from random import randint
 from .project import Project
 from ..tools import sleep
@@ -92,7 +93,7 @@ class KSJSB(Project):
         try:
             if self.shouldPressBackKey():
                 self.adbIns.pressBackKey()
-        except FileNotFoundError as e:
+        except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
         self.sleepTime = self.sleepTime + self.lastTime - time()
         self.lastTime = time()
