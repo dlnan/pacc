@@ -94,7 +94,12 @@ class KSJSB(Project):
     def watchVideo(self, st):
         if self.adbIns.rebootPerHour():
             self.reopenApp()
-        self.randomSwipe()
+        try:
+            self.randomSwipe()
+        except FileNotFoundError as e:
+            print(e)
+            self.sleepTime = -1
+            self.randomSwipe()
         self.sleepTime -= st
         if self.shouldReopen():
             self.reopenApp()
