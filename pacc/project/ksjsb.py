@@ -65,12 +65,9 @@ class KSJSB(Project):
     def openApp(self):
         super(KSJSB, self).openApp(Activity.HomeActivity)
 
-    def reopenApp(self, reboot=False, sleepTime=6):
-        if reboot:
-            self.adbIns.reboot()
+    def reopenApp(self):
         self.freeMemory()
         self.openApp()
-        sleep(sleepTime)
 
     def shouldReopen(self):
         pass
@@ -88,8 +85,7 @@ class KSJSB(Project):
         return False
 
     def watchVideo(self):
-        if self.adbIns.rebootPerHour():
-            self.reopenApp()
+        self.reopenAppPerHour()
         try:
             if self.shouldPressBackKey():
                 self.adbIns.pressBackKey()
