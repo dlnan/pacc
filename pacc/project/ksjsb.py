@@ -72,8 +72,13 @@ class KSJSB(Project):
         sleep(sleepTime)
 
     def shouldReopen(self):
+        pass
+
+    def shouldPressBackKey(self, currentFocus):
         currentFocus = self.adbIns.getCurrentFocus()
-        if Activity.MiniAppActivity0 in currentFocus:
+        if self.uIAIns.getDict(ResourceID.tab_text):
+            return True
+        elif Activity.MiniAppActivity0 in currentFocus:
             return True
         elif Activity.PhotoDetailActivity in currentFocus:
             return True
@@ -81,15 +86,8 @@ class KSJSB(Project):
             return True
         return False
 
-    def shouldPressBackKey(self):
-        if self.uIAIns.getDict(ResourceID.tab_text):
-            return True
-        return False
-
     def watchVideo(self):
         if self.adbIns.rebootPerHour():
-            self.reopenApp()
-        if self.shouldReopen():
             self.reopenApp()
         try:
             if self.shouldPressBackKey():
