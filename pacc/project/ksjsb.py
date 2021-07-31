@@ -74,7 +74,7 @@ class KSJSB(Project):
     def shouldReopen(self):
         pass
 
-    def shouldPressBackKey(self, currentFocus):
+    def shouldPressBackKey(self):
         currentFocus = self.adbIns.getCurrentFocus()
         if self.uIAIns.getDict(ResourceID.tab_text):
             return True

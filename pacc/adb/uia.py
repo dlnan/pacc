@@ -27,7 +27,8 @@ class UIAutomator:
         x, y = point
         self.tap(x, y)
 
-    def tap(self, x, y, interval=1):
+    def tap(self, cP, interval=1):
+        x, y = cP
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
@@ -36,6 +37,7 @@ class UIAutomator:
         cP = self.getCP(resourceID)
         if not cP:
             return False
+        print(cP)
         self.tap(cP)
         return True
 
@@ -49,7 +51,10 @@ class UIAutomator:
         return x, y
 
     def getBounds(self, resourceID):
-        return self.getDict(resourceID)['@bounds']
+        dic = self.getDict(resourceID)
+        if dic:
+            return dic['@bounds']
+        return False
 
     def getDict(self, resourceID):
         try:

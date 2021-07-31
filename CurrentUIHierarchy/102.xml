@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<hierarchy rotation="0">
+	<node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[27,792][1053,1200]">
+		<node index="0" text="" resource-id="" class="android.widget.FrameLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,840][1005,1152]">
+			<node index="0" text="" resource-id="android:id/content" class="android.widget.FrameLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,840][1005,1152]">
+				<node index="0" text="" resource-id="android:id/parentPanel" class="android.widget.LinearLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,840][1005,1152]">
+					<node index="0" text="" resource-id="android:id/contentPanel" class="android.widget.FrameLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,840][1005,984]">
+						<node index="0" text="" resource-id="android:id/scrollView" class="android.widget.ScrollView" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,840][1005,959]">
+							<node index="0" text="" resource-id="" class="android.widget.LinearLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,894][1005,959]">
+								<node index="0" text="联机业务异常，请重新联机" resource-id="android:id/message" class="android.widget.TextView" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,894][1005,959]"/>
+							</node>
+						</node>
+					</node>
+					<node index="1" text="" resource-id="android:id/buttonPanel" class="android.widget.LinearLayout" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[75,984][1005,1152]">
+						<node index="0" text="确定" resource-id="android:id/button2" class="android.widget.Button" package="com.dd.rclient" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[777,996][969,1140]"/>
+					</node>
+				</node>
+			</node>
+		</node>
+	</node>
+</hierarchy>
