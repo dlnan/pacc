@@ -56,7 +56,7 @@ class UIAutomator:
             dic = xmltodict.parse(self.xml)
         except xml.parsers.expat.ExpatError as e:
             print(e)
-            self.getDict(resourceID)
+            return self.getDict(resourceID)
         self.node = Node(resourceID)
         return self.depthFirstSearch(dic)
 

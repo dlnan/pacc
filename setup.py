@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pacc',  # 包名
-    version='0.0.59',  # 版本
+    version='0.0.60',  # 版本
     packages=find_packages(),  # 目录下所有文件
     description='Python Android Cluster Control 为使用Python对安卓集群控制进行支持',  # 描述信息
     long_description="""该Python模块用于通过USB或Wifi对Android集群进行控制，集成了ADB、UIAutomator、数据库、中央控制系统、图像识别、验证码破解、人工智能、自然语言处理等功能。
