@@ -13,6 +13,8 @@ class ResourceID:
     iv_close_common_dialog = 'com.kuaishou.nebula:id/iv_close_common_dialog'  # 主界面右上方关闭奥运夺冠瞬间界面
     animated_image = 'com.kuaishou.nebula:id/animated_image'  # 主界面左上方关闭奥运福娃按钮
     positive = 'com.kuaishou.nebula:id/positive'  # 主界面中间青少年模式，我知道了
+    description = 'com.kuaishou.nebula:id/description'  # 网络连接失败，请稍后重试
+    tab_text = 'com.kuaishou.nebula:id/tab_text'  # 详细信息/评论
 
 
 class Activity:
@@ -81,6 +83,8 @@ class KSJSB(Project):
         if Activity.MiniAppActivity0 in currentFocus:
             return True
         elif Activity.PhotoDetailActivity in currentFocus:
+            return True
+        elif self.uIAIns.getDict(ResourceID.tab_text):
             return True
         return False
 
