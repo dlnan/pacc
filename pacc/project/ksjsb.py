@@ -20,6 +20,7 @@ class ResourceID:
     live_exit_button = 'com.kuaishou.nebula:id/live_exit_button'  # 直接退出（直播）
     exit_btn = 'com.kuaishou.nebula:id/exit_btn'  # 退出（直播）
     live_simple_play_swipe_text = 'com.kuaishou.nebula:id/live_simple_play_swipe_text'  # 点击进入直播间
+    open_long_atlas = 'com.kuaishou.nebula:id/open_long_atlas'  # 点击打开长图
     comment_header_close = 'com.kuaishou.nebula:id/comment_header_close'  # 关闭评论
     button2 = 'android:id/button2'  # 等待按钮
 
@@ -102,6 +103,8 @@ class KSJSB(Project):
 
     def initSleepTime(self):
         if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
+            self.restTime -= abs(self.restTime)
+        if self.uIAIns.getDict(ResourceID.open_long_atlas, xml=self.uIAIns.xml):
             self.restTime -= abs(self.restTime)
 
     def watchVideo(self):
