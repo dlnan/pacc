@@ -21,6 +21,7 @@ class ResourceID:
     exit_btn = 'com.kuaishou.nebula:id/exit_btn'  # 退出（直播）
     live_simple_play_swipe_text = 'com.kuaishou.nebula:id/live_simple_play_swipe_text'  # 点击进入直播间
     comment_header_close = 'com.kuaishou.nebula:id/comment_header_close'  # 关闭评论
+    button2 = 'android:id/button2'  # 等待按钮
 
 
 class Activity:
@@ -97,6 +98,7 @@ class KSJSB(Project):
             self.adbIns.pressBackKey()
         self.uIAIns.click(ResourceID.live_exit_button, xml=self.uIAIns.xml)
         self.uIAIns.click(ResourceID.exit_btn, xml=self.uIAIns.xml)
+        self.uIAIns.click(ResourceID.button2, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
         if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
