@@ -104,5 +104,5 @@ class KSJSB(Project):
         while True:
             for i in cls.instances:
                 i.watchVideo()
-            print('已运行：', datetime.now() - cls.startTime, sep='')
+            print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime, sep='')
             sleep(1)
