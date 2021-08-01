@@ -74,25 +74,23 @@ class KSJSB(Project):
     def shouldReopen(self):
         pass
 
-    def shouldPressBackKey(self):
+    def pressBackKey(self):
         currentFocus = self.adbIns.getCurrentFocus()
         if self.uIAIns.getDict(ResourceID.tab_text):
-            return True
+            self.adbIns.pressBackKey()
         elif Activity.MiniAppActivity0 in currentFocus:
-            return True
+            self.adbIns.pressBackKey()
         elif Activity.PhotoDetailActivity in currentFocus:
+            self.adbIns.pressBackKey()
             self.uIAIns.click(ResourceID.live_exit_button)
             self.uIAIns.click(ResourceID.exit_btn)
-            return True
         elif Activity.TopicDetailActivity in currentFocus:
-            return True
-        return False
+            self.adbIns.pressBackKey()
 
     def watchVideo(self):
         self.reopenAppPerHour()
         try:
-            if self.shouldPressBackKey():
-                self.adbIns.pressBackKey()
+            self.pressBackKey()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
         self.sleepTime = self.sleepTime + self.lastTime - time()
