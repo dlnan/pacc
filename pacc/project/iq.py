@@ -3,7 +3,7 @@ from ..tools import sleep
 
 
 class ResourceID:
-    icon_title = 'com.miui.home:id/icon_title'  # 桌面图标
+    icon_icon = 'com.miui.home:id/icon_icon'  # 桌面图标
 
 
 class IQ(Project):
@@ -13,5 +13,5 @@ class IQ(Project):
     def mainloop(self):
         while True:
             if self.adbIns.rebootPerHour():
-                self.uIAIns.click(ResourceID.icon_title, '新自阅')
+                self.uIAIns.click(ResourceID.icon_icon, contentDesc='新自阅')
             sleep(1200)

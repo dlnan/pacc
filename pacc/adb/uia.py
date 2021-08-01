@@ -7,16 +7,17 @@ import xmltodict
 
 
 class Node:
-    def __init__(self, resourceID, text):
+    def __init__(self, resourceID, text, contentDesc):
         self.resourceID = resourceID
         self.text = text
+        self.contentDesc = contentDesc
 
 
 class UIAutomator:
     def __init__(self, deviceSN):
         self.device = RetrieveBaseInfo(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.IP
-        self.node = Node('', '')
+        self.node = Node('', '', '')
 
     def getScreen(self):
         system(self.cmd + 'shell rm /sdcard/screencap.png')
@@ -29,16 +30,16 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
 
-    def click(self, resourceID, text=''):
-        cP = self.getCP(resourceID, text)
+    def click(self, resourceID, text='', contentDesc=''):
+        cP = self.getCP(resourceID, text, contentDesc)
         if not cP:
             return False
         print(cP)
         self.tap(cP)
         return True
 
-    def getCP(self, resourceID, text=''):
-        bounds = self.getBounds(resourceID, text)
+    def getCP(self, resourceID, text='', contentDesc=''):
+        bounds = self.getBounds(resourceID, text, contentDesc)
         if not bounds:
             return False
         x1, y1, x2, y2 = findAllNumsWithRe(bounds)
@@ -46,14 +47,14 @@ class UIAutomator:
         y = average(y1, y2)
         return x, y
 
-    def getBounds(self, resourceID, text=''):
-        dic = self.getDict(resourceID, text)
+    def getBounds(self, resourceID, text='', contentDesc=''):
+        dic = self.getDict(resourceID, text, contentDesc)
         if dic:
             return dic['@bounds']
         return False
 
-    def getDict(self, resourceID, text=''):
-        self.node = Node(resourceID, text)
+    def getDict(self, resourceID, text='', contentDesc=''):
+        self.node = Node(resourceID, text, contentDesc)
         return self.depthFirstSearch(xmltodict.parse(self.xml))
 
     def isTargetNode(self, dic):
@@ -64,6 +65,10 @@ class UIAutomator:
         if dic['@resource-id'] == self.node.resourceID:
             if self.node.text:
                 if dic['@text'] == self.node.text:
+                    return True
+                return False
+            elif self.node.contentDesc:
+                if dic['@content-desc'] == self.node.contentDesc:
                     return True
                 return False
             return True
