@@ -114,6 +114,7 @@ class KSJSB(Project):
         self.restTime = self.restTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
+        self.uIAIns.xml = ''
 
     @classmethod
     def mainloop(cls, devicesSN):
