@@ -81,7 +81,6 @@ class KSJSB(Project):
         elif Activity.PhotoDetailActivity in currentFocus:
             self.adbIns.pressBackKey()
             self.adbIns.pressBackKey()
-            self.adbIns.pressBackKey()
             self.uIAIns.click(ResourceID.live_exit_button)
             self.uIAIns.click(ResourceID.exit_btn)
         elif Activity.TopicDetailActivity in currentFocus:
