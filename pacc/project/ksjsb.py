@@ -37,7 +37,7 @@ class KSJSB(Project):
 
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
-        self.sleepTime = 0
+        self.restTime = 0
         self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
 
@@ -58,14 +58,14 @@ class KSJSB(Project):
         pass
 
     def randomSwipe(self):
-        if self.sleepTime > 0:
+        if self.restTime > 0:
             return
         x1 = randint(520, 550)
         y1 = randint(1530, 1560)
         x2 = randint(520, 550)
         y2 = randint(360, 390)
         self.adbIns.swipe(x1, y1, x2, y2)
-        self.sleepTime += randint(3, 15)
+        self.restTime += randint(3, 15)
 
     def openApp(self):
         super(KSJSB, self).openApp(Activity.HomeActivity)
@@ -97,7 +97,7 @@ class KSJSB(Project):
 
     def initSleepTime(self):
         if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
-            self.sleepTime = 0
+            self.restTime -= abs(self.restTime)
 
     def watchVideo(self):
         self.reopenAppPerHour()
@@ -106,7 +106,7 @@ class KSJSB(Project):
             self.initSleepTime()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
-        self.sleepTime = self.sleepTime + self.lastTime - time()
+        self.restTime = self.restTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
 
