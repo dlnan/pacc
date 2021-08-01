@@ -17,6 +17,8 @@ class ResourceID:
     positive = 'com.kuaishou.nebula:id/positive'  # 主界面中间青少年模式，我知道了
     description = 'com.kuaishou.nebula:id/description'  # 网络连接失败，请稍后重试
     tab_text = 'com.kuaishou.nebula:id/tab_text'  # 详细信息/评论
+    live_exit_button = 'com.kuaishou.nebula:id/live_exit_button'  # 直接退出（直播）
+    exit_btn = 'com.kuaishou.nebula:id/exit_btn'  # 退出（直播）
 
 
 class Activity:
@@ -79,6 +81,8 @@ class KSJSB(Project):
         elif Activity.MiniAppActivity0 in currentFocus:
             return True
         elif Activity.PhotoDetailActivity in currentFocus:
+            self.uIAIns.click(ResourceID.live_exit_button)
+            self.uIAIns.click(ResourceID.exit_btn)
             return True
         elif Activity.TopicDetailActivity in currentFocus:
             return True
