@@ -24,10 +24,11 @@ class ResourceID:
 
 class Activity:
     HomeActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.HomeActivity'  # 主界面
-    MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
     PhotoDetailActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'  # 直播
+    MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
     TopicDetailActivity = 'com.kuaishou.nebula/com.yxcorp.plugin.tag.topic.TopicDetailActivity'  # 每日书单
     UserProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'  # 用户主页
+    AdYodaActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.ad.webview.AdYodaActivity'  # 广告
 
 
 class KSJSB(Project):
@@ -78,18 +79,21 @@ class KSJSB(Project):
 
     def pressBackKey(self):
         currentFocus = self.adbIns.getCurrentFocus()
-        if Activity.MiniAppActivity0 in currentFocus:
+        activities = [
+            Activity.PhotoDetailActivity,
+            Activity.MiniAppActivity0,
+            Activity.TopicDetailActivity,
+            Activity.UserProfileActivity,
+            Activity.AdYodaActivity
+        ]
+        for a in activities:
+            if a in currentFocus:
+                self.adbIns.pressBackKey()
+                break
+        if self.uIAIns.getDict(ResourceID.tab_text):
             self.adbIns.pressBackKey()
-        elif Activity.PhotoDetailActivity in currentFocus:
-            self.adbIns.pressBackKey()
-            self.uIAIns.click(ResourceID.live_exit_button)
-            self.uIAIns.click(ResourceID.exit_btn)
-        elif Activity.TopicDetailActivity in currentFocus:
-            self.adbIns.pressBackKey()
-        elif Activity.UserProfileActivity in currentFocus:
-            self.adbIns.pressBackKey()
-        elif self.uIAIns.getDict(ResourceID.tab_text):
-            self.adbIns.pressBackKey()
+        self.uIAIns.click(ResourceID.live_exit_button, xml=self.uIAIns.xml)
+        self.uIAIns.click(ResourceID.exit_btn, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
         if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
