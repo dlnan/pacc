@@ -58,7 +58,7 @@
 															<node NAF="true" index="1" text="" resource-id="com.miui.home:id/clear_icon" class="android.widget.ImageView" package="com.miui.home" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[668,150][819,301]"/>
 														</node>
 														<node index="1" text="" resource-id="com.miui.home:id/icon_title_container" class="android.widget.FrameLayout" package="com.miui.home" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[642,301][845,429]">
-															<node index="0" text="31%" resource-id="com.miui.home:id/icon_title" class="android.widget.TextView" package="com.miui.home" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[642,306][845,429]"/>
+															<node index="0" text="28%" resource-id="com.miui.home:id/icon_title" class="android.widget.TextView" package="com.miui.home" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[642,306][845,429]"/>
 														</node>
 													</node>
 												</node>
