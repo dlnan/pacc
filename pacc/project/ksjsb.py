@@ -112,7 +112,10 @@ class KSJSB(Project):
             pass
         else:
             return
-        self.restTime -= abs(self.restTime)
+        if self.restTime > 0:
+            self.restTime = 0
+        else:
+            self.restTime -= 3
 
     def watchVideo(self):
         self.reopenAppPerHour()
