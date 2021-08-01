@@ -20,6 +20,7 @@ class ResourceID:
     live_exit_button = 'com.kuaishou.nebula:id/live_exit_button'  # 直接退出（直播）
     exit_btn = 'com.kuaishou.nebula:id/exit_btn'  # 退出（直播）
     live_simple_play_swipe_text = 'com.kuaishou.nebula:id/live_simple_play_swipe_text'  # 点击进入直播间
+    comment_header_close = 'com.kuaishou.nebula:id/comment_header_close'  # 关闭评论
 
 
 class Activity:
@@ -91,6 +92,8 @@ class KSJSB(Project):
                 self.adbIns.pressBackKey()
                 break
         if self.uIAIns.getDict(ResourceID.tab_text):
+            self.adbIns.pressBackKey()
+        elif self.uIAIns.getDict(ResourceID.comment_header_close, xml=self.uIAIns.xml):
             self.adbIns.pressBackKey()
         self.uIAIns.click(ResourceID.live_exit_button, xml=self.uIAIns.xml)
         self.uIAIns.click(ResourceID.exit_btn, xml=self.uIAIns.xml)
