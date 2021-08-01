@@ -57,10 +57,10 @@ class KSJSB(Project):
     def randomSwipe(self):
         if self.sleepTime > 0:
             return
-        x1 = randint(500, 560)
-        y1 = randint(1500, 1590)
-        x2 = randint(500, 560)
-        y2 = randint(360, 560)
+        x1 = randint(520, 550)
+        y1 = randint(1530, 1560)
+        x2 = randint(520, 550)
+        y2 = randint(360, 390)
         self.adbIns.swipe(x1, y1, x2, y2)
         self.sleepTime += randint(3, 15)
 
