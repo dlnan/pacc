@@ -52,7 +52,6 @@ class ADB:
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
-        r = r.replace("  mCurrentFocus=Window{", '')[:-2]
         print(r)
         return r
 
