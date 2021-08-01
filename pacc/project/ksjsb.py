@@ -26,6 +26,7 @@ class Activity:
     MiniAppActivity0 = 'com.kuaishou.nebula/com.mini.app.activity.MiniAppActivity0'  # 小程序
     PhotoDetailActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.detail.PhotoDetailActivity'  # 直播
     TopicDetailActivity = 'com.kuaishou.nebula/com.yxcorp.plugin.tag.topic.TopicDetailActivity'  # 每日书单
+    UserProfileActivity = 'com.kuaishou.nebula/com.yxcorp.gifshow.profile.activity.UserProfileActivity'  # 用户主页
 
 
 class KSJSB(Project):
@@ -83,6 +84,8 @@ class KSJSB(Project):
             self.uIAIns.click(ResourceID.live_exit_button)
             self.uIAIns.click(ResourceID.exit_btn)
         elif Activity.TopicDetailActivity in currentFocus:
+            self.adbIns.pressBackKey()
+        elif Activity.UserProfileActivity in currentFocus:
             self.adbIns.pressBackKey()
         elif self.uIAIns.getDict(ResourceID.tab_text):
             self.adbIns.pressBackKey()
