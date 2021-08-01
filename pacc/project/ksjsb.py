@@ -87,7 +87,6 @@ class KSJSB(Project):
             self.adbIns.pressBackKey()
         elif Activity.UserProfileActivity in currentFocus:
             self.adbIns.pressBackKey()
-            print(Activity.UserProfileActivity)
         elif self.uIAIns.getDict(ResourceID.tab_text):
             self.adbIns.pressBackKey()
 
