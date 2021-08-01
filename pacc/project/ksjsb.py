@@ -22,7 +22,8 @@ class ResourceID:
     live_simple_play_swipe_text = 'com.kuaishou.nebula:id/live_simple_play_swipe_text'  # 点击进入直播间
     open_long_atlas = 'com.kuaishou.nebula:id/open_long_atlas'  # 点击打开长图
     comment_header_close = 'com.kuaishou.nebula:id/comment_header_close'  # 关闭评论
-    button2 = 'android:id/button2'  # 等待按钮
+    button2 = 'android:id/button2'  # 等待按钮（应用长时间无反应）
+    choose_tv = 'com.kuaishou.nebula:id/choose_tv'  # 请选择你要进行的操作（不感兴趣、关注）
 
 
 class Activity:
@@ -102,10 +103,16 @@ class KSJSB(Project):
         self.uIAIns.click(ResourceID.button2, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
+        print('restTime=%s' % self.restTime)
         if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
-            self.restTime -= abs(self.restTime)
-        if self.uIAIns.getDict(ResourceID.open_long_atlas, xml=self.uIAIns.xml):
-            self.restTime -= abs(self.restTime)
+            pass
+        elif self.uIAIns.getDict(ResourceID.open_long_atlas, xml=self.uIAIns.xml):
+            pass
+        elif self.uIAIns.getDict(ResourceID.choose_tv, xml=self.uIAIns.xml):
+            pass
+        else:
+            return
+        self.restTime -= abs(self.restTime)
 
     def watchVideo(self):
         self.reopenAppPerHour()
