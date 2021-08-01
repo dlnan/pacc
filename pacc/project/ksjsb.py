@@ -19,6 +19,7 @@ class ResourceID:
     tab_text = 'com.kuaishou.nebula:id/tab_text'  # 详细信息/评论
     live_exit_button = 'com.kuaishou.nebula:id/live_exit_button'  # 直接退出（直播）
     exit_btn = 'com.kuaishou.nebula:id/exit_btn'  # 退出（直播）
+    live_simple_play_swipe_text = 'com.kuaishou.nebula:id/live_simple_play_swipe_text'  # 点击进入直播间
 
 
 class Activity:
@@ -90,10 +91,15 @@ class KSJSB(Project):
         elif self.uIAIns.getDict(ResourceID.tab_text):
             self.adbIns.pressBackKey()
 
+    def initSleepTime(self):
+        if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
+            self.sleepTime = 0
+
     def watchVideo(self):
         self.reopenAppPerHour()
         try:
             self.pressBackKey()
+            self.initSleepTime()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
         self.sleepTime = self.sleepTime + self.lastTime - time()

@@ -18,6 +18,7 @@ class UIAutomator:
         self.device = RetrieveBaseInfo(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.IP
         self.node = Node('', '', '')
+        self.xml = ''
 
     def getScreen(self):
         system(self.cmd + 'shell rm /sdcard/screencap.png')
@@ -30,16 +31,16 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
 
-    def click(self, resourceID, text='', contentDesc=''):
-        cP = self.getCP(resourceID, text, contentDesc)
+    def click(self, resourceID, text='', contentDesc='', xml=''):
+        cP = self.getCP(resourceID, text, contentDesc, xml)
         if not cP:
             return False
         print(cP)
         self.tap(cP)
         return True
 
-    def getCP(self, resourceID, text='', contentDesc=''):
-        bounds = self.getBounds(resourceID, text, contentDesc)
+    def getCP(self, resourceID, text='', contentDesc='', xml=''):
+        bounds = self.getBounds(resourceID, text, contentDesc, xml)
         if not bounds:
             return False
         x1, y1, x2, y2 = findAllNumsWithRe(bounds)
@@ -47,14 +48,18 @@ class UIAutomator:
         y = average(y1, y2)
         return x, y
 
-    def getBounds(self, resourceID, text='', contentDesc=''):
-        dic = self.getDict(resourceID, text, contentDesc)
+    def getBounds(self, resourceID, text='', contentDesc='', xml=''):
+        dic = self.getDict(resourceID, text, contentDesc, xml)
         if dic:
             return dic['@bounds']
         return False
 
-    def getDict(self, resourceID, text='', contentDesc=''):
+    def getDict(self, resourceID, text='', contentDesc='', xml=''):
         self.node = Node(resourceID, text, contentDesc)
+        if xml:
+            self.xml = xml
+        else:
+            self.xml = self.getCurrentUIHierarchy()
         return self.depthFirstSearch(xmltodict.parse(self.xml))
 
     def isTargetNode(self, dic):
@@ -89,10 +94,6 @@ class UIAutomator:
                 res = self.depthFirstSearch(i)
                 if res:
                     return res
-
-    @property
-    def xml(self):
-        return self.getCurrentUIHierarchy()
 
     def getCurrentUIHierarchy(self):
         system(self.cmd + 'shell rm /sdcard/window_dump.xml')
