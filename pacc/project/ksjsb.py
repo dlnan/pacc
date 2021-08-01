@@ -76,9 +76,7 @@ class KSJSB(Project):
 
     def pressBackKey(self):
         currentFocus = self.adbIns.getCurrentFocus()
-        if self.uIAIns.getDict(ResourceID.tab_text):
-            self.adbIns.pressBackKey()
-        elif Activity.MiniAppActivity0 in currentFocus:
+        if Activity.MiniAppActivity0 in currentFocus:
             self.adbIns.pressBackKey()
         elif Activity.PhotoDetailActivity in currentFocus:
             self.adbIns.pressBackKey()
@@ -87,6 +85,8 @@ class KSJSB(Project):
             self.uIAIns.click(ResourceID.live_exit_button)
             self.uIAIns.click(ResourceID.exit_btn)
         elif Activity.TopicDetailActivity in currentFocus:
+            self.adbIns.pressBackKey()
+        elif self.uIAIns.getDict(ResourceID.tab_text):
             self.adbIns.pressBackKey()
 
     def watchVideo(self):
