@@ -111,8 +111,11 @@ class KSJSB(Project):
 
     @classmethod
     def mainloop(cls, devicesSN):
+        threads = []
         for deviceSN in devicesSN:
             t = runThread(cls.initIns, (deviceSN, ))
+            threads.append(t)
+        for t in threads:
             t.join()
         while True:
             for i in cls.instances:
