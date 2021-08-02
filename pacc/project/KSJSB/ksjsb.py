@@ -12,11 +12,11 @@ from . import resourceID, activity, bounds
 class KSJSB(Project):
     instances = []
     startTime = datetime.now()
-    startDay = 3
 
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
         self.restTime = 0
+        self.startDay = datetime.now().day
         self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
 
@@ -125,6 +125,16 @@ class KSJSB(Project):
     def watchVideo(self):
         self.reopenAppPerHour()
         try:
+            if not datetime.now().day == self.startDay:
+                sleep(600)
+                return
+            if self.uIAIns.getDict(resourceID.red_packet_anim):
+                dic = self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml)
+                if dic and not dic['@text']:
+                    self.freeMemory()
+                    sleep(600)
+                    self.startTime = datetime.now().day + 1
+                    return
             self.pressBackKey()
             self.initSleepTime()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
@@ -145,9 +155,6 @@ class KSJSB(Project):
     def mainloop(cls, devicesSN):
         runThreadsWithArgsList(cls.initIns, devicesSN)
         while True:
-            if not datetime.now().day == cls.startDay:
-                sleep(600)
-                continue
             functions = []
             for i in cls.instances:
                 functions.append(i.watchVideo)
