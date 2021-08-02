@@ -4,9 +4,9 @@ from datetime import datetime
 from time import time
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
-from ...Multi import runThread, threadLock
+from ...Multi import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
 from ..project import Project
-from . import resourceID, activity
+from . import resourceID, activity, bounds
 
 
 class KSJSB(Project):
@@ -19,23 +19,47 @@ class KSJSB(Project):
         self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
 
-    def updateGoldCoins(self):
-        self.reopenApp()
-        self.clickByRID(resourceID.red_packet_anim)
-        goldCoins = self.getGoldCoins()
-        cashCoupons = self.getCashCoupons()
-        if not goldCoins == self.dbr.goldCoins:
-            UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
-        if not cashCoupons == self.dbr.cashCoupons:
-            UpdateKSJSB(self.adbIns.device.SN).updateCashCoupons(cashCoupons)
+    @classmethod
+    def updateWealthWithMulti(cls, devicesSN):
+        runThreadsWithArgsList(cls.initIns, devicesSN)
+        functions = []
+        for i in cls.instances:
+            functions.append(i.updateWealth)
+        runThreadsWithFunctions(functions)
 
-    def getGoldCoins(self):
-        pass
+    def updateWealth(self, reopen=True):
+        if reopen:
+            self.reopenApp()
+        try:
+            if not self.uIAIns.click(resourceID.red_packet_anim
+                                     ) and activity.MiniAppActivity0 in self.adbIns.getCurrentFocus():
+                self.randomSwipe(True)
+                self.updateWealth(False)
+            sleep(9)
+            while self.uIAIns.click(bounds=bounds.attendance):
+                pass
+            goldCoins, cashCoupons = self.getWealth()
+            if not goldCoins == self.dbr.goldCoins:
+                UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
+            if not cashCoupons == self.dbr.cashCoupons:
+                UpdateKSJSB(self.adbIns.device.SN).updateCashCoupons(cashCoupons)
+        except FileNotFoundError as e:
+            print(e)
+            self.updateWealth(False)
 
-    def getCashCoupons(self):
-        pass
+    def getWealth(self):
+        gCDic = self.uIAIns.getDict(bounds=bounds.goldCoins)
+        cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)
+        if not gCDic:
+            gCDic = self.uIAIns.getDict(bounds=bounds.goldCoins2, xml=self.uIAIns.xml)
+            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons2, xml=self.uIAIns.xml)
+        if not cCDic:
+            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons3, xml=self.uIAIns.xml)
+        return gCDic['@text'], cCDic['@text']
 
-    def randomSwipe(self):
+    def randomSwipe(self, initRestTime=False):
+        if initRestTime and self.restTime > 0:
+            self.restTime = 0
         if self.restTime > 0:
             return
         x1 = randint(520, 550)
@@ -45,8 +69,18 @@ class KSJSB(Project):
         self.adbIns.swipe(x1, y1, x2, y2)
         self.restTime += randint(3, 15)
 
-    def openApp(self):
-        super(KSJSB, self).openApp(activity.HomeActivity)
+    def openApp(self, reopen=True):
+        if reopen:
+            super(KSJSB, self).openApp(activity.HomeActivity)
+            sleep(12)
+        try:
+            if self.uIAIns.click(resourceID.close):
+                self.uIAIns.click(resourceID.iv_close_common_dialog)
+            else:
+                self.uIAIns.click(resourceID.iv_close_common_dialog, xml=self.uIAIns.xml)
+        except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
+            print(e)
+            self.openApp(False)
 
     def reopenApp(self):
         self.freeMemory()
@@ -111,14 +145,10 @@ class KSJSB(Project):
 
     @classmethod
     def mainloop(cls, devicesSN):
-        threads = []
-        for deviceSN in devicesSN:
-            t = runThread(cls.initIns, (deviceSN, ))
-            threads.append(t)
-        for t in threads:
-            t.join()
+        runThreadsWithArgsList(cls.initIns, devicesSN)
         while True:
+            functions = []
             for i in cls.instances:
-                i.watchVideo()
+                functions.append(i.watchVideo)
+            runThreadsWithFunctions(functions)
             print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime, sep='')
-            sleep(1)

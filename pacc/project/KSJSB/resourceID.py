@@ -3,6 +3,7 @@ red_packet_anim = 'com.kuaishou.nebula:id/red_packet_anim'  # 主界面右上方
 cycle_progress = 'com.kuaishou.nebula:id/cycle_progress'  # 金币进度
 gold_egg_anim = 'com.kuaishou.nebula:id/gold_egg_anim'  # 金蛋
 iv_close_common_dialog = 'com.kuaishou.nebula:id/iv_close_common_dialog'  # 主界面右上方关闭奥运夺冠瞬间界面
+close = 'com.kuaishou.nebula:id/close'  # 关闭邀请新朋友
 animated_image = 'com.kuaishou.nebula:id/animated_image'  # 主界面左上方关闭奥运福娃按钮
 positive = 'com.kuaishou.nebula:id/positive'  # 主界面中间青少年模式，我知道了
 description = 'com.kuaishou.nebula:id/description'  # 网络连接失败，请稍后重试

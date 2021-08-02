@@ -7,23 +7,22 @@ from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
 
 
 class Node:
-    def __init__(self, resourceID, text, contentDesc):
+    def __init__(self, resourceID='', text='', contentDesc='', bounds=''):
         self.resourceID = resourceID
         self.text = text
         self.contentDesc = contentDesc
+        self.bounds = bounds
 
 
 class UIAutomator:
     def __init__(self, deviceSN):
         self.device = RetrieveBaseInfo(deviceSN)
         self.cmd = 'adb -s %s ' % self.device.IP
-        self.node = Node('', '', '')
+        self.node = Node()
         self.xml = ''
 
     def getScreen(self):
-        system(self.cmd + 'shell rm /sdcard/screencap.png')
-        system(self.cmd + 'shell screencap -p /sdcard/screencap.png')
-        system(self.cmd + 'pull /sdcard/screencap.png CurrentUIHierarchy/%s.png' % self.device.SN)
+        system(self.cmd + 'exec-out screencap -p > CurrentUIHierarchy/%s.png' % self.device.SN)
 
     def tap(self, cP, interval=1):
         x, y = cP
@@ -31,16 +30,16 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval)
 
-    def click(self, resourceID, text='', contentDesc='', xml=''):
-        cP = self.getCP(resourceID, text, contentDesc, xml)
+    def click(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
+        cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
         if not cP:
             return False
         print(cP)
         self.tap(cP)
         return True
 
-    def getCP(self, resourceID, text='', contentDesc='', xml=''):
-        bounds = self.getBounds(resourceID, text, contentDesc, xml)
+    def getCP(self, resourceID, text='', contentDesc='', xml='', bounds=''):
+        bounds = self.getBounds(resourceID, text, contentDesc, xml, bounds)
         if not bounds:
             return False
         x1, y1, x2, y2 = findAllNumsWithRe(bounds)
@@ -48,14 +47,14 @@ class UIAutomator:
         y = average(y1, y2)
         return x, y
 
-    def getBounds(self, resourceID, text='', contentDesc='', xml=''):
-        dic = self.getDict(resourceID, text, contentDesc, xml)
+    def getBounds(self, resourceID, text='', contentDesc='', xml='', bounds=''):
+        dic = self.getDict(resourceID, text, contentDesc, xml, bounds)
         if dic:
             return dic['@bounds']
         return False
 
-    def getDict(self, resourceID, text='', contentDesc='', xml=''):
-        self.node = Node(resourceID, text, contentDesc)
+    def getDict(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
+        self.node = Node(resourceID, text, contentDesc, bounds)
         if xml:
             self.xml = xml
         else:
@@ -67,16 +66,25 @@ class UIAutomator:
             return False
         if '@resource-id' not in dic.keys():
             return False
-        if dic['@resource-id'] == self.node.resourceID:
-            if self.node.text:
-                if dic['@text'] == self.node.text:
-                    return True
-                return False
-            elif self.node.contentDesc:
-                if dic['@content-desc'] == self.node.contentDesc:
-                    return True
-                return False
-            return True
+        if self.node.resourceID:
+            if dic['@resource-id'] == self.node.resourceID:
+                if self.node.text:
+                    if dic['@text'] == self.node.text:
+                        return True
+                    return False
+                elif self.node.contentDesc:
+                    if dic['@content-desc'] == self.node.contentDesc:
+                        return True
+                    return False
+                return True
+        elif self.node.text:
+            if dic['@text'] == self.node.text:
+                return True
+            return False
+        elif self.node.bounds:
+            if dic['@bounds'] == self.node.bounds:
+                return True
+            return False
         return False
 
     def depthFirstSearch(self, dic):

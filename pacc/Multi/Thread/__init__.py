@@ -1,6 +1,7 @@
-from .thread import runThread, threadLock
+from .thread import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
 
 __all__ = [
-    'runThread',
+    'runThreadsWithArgsList',
+    'runThreadsWithFunctions',
     'threadLock'
 ]
