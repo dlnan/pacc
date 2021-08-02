@@ -114,6 +114,7 @@ class KSJSB(Project):
         threads = []
         for deviceSN in devicesSN:
             t = runThread(cls.initIns, (deviceSN, ))
+            sleep(3)
             threads.append(t)
         for t in threads:
             t.join()
