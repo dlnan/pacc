@@ -5,8 +5,7 @@ from pacc.tools import sleep
 from datetime import datetime
 from time import time
 from pacc.mysql import RetrieveKSJSB, UpdateKSJSB
-import resourceID
-import activity
+from . import resourceID, activity
 
 
 class KSJSB(Project):
