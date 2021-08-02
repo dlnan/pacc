@@ -12,6 +12,7 @@ from . import resourceID, activity, bounds
 class KSJSB(Project):
     instances = []
     startTime = datetime.now()
+    startDay = 3
 
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
@@ -144,6 +145,9 @@ class KSJSB(Project):
     def mainloop(cls, devicesSN):
         runThreadsWithArgsList(cls.initIns, devicesSN)
         while True:
+            if not datetime.now().day == cls.startDay:
+                sleep(600)
+                continue
             functions = []
             for i in cls.instances:
                 functions.append(i.watchVideo)
