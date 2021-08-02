@@ -45,3 +45,4 @@ class SD(Project):
         while True:
             for i in cls.instances:
                 i.check()
+            sleep(600)
