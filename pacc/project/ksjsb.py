@@ -104,7 +104,9 @@ class KSJSB(Project):
 
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)
-        if self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
+        if self.restTime <= 0:
+            return
+        elif self.uIAIns.getDict(ResourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
             pass
         elif self.uIAIns.getDict(ResourceID.open_long_atlas, xml=self.uIAIns.xml):
             pass
@@ -112,10 +114,7 @@ class KSJSB(Project):
             pass
         else:
             return
-        if self.restTime > 0:
-            self.restTime = 0
-        else:
-            self.restTime -= 3
+        self.restTime = 0
 
     def watchVideo(self):
         self.reopenAppPerHour()
