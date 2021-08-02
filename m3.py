@@ -1,3 +1,3 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
-print(datetime.now().day is 2)
+print((datetime.now()+timedelta(days=30)).day)

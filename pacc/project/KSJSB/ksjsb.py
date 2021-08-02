@@ -1,6 +1,6 @@
 import xml
 from random import randint
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import time
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
@@ -133,7 +133,7 @@ class KSJSB(Project):
                 if dic and not dic['@text']:
                     self.freeMemory()
                     sleep(600)
-                    self.startTime = datetime.now().day + 1
+                    self.startTime = (datetime.now()+timedelta(days=1)).day
                     return
             self.pressBackKey()
             self.initSleepTime()
