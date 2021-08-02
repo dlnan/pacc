@@ -1,10 +1,10 @@
 import xml
 from random import randint
-from ..project import Project
-from pacc.tools import sleep
 from datetime import datetime
 from time import time
-from pacc.mysql import RetrieveKSJSB, UpdateKSJSB
+from ...tools import sleep
+from ...mysql import RetrieveKSJSB, UpdateKSJSB
+from ..project import Project
 from . import resourceID, activity
 
 
