@@ -104,6 +104,8 @@ class KSJSB(Project):
             self.adbIns.pressBackKey()
         elif self.uIAIns.getDict(resourceID.comment_header_close, xml=self.uIAIns.xml):
             self.adbIns.pressBackKey()
+        elif self.uIAIns.getDict(resourceID.tv_upgrade_now, xml=self.uIAIns.xml):
+            self.adbIns.pressBackKey()
         self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml)
         self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
