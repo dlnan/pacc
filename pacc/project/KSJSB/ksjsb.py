@@ -50,11 +50,8 @@ class KSJSB(Project):
     def getWealth(self):
         gCDic = self.uIAIns.getDict(bounds=bounds.goldCoins)
         cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)
-        if not gCDic:
-            gCDic = self.uIAIns.getDict(bounds=bounds.goldCoins2, xml=self.uIAIns.xml)
-            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons2, xml=self.uIAIns.xml)
         if not cCDic:
-            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons3, xml=self.uIAIns.xml)
+            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons2, xml=self.uIAIns.xml)
         return gCDic['@text'], cCDic['@text']
 
     def randomSwipe(self, initRestTime=False):
