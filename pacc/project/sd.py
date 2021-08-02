@@ -18,7 +18,7 @@ class SD(Project):
     def check(self):
         try:
             self.uIAIns.click(ResourceID.button2)
-            dic = self.uIAIns.getDict(ResourceID.mec_connect_state)
+            dic = self.uIAIns.getDict(ResourceID.mec_connect_state, self.uIAIns.xml)
             if dic and dic['@text'] == '正在连接服务器...':
                 self.reopenApp()
         except FileNotFoundError as e:
@@ -35,7 +35,7 @@ class SD(Project):
         self.uIAIns.click('com.dd.rclient:id/auto_wait_btn')
 
     def exitApp(self):
-        self.uIAIns.click(ResourceID.btn_exit_app)
+        self.uIAIns.click(ResourceID.btn_exit_app, self.uIAIns.xml)
         self.uIAIns.click(ResourceID.button2)
 
     @classmethod
