@@ -104,7 +104,6 @@ class KSJSB(Project):
 
     @classmethod
     def initIns(cls, deviceSN):
-        print(deviceSN)
         ins = cls(deviceSN)
         threadLock.acquire()
         cls.instances.append(ins)
