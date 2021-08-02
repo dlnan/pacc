@@ -3,6 +3,7 @@ import threading
 threadLock = threading.Lock()
 
 
-def runThread(functionName, interval=0):
-	t = threading.Timer(interval, functionName)
+def runThread(functionName, args):
+	t = threading.Thread(target=functionName, args=args)
 	t.start()
+	return t

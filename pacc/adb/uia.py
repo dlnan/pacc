@@ -1,9 +1,9 @@
-import collections
-from ..mysql import RetrieveBaseInfo
-from os import system, remove
-from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
-from os.path import exists
 import xmltodict
+from os import system, remove
+from os.path import exists
+from collections import OrderedDict
+from ..mysql import RetrieveBaseInfo
+from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
 
 
 class Node:
@@ -80,7 +80,7 @@ class UIAutomator:
         return False
 
     def depthFirstSearch(self, dic):
-        if type(dic) == collections.OrderedDict:
+        if type(dic) == OrderedDict:
             if self.isTargetNode(dic):
                 return dic
             for i in dic.keys():

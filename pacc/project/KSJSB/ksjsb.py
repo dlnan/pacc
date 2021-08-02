@@ -4,6 +4,7 @@ from datetime import datetime
 from time import time
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
+from ...Multi import runThread, threadLock
 from ..project import Project
 from . import resourceID, activity
 
@@ -102,9 +103,18 @@ class KSJSB(Project):
         self.uIAIns.xml = ''
 
     @classmethod
+    def initIns(cls, deviceSN):
+        print(deviceSN)
+        ins = cls(deviceSN)
+        threadLock.acquire()
+        cls.instances.append(ins)
+        threadLock.release()
+
+    @classmethod
     def mainloop(cls, devicesSN):
         for deviceSN in devicesSN:
-            cls.instances.append(cls(deviceSN))
+            t = runThread(cls.initIns, deviceSN)
+            t.join()
         while True:
             for i in cls.instances:
                 i.watchVideo()
