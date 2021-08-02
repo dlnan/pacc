@@ -99,7 +99,7 @@ class KSJSB(Project):
         for a in activities:
             if a in currentFocus:
                 self.adbIns.pressBackKey()
-                return
+                break
         if self.uIAIns.getDict(resourceID.tab_text, xml=self.uIAIns.xml):
             self.adbIns.pressBackKey()
         elif self.uIAIns.getDict(resourceID.comment_header_close, xml=self.uIAIns.xml):
