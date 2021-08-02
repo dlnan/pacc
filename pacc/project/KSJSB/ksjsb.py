@@ -100,12 +100,15 @@ class KSJSB(Project):
             if a in currentFocus:
                 self.adbIns.pressBackKey()
                 break
-        if self.uIAIns.getDict(resourceID.tab_text, xml=self.uIAIns.xml):
-            self.adbIns.pressBackKey()
-        elif self.uIAIns.getDict(resourceID.comment_header_close, xml=self.uIAIns.xml):
-            self.adbIns.pressBackKey()
-        elif self.uIAIns.getDict(resourceID.tv_upgrade_now, xml=self.uIAIns.xml):
-            self.adbIns.pressBackKey()
+        resourcesID = [
+            resourceID.tab_text,
+            resourceID.comment_header_close,
+            resourceID.tv_upgrade_now
+        ]
+        for rID in resourcesID:
+            if self.uIAIns.getDict(rID, xml=self.uIAIns.xml):
+                self.adbIns.pressBackKey()
+                break
         self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml)
         self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
@@ -130,7 +133,7 @@ class KSJSB(Project):
             if not datetime.now().day == self.startDay:
                 sleep(600)
                 return
-            if self.uIAIns.getDict(resourceID.red_packet_anim):
+            if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 dic = self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml)
                 if dic and not dic['@text']:
                     self.freeMemory()
