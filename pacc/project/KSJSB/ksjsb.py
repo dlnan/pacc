@@ -157,11 +157,15 @@ class KSJSB(Project):
         threadLock.release()
 
     @classmethod
-    def mainloop(cls, devicesSN):
+    def mainloop(cls, devicesSN, thread=True):
         runThreadsWithArgsList(cls.initIns, devicesSN)
         while True:
             functions = []
             for i in cls.instances:
-                functions.append(i.watchVideo)
-            runThreadsWithFunctions(functions)
+                if thread:
+                    functions.append(i.watchVideo)
+                else:
+                    i.watchVideo()
+            if thread:
+                runThreadsWithFunctions(functions)
             print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime, sep='')
