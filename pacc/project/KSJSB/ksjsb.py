@@ -143,6 +143,7 @@ class KSJSB(Project):
             self.initSleepTime()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
+            self.randomSwipe(True)
         self.restTime = self.restTime + self.lastTime - time()
         self.lastTime = time()
         self.randomSwipe()
