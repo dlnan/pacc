@@ -23,7 +23,7 @@ def runThreadsWithArgsList(function, argsList):
 
 
 def runThread(function, args=(), delay=1):
-	sleep(delay)
+	sleep(delay, False)
 	if args:
 		t = threading.Thread(target=function, args=args)
 	else:
