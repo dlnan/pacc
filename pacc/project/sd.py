@@ -1,5 +1,6 @@
 from .project import Project
 from ..tools import sleep
+from xml.parsers.expat import ExpatError
 
 
 class ResourceID:
@@ -21,8 +22,9 @@ class SD(Project):
             dic = self.uIAIns.getDict(ResourceID.mec_connect_state, xml=self.uIAIns.xml)
             if dic and dic['@text'] == '正在连接服务器...':
                 self.reopenApp()
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
+            sleep(60)
             self.check()
 
     def reopenApp(self):

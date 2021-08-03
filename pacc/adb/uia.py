@@ -32,6 +32,8 @@ class UIAutomator:
 
     def click(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
+        if cP and text:
+            print('检测到【%s】' % text)
         if not cP:
             return False
         self.tap(cP)
@@ -68,7 +70,7 @@ class UIAutomator:
         if self.node.resourceID:
             if dic['@resource-id'] == self.node.resourceID:
                 if self.node.text:
-                    if dic['@text'] == self.node.text:
+                    if self.node.text in dic['@text']:
                         return True
                     return False
                 elif self.node.contentDesc:
@@ -77,14 +79,20 @@ class UIAutomator:
                     return False
                 return True
         elif self.node.text:
-            if dic['@text'] == self.node.text:
+            if self.node.text in dic['@text']:
                 return True
             return False
         elif self.node.bounds:
-            if dic['@bounds'] == self.node.bounds:
+            if self.isTargetBounds(self.node.bounds, dic['@bounds']):
                 return True
             return False
         return False
+
+    @classmethod
+    def isTargetBounds(cls, targetBounds, srcBounds):
+        x1, y1, x2, y2 = findAllNumsWithRe(targetBounds)
+        x3, y3, x4, y4 = findAllNumsWithRe(srcBounds)
+        return x1 in (-1, x3) and y1 in (-1, y3) and x2 in (-1, x4) and y2 in (-1, y4)
 
     def depthFirstSearch(self, dic):
         if type(dic) == OrderedDict:

@@ -6,7 +6,7 @@ def findAllWithRe(data, pattern):
 
 
 def findAllNumsWithRe(data):
-    r = findAllWithRe(data, r'\d+')
+    r = findAllWithRe(data, r'\-?\d+')
     res = []
     for i in r:
         res.append(int(i))

@@ -38,8 +38,20 @@ class KSJSB(Project):
                 self.randomSwipe(True)
                 self.updateWealth(False)
             sleep(9)
-            while self.uIAIns.click(bounds=bounds.attendance):
-                pass
+            self.uIAIns.getCurrentUIHierarchy()
+            print('已进入财富界面')
+            if self.uIAIns.click('', '立即领取今日现金'):
+                self.uIAIns.xml = ''
+            if self.uIAIns.click('', '明天继续领现金', xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            if not self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            if self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
+                sleep(60)
+                self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
             goldCoins, cashCoupons = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
                 UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
@@ -50,11 +62,8 @@ class KSJSB(Project):
             self.updateWealth(False)
 
     def getWealth(self):
-        gCDic = self.uIAIns.getDict(bounds=bounds.goldCoins)
-        cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)
-        if not cCDic:
-            cCDic = self.uIAIns.getDict(bounds=bounds.cashCoupons2, xml=self.uIAIns.xml)
-        return gCDic['@text'], cCDic['@text']
+        return float(self.uIAIns.getDict(bounds=bounds.goldCoins, xml=self.uIAIns.xml)['@text']),\
+               float(self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)['@text'])
 
     def randomSwipe(self, initRestTime=False):
         if initRestTime and self.restTime > 0:
@@ -79,6 +88,8 @@ class KSJSB(Project):
                 self.uIAIns.click(resourceID.iv_close_common_dialog, xml=self.uIAIns.xml)
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
+            self.randomSwipe(True)
+            sleep(6)
             self.openApp(False)
 
     def reopenApp(self):
