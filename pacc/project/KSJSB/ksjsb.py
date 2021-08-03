@@ -132,7 +132,7 @@ class KSJSB(Project):
         try:
             if not datetime.now().day == self.startDay:
                 print(self.adbIns.device.SN, '不在工作期', sep='')
-                sleep(60, False)
+                sleep(6)
                 return
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
