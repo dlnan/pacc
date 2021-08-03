@@ -58,7 +58,7 @@ class KSJSB(Project):
     def randomSwipe(self, initRestTime=False):
         if initRestTime and self.restTime > 0:
             self.restTime = 0
-        if self.restTime > 0:
+        elif self.restTime > 0:
             return
         x1 = randint(520, 550)
         y1 = randint(1530, 1560)
