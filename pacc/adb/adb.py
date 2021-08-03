@@ -58,7 +58,7 @@ class ADB:
     def pressKey(self, keycode):
         print('正在让%s按下%s键' % (self.device.SN, keycode))
         system(self.cmd + 'shell input keyevent ' + keycode)
-        sleep(1, False)
+        sleep(1, False, False)
 
     def pressHomeKey(self):
         self.pressKey('KEYCODE_HOME')
@@ -85,7 +85,7 @@ class ADB:
         :return:
         """
         system(self.cmd + 'tcpip 5555')
-        sleep(1, False)
+        sleep(1, False, False)
 
     def connect(self, timeout=1):
         """
@@ -93,7 +93,7 @@ class ADB:
         :return:
         """
         system('adb connect %s' % self.device.IP)
-        sleep(timeout)
+        sleep(timeout, False, False)
         if self.device.IP not in getOnlineDevices():
             self.connect(timeout + 1)
 
@@ -103,7 +103,7 @@ class ADB:
         :return:
         """
         system('adb disconnect %s' % self.device.IP)
-        sleep(2, False)
+        sleep(2, False, False)
 
     def reconnect(self):
         self.disconnect()

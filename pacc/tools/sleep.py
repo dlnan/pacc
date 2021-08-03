@@ -1,7 +1,7 @@
 import time
 
 
-def sleep(seconds, showProcess=True):
+def sleep(seconds, showProcess=True, showResult=True):
     if not showProcess:
         time.sleep(seconds)
     else:
@@ -11,4 +11,5 @@ def sleep(seconds, showProcess=True):
             time.sleep(1)
             print("\r", end="", flush=True)
             s -= 1
-    print('已完成%s秒的休息' % seconds)
+    if showResult:
+        print('已完成%s秒的休息' % seconds)
