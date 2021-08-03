@@ -69,6 +69,9 @@ class ADB:
     def pressBackKey(self):
         self.pressKey('KEYCODE_BACK')
 
+    def pressPowerKey(self):
+        self.pressKey('KEYCODE_POWER')
+
     def usb(self, timeout=2):
         """
         restart adbd listening on USB
