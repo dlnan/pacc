@@ -36,7 +36,6 @@ class ADB:
         if not self.getIPv4Address() == self.device.IP:
             UpdateBaseInfo(deviceSN).updateIP(self.getIPv4Address())
             self.device = RetrieveBaseInfo(deviceSN)
-        self.tcpip()
         self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
         self.uIA = UIAutomator(deviceSN)
@@ -87,7 +86,7 @@ class ADB:
         restart adbd listening on TCP on PORT
         :return:
         """
-        system(self.cmd + 'tcpip 5555')
+        system('adb -s %s tcpip 5555' % self.device.ID)
         sleep(1, False, False)
 
     def connect(self, timeout=1):
@@ -95,6 +94,7 @@ class ADB:
         connect to a device via TCP/IP [default port=5555]
         :return:
         """
+        self.tcpip()
         system('adb connect %s' % self.device.IP)
         sleep(timeout, False, False)
         if self.device.IP not in getOnlineDevices():
@@ -111,6 +111,10 @@ class ADB:
     def reconnect(self):
         self.disconnect()
         self.connect()
+
+    def keepOnline(self):
+        if self.device.IP not in getOnlineDevices():
+            self.__init__(self.device.SN)
 
     def taps(self, instructions):
         for x, y, interval, tip in instructions:
