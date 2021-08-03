@@ -137,7 +137,7 @@ class KSJSB(Project):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.freeMemory()
                     sleep(1)
-                    self.startTime = (datetime.now()+timedelta(days=1)).day
+                    self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
             self.pressBackKey()
             self.initSleepTime()
