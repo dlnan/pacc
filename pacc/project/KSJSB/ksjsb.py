@@ -19,6 +19,7 @@ class KSJSB(Project):
         self.startDay = datetime.now().day
         self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
+        self.currentFocus = ''
 
     @classmethod
     def updateWealthWithMulti(cls, devicesSN):
@@ -85,7 +86,10 @@ class KSJSB(Project):
         self.openApp()
 
     def shouldReopen(self):
-        pass
+        currentFocus = self.adbIns.getCurrentFocus()
+        if activity.KRT1Activity in currentFocus:
+            return True
+        return False
 
     def pressBackKey(self):
         currentFocus = self.adbIns.getCurrentFocus()
@@ -130,17 +134,16 @@ class KSJSB(Project):
     def watchVideo(self):
         self.reopenAppPerHour()
         try:
-            if not datetime.now().day == self.startDay:
-                print(self.adbIns.device.SN, '不在工作期', sep='')
-                sleep(3, False, False)
-                return
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.freeMemory()
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
+            self.currentFocus = self.adbIns.getCurrentFocus()
             self.pressBackKey()
             self.initSleepTime()
+            if self.shouldReopen():
+                self.reopenApp()
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
             self.randomSwipe(True)
@@ -162,7 +165,9 @@ class KSJSB(Project):
         while True:
             functions = []
             for i in cls.instances:
-                if thread:
+                if not datetime.now().day == i.startDay:
+                    continue
+                elif thread:
                     functions.append(i.watchVideo)
                 else:
                     i.watchVideo()
