@@ -86,13 +86,11 @@ class KSJSB(Project):
         self.openApp()
 
     def shouldReopen(self):
-        currentFocus = self.adbIns.getCurrentFocus()
-        if activity.KRT1Activity in currentFocus:
+        if activity.KRT1Activity in self.currentFocus:
             return True
         return False
 
     def pressBackKey(self):
-        currentFocus = self.adbIns.getCurrentFocus()
         activities = [
             activity.PhotoDetailActivity,
             activity.MiniAppActivity0,
@@ -101,7 +99,7 @@ class KSJSB(Project):
             activity.AdYodaActivity
         ]
         for a in activities:
-            if a in currentFocus:
+            if a in self.currentFocus:
                 self.adbIns.pressBackKey()
                 break
         resourcesID = [
