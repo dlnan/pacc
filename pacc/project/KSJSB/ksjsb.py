@@ -169,7 +169,9 @@ class KSJSB(Project):
                     functions.append(i.watchVideo)
                 else:
                     i.watchVideo()
-            if thread:
+            if thread and functions:
                 runThreadsWithFunctions(functions)
+            else:
+                sleep(1200)
             print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
                   sep='', end='\n\n')
