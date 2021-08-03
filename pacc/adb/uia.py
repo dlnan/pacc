@@ -34,7 +34,6 @@ class UIAutomator:
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
         if not cP:
             return False
-        print(cP)
         self.tap(cP)
         return True
 
