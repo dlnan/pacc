@@ -134,8 +134,7 @@ class KSJSB(Project):
                 sleep(600)
                 return
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
-                dic = self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml)
-                if dic and not dic['@text']:
+                if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.freeMemory()
                     sleep(600)
                     self.startTime = (datetime.now()+timedelta(days=1)).day
@@ -168,4 +167,5 @@ class KSJSB(Project):
                     i.watchVideo()
             if thread:
                 runThreadsWithFunctions(functions)
-            print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime, sep='')
+            print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
+                  sep='', end='\n\n')

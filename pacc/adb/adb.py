@@ -48,10 +48,10 @@ class ADB:
                 self.pressBackKey()
 
     def getModel(self):
-        return popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
+        return popen(self.cmd + 'shell getprop ro.product.model').read()[:-2]
 
     def getCurrentFocus(self):
-        r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()
+        r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()[2:-2]
         print(r)
         return r
 
