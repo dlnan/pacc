@@ -28,7 +28,7 @@ class UIAutomator:
         x, y = cP
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
-        sleep(interval)
+        sleep(interval, False, False)
 
     def click(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)

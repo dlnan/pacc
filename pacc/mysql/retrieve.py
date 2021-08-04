@@ -6,8 +6,7 @@ class Retrieve:
         self.SN = SN
 
     def query(self, table, field):
-        cmd = 'select `%s` from `%s` where `SN` = %s' % (field, table, self.SN)
-        res = query(cmd)
+        res = query('select `%s` from `%s` where `SN` = %s' % (field, table, self.SN))
         if len(res) == 1:
             res = res[0]
         return res

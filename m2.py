@@ -10,4 +10,4 @@ from pacc.project import KSJSB
 # KSJSB('301').updateWealth()
 # KSJSB('302').updateWealth()
 # KSJSB('303').updateWealth()
-KSJSB('304').updateWealth()
+# KSJSB('304').updateWealth()

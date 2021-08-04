@@ -1,8 +1,8 @@
 from os import popen, system
-from ..tools import findAllWithRe, sleep, EMail
 from random import randint
-from ..mysql import RetrieveBaseInfo, UpdateBaseInfo
 from datetime import datetime
+from ..tools import findAllWithRe, sleep, EMail
+from ..mysql import RetrieveBaseInfo, UpdateBaseInfo
 from .uia import UIAutomator
 
 
@@ -26,6 +26,7 @@ class ADB:
         if self.device.ID not in getOnlineDevices():
             if not offlineCnt % 20:
                 EMail(self.device.SN).sendOfflineError()
+            print(self.device.SN, '不在线，该设备的ID为：', self.device.ID, '，请核对！', sep='')
             sleep(30)
             self.__init__(deviceSN, offlineCnt+1)
         self.cmd = 'adb -s %s ' % self.device.ID

@@ -21,6 +21,9 @@ class KSJSB(Project):
         self.dbr = RetrieveKSJSB(deviceSN)
         self.currentFocus = ''
 
+    def viewAds(self):
+        pass
+
     @classmethod
     def updateWealthWithMulti(cls, devicesSN):
         runThreadsWithArgsList(cls.initIns, devicesSN)
@@ -28,6 +31,9 @@ class KSJSB(Project):
         for i in cls.instances:
             functions.append(i.updateWealth)
         runThreadsWithFunctions(functions)
+
+    def enterWealthInterface(self):
+        pass
 
     def updateWealth(self, reopen=True):
         if reopen:
@@ -42,15 +48,19 @@ class KSJSB(Project):
             print('已进入财富界面')
             if self.uIAIns.click('', '立即领取今日现金'):
                 self.uIAIns.xml = ''
+                self.updateWealth()
+                return
             if self.uIAIns.click('', '明天继续领现金', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            if not self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
+            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             if self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
                 sleep(60)
                 self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
+            if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             goldCoins, cashCoupons = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
@@ -141,7 +151,8 @@ class KSJSB(Project):
         self.restTime = 0
 
     def watchVideo(self):
-        self.reopenAppPerHour()
+        if self.reopenAppPerHour():
+            self.adbIns.keepOnline()
         try:
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
