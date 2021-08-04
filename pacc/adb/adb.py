@@ -53,6 +53,8 @@ class ADB:
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()[2:-2]
         print(r)
+        if r.count('mCurrentFocus=Window{') > 1:
+            self.reboot()
         return r
 
     def pressKey(self, keycode):
