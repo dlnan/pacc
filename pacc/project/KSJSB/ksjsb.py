@@ -144,6 +144,7 @@ class KSJSB(Project):
         self.reopenAppPerHour()
         try:
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
+                print(self.adbIns.device.SN, resourceID.red_packet_anim)
                 dic = self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml)
                 if dic and not dic['@text']:
                     self.freeMemory()
