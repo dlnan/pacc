@@ -93,9 +93,11 @@ class KSJSB(Project):
             sleep(12)
         try:
             if self.uIAIns.click(resourceID.close):
-                self.uIAIns.click(resourceID.iv_close_common_dialog)
-            else:
-                self.uIAIns.click(resourceID.iv_close_common_dialog, xml=self.uIAIns.xml)
+                self.uIAIns.xml = ''
+            if self.uIAIns.click(resourceID.iv_close_common_dialog, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            if self.uIAIns.click(resourceID.positive, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
         except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
             print(e)
             self.randomSwipe(True)
