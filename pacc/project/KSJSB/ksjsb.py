@@ -111,6 +111,8 @@ class KSJSB(Project):
     def shouldReopen(self):
         if activity.KRT1Activity in self.currentFocus:
             return True
+        elif 'com.kuaishou.nebula' not in self.currentFocus:
+            return True
         return False
 
     def pressBackKey(self):
