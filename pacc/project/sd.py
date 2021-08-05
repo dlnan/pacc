@@ -10,6 +10,10 @@ class ResourceID:
     icon_title = 'com.miui.home:id/icon_title'  # 桌面图标
 
 
+class Activity:
+    MainActivity = 'com.dd.rclient/com.dd.rclient.ui.activity.MainActivity'
+
+
 class SD(Project):
     instances = []
 
@@ -23,6 +27,8 @@ class SD(Project):
             dic = self.uIAIns.getDict(ResourceID.mec_connect_state, xml=self.uIAIns.xml)
             if dic and dic['@text'] == '正在连接服务器...':
                 self.reopenApp()
+            elif not dic and Activity.MainActivity in self.adbIns.getCurrentFocus():
+                self.reopenApp()
         except (FileNotFoundError, ExpatError) as e:
             print(e)
             sleep(60)
@@ -34,7 +40,7 @@ class SD(Project):
 
     def openApp(self):
         self.uIAIns.click(ResourceID.icon_title, '滴滴助手')
-        sleep(9)
+        sleep(12)
         self.uIAIns.click('com.dd.rclient:id/auto_wait_btn')
 
     def exitApp(self):

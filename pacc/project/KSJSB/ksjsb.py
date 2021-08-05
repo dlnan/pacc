@@ -21,8 +21,67 @@ class KSJSB(Project):
         self.dbr = RetrieveKSJSB(deviceSN)
         self.currentFocus = ''
 
+    def watchLive(self):
+        self.enterWealthInterface()
+        self.randomSwipe(True)
+        while True:
+            try:
+                if self.uIAIns.click(text='观看精彩直播得110金币'):
+                    sleep(69)
+                    self.uIAIns.click(resourceID.dialog_close)
+                    self.adbIns.pressBackKey()
+                else:
+                    break
+            except FileNotFoundError as e:
+                print(e)
+                self.watchLive()
+
     def viewAds(self):
-        pass
+        self.enterWealthInterface()
+        self.randomSwipe(True)
+        while True:
+            try:
+                if self.uIAIns.click(text='观看广告单日最高可得5000金币') or self.uIAIns.click(
+                        text='每次100金币，每天1000金币', xml=self.uIAIns.xml):
+                    sleep(39)
+                    self.adbIns.pressBackKey()
+                else:
+                    break
+            except FileNotFoundError as e:
+                print(e)
+                self.viewAds()
+
+    def enterWealthInterface(self, reopen=True):
+        if reopen:
+            self.reopenApp()
+        try:
+            if not self.uIAIns.click(resourceID.red_packet_anim
+                                     ) and activity.MiniAppActivity0 in self.adbIns.getCurrentFocus():
+                self.randomSwipe(True)
+                self.enterWealthInterface(False)
+                return
+            sleep(9)
+            self.uIAIns.getCurrentUIHierarchy()
+            print('已进入财富界面')
+            if self.uIAIns.click('', '立即领取今日现金'):
+                self.uIAIns.xml = ''
+                self.enterWealthInterface()
+                return
+            if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
+                sleep(60)
+                self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
+            if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+        except FileNotFoundError as e:
+            print(e)
+            self.enterWealthInterface(False)
 
     @classmethod
     def updateWealthWithMulti(cls, devicesSN):
@@ -32,36 +91,9 @@ class KSJSB(Project):
             functions.append(i.updateWealth)
         runThreadsWithFunctions(functions)
 
-    def enterWealthInterface(self):
-        pass
-
     def updateWealth(self, reopen=True):
-        if reopen:
-            self.reopenApp()
+        self.enterWealthInterface(reopen)
         try:
-            if not self.uIAIns.click(resourceID.red_packet_anim
-                                     ) and activity.MiniAppActivity0 in self.adbIns.getCurrentFocus():
-                self.randomSwipe(True)
-                self.updateWealth(False)
-            sleep(9)
-            self.uIAIns.getCurrentUIHierarchy()
-            print('已进入财富界面')
-            if self.uIAIns.click('', '立即领取今日现金'):
-                self.uIAIns.xml = ''
-                self.updateWealth()
-                return
-            if self.uIAIns.click('', '明天继续领现金', xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
-            if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
-            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
-            if self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
-                sleep(60)
-                self.adbIns.pressBackKey()
-                self.uIAIns.xml = ''
-            if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
             goldCoins, cashCoupons = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
                 UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
