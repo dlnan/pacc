@@ -39,6 +39,7 @@ class SD(Project):
         self.openApp()
 
     def openApp(self):
+        self.freeMemory()
         self.uIAIns.click(ResourceID.icon_title, '滴滴助手')
         sleep(12)
         self.uIAIns.click('com.dd.rclient:id/auto_wait_btn')
