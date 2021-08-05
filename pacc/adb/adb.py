@@ -44,14 +44,18 @@ class ADB:
             UpdateBaseInfo(deviceSN).updateModel(self.getModel())
             self.device = RetrieveBaseInfo(deviceSN)
         if 'com.android.settings/com.android.settings.Settings$UsbDetailsActivity' in self.getCurrentFocus():
-            if self.device.Model == 'M2007J22':
+            if self.device.Model == 'M2007J22C':
                 self.pressBackKey()
 
     def getModel(self):
-        return popen(self.cmd + 'shell getprop ro.product.model').read()[:-2]
+        res = popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
+        while res[-1] == '\n':
+            res = res[:-1]
+        return res
 
     def getCurrentFocus(self):
         r = popen(self.cmd + 'shell dumpsys window | findstr mCurrentFocus').read()[2:-2]
+        # print(r.count('mCurrentFocus=Window{'), r)
         print(r)
         if r.count('mCurrentFocus=Window{') > 1:
             self.reboot()

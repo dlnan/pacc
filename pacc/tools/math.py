@@ -1,2 +1,2 @@
 def average(*args):
-    return sum(args) / len(args)
+    return int(sum(args) / len(args))

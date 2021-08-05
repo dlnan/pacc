@@ -1,7 +1,7 @@
-import xml
-from random import randint
 from datetime import datetime, timedelta
+from random import randint
 from time import time
+from xml.parsers.expat import ExpatError
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
 from ...Multi import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
@@ -26,12 +26,19 @@ class KSJSB(Project):
         self.randomSwipe(True)
         while True:
             try:
+                while self.uIAIns.getCP(text='观看精彩直播得110金币') == (0, 0):
+                    self.randomSwipe(True)
+                if not self.uIAIns.getDict(text='看直播领1100金币'):
+                    self.watchLive()
+                    return
                 if self.uIAIns.click(text='观看精彩直播得110金币'):
-                    sleep(69)
-                    self.uIAIns.click(resourceID.dialog_close)
-                    self.adbIns.pressBackKey()
+                    sleep(80)
+                    self.exitLive()
                 else:
                     break
+                if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
+                    self.watchLive()
+                    return
             except FileNotFoundError as e:
                 print(e)
                 self.watchLive()
@@ -130,7 +137,7 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
             if self.uIAIns.click(resourceID.positive, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-        except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
             sleep(6)
@@ -145,11 +152,12 @@ class KSJSB(Project):
             return True
         elif 'com.kuaishou.nebula' not in self.currentFocus:
             return True
+        elif self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
+            return True
         return False
 
     def pressBackKey(self):
         activities = [
-            activity.PhotoDetailActivity,
             activity.MiniAppActivity0,
             activity.TopicDetailActivity,
             activity.UserProfileActivity,
@@ -168,9 +176,16 @@ class KSJSB(Project):
             if self.uIAIns.getDict(rID, xml=self.uIAIns.xml):
                 self.adbIns.pressBackKey()
                 break
-        self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml)
-        self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
+        self.exitLive(self.currentFocus, self.uIAIns.xml)
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
+
+    def exitLive(self, currentFocus='', xml=''):
+        if not currentFocus:
+            currentFocus = self.adbIns.getCurrentFocus()
+        if activity.PhotoDetailActivity in currentFocus:
+            self.adbIns.pressBackKey()
+            self.uIAIns.click(resourceID.live_exit_button, xml=xml)
+            self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)
@@ -179,8 +194,6 @@ class KSJSB(Project):
         elif self.uIAIns.getDict(resourceID.live_simple_play_swipe_text, xml=self.uIAIns.xml):
             pass
         elif self.uIAIns.getDict(resourceID.open_long_atlas, xml=self.uIAIns.xml):
-            pass
-        elif self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
             pass
         else:
             return
@@ -201,7 +214,7 @@ class KSJSB(Project):
             self.initSleepTime()
             if self.shouldReopen():
                 self.reopenApp()
-        except (FileNotFoundError, xml.parsers.expat.ExpatError) as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
         self.restTime = self.restTime + self.lastTime - time()

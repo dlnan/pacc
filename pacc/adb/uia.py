@@ -39,7 +39,7 @@ class UIAutomator:
         self.tap(cP)
         return True
 
-    def getCP(self, resourceID, text='', contentDesc='', xml='', bounds=''):
+    def getCP(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
         bounds = self.getBounds(resourceID, text, contentDesc, xml, bounds)
         if not bounds:
             return False

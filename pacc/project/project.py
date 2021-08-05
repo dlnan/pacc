@@ -34,7 +34,11 @@ class Project:
         self.adbIns.pressHomeKey()
         self.adbIns.pressHomeKey()
         self.adbIns.pressMenuKey()
-        self.tapFreeButton()
+        try:
+            self.tapFreeButton()
+        except FileNotFoundError as e:
+            print(e)
+            self.freeMemory()
 
     def mainloop(self):
         pass

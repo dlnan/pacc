@@ -1,6 +1,6 @@
 from .KSJSB import KSJSB
 from .hzdyx import HZDYX
-from .dyfd import DYFD
+from pacc.project.old.dyfd import DYFD
 from .iq import IQ
 from .sd import SD
 

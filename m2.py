@@ -7,7 +7,10 @@ from pacc.project import KSJSB
 #     '304'
 # ])
 
-KSJSB('301').watchLive()
+# KSJSB('301').watchLive()
+# KSJSB('302').watchLive()
+# KSJSB('303').watchLive()
+KSJSB('304').watchLive()
 # KSJSB('303').viewAds()
 # KSJSB('304').viewAds()
 # KSJSB('302').updateWealth()
