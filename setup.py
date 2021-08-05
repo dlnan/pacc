@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='pacc',  # 包名
-    version='0.0.153',  # 版本
+    version='0.0.154',  # 版本
     packages=find_packages(),  # 目录下所有文件
     description="""Python Android Cluster Control 为在Windows上使用Python通过USB（通用串行总线）或
-                    WLAN（基于IPv4的无线局域网）对Android手机集群的控制进行支持""",  # 描述信息
+                    WLAN（基于IPv4的无线局域网）对Android手机集群的控制提供支持""",  # 描述信息
     long_description="""该Python模块用于通过USB或WiFi对Android集群进行控制，
     集成了ADB、UIAutomator、数据库、中央控制系统、计算机视觉（图像识别）、验证码破解、人工智能（自然语言处理）等功能。\n
     目前最新版已集成的功能如下：\n
@@ -18,7 +18,8 @@ setup(
     已实现的中央控制脚本如下：\n
     1. 快手极速版全自动刷金币（刷视频、刷广告）中央控制脚本\n
     2. 抖音极速版全自动刷金币中央控制脚本\n
-    2. 他趣全自动拉黑女粉、聊天、接视频中央控制脚本\n
+    3. 淘礼金全自动抢单（淘宝0元购）中央控制脚本
+    3. 他趣全自动拉黑女粉、聊天、接视频中央控制脚本\n
     源码可通过如下渠道获取：\n
     Gitee：https://gitee.com/coco56/pacc\n
     Github：https://github.com/cocos56/pacc\n

@@ -43,8 +43,8 @@ class ADB:
         if not self.getModel() == self.device.Model:
             UpdateBaseInfo(deviceSN).updateModel(self.getModel())
             self.device = RetrieveBaseInfo(deviceSN)
-        if 'com.android.settings' in self.getCurrentFocus():
-            if self.device.Model == 'M2007J22C':
+        if 'com.android.settings/com.android.settings.Settings$UsbDetailsActivity' in self.getCurrentFocus():
+            if self.device.Model == 'M2007J22':
                 self.pressBackKey()
 
     def getModel(self):
