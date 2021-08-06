@@ -205,6 +205,9 @@ class KSJSB(Project):
         try:
             if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
+                    self.viewAds()
+                    self.watchLive()
+                    self.updateWealth()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now()+timedelta(days=1)).day

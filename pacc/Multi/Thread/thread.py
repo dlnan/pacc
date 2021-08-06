@@ -4,6 +4,36 @@ from ...tools import sleep
 threadLock = threading.Lock()
 
 
+class Thread:
+	instances = []
+
+	def __init__(self, function, args='', tag=''):
+		self.function = function
+		self.args = args
+		self.tag = tag
+		self.instances.append(self)
+
+	def __del__(self):
+		self.instances.remove(self)
+
+	def runThread(self, delay=1):
+		sleep(delay, False, False)
+		if self.args:
+			t = threading.Thread(target=self.function, args=self.args)
+		else:
+			t = threading.Thread(target=self.function)
+		t.start()
+		return t
+
+	# def runThreads(self):
+	# 	threads = []
+	# 	for args in argsList:
+	# 		t = runThread(function, (args,))
+	# 		threads.append(t)
+	# 	for t in threads:
+	# 		t.join()
+
+
 def runThreadsWithFunctions(functions):
 	threads = []
 	for function in functions:
