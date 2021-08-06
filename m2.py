@@ -1,4 +1,8 @@
-from pacc.project import KSJSB
+from pacc.project import KSJSB, DYJSB
+
+DYJSB.mainloop([
+    '301'
+])
 
 # KSJSB.updateWealthWithMulti([
 #     '301',
@@ -10,7 +14,7 @@ from pacc.project import KSJSB
 # KSJSB('301').watchLive()
 # KSJSB('302').watchLive()
 # KSJSB('303').watchLive()
-KSJSB('304').watchLive()
+# KSJSB('304').watchLive()
 # KSJSB('303').viewAds()
 # KSJSB('304').viewAds()
 # KSJSB('302').updateWealth()

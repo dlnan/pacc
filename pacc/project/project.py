@@ -1,5 +1,7 @@
-from ..adb import ADB, UIAutomator
 from datetime import datetime
+from random import randint
+from time import time
+from ..adb import ADB, UIAutomator
 
 
 class ResourceID:
@@ -7,11 +9,27 @@ class ResourceID:
 
 
 class Project:
+    instances = []
+    startTime = datetime.now()
 
     def __init__(self, deviceSN):
         self.adbIns = ADB(deviceSN)
         self.uIAIns = UIAutomator(deviceSN)
         self.lastReopenHour = -1
+        self.restTime = 0
+        self.lastTime = time()
+
+    def randomSwipe(self, initRestTime=False):
+        if initRestTime and self.restTime > 0:
+            self.restTime = 0
+        elif self.restTime > 0:
+            return
+        x1 = randint(520, 550)
+        y1 = randint(1530, 1560)
+        x2 = randint(520, 550)
+        y2 = randint(360, 390)
+        self.adbIns.swipe(x1, y1, x2, y2)
+        self.restTime += randint(3, 15)
 
     def reopenAppPerHour(self):
         if self.lastReopenHour == datetime.now().hour:
@@ -25,7 +43,8 @@ class Project:
             self.uIAIns.click(ResourceID.clearAnimView)
 
     def reopenApp(self):
-        pass
+        self.freeMemory()
+        self.openApp()
 
     def openApp(self, activity):
         self.adbIns.start(activity)

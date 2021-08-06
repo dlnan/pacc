@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from random import randint
 from time import time
 from xml.parsers.expat import ExpatError
 from ...tools import sleep
@@ -10,14 +9,9 @@ from . import resourceID, activity, bounds
 
 
 class KSJSB(Project):
-    instances = []
-    startTime = datetime.now()
-
     def __init__(self, deviceSN):
         super(KSJSB, self).__init__(deviceSN)
-        self.restTime = 0
         self.startDay = datetime.now().day
-        self.lastTime = time()
         self.dbr = RetrieveKSJSB(deviceSN)
         self.currentFocus = ''
 
@@ -76,7 +70,7 @@ class KSJSB(Project):
                 return
             if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):
+            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):  # 需要授权
                 self.uIAIns.xml = ''
             elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
                 sleep(60)
@@ -114,18 +108,6 @@ class KSJSB(Project):
         return float(self.uIAIns.getDict(bounds=bounds.goldCoins, xml=self.uIAIns.xml)['@text']),\
                float(self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)['@text'])
 
-    def randomSwipe(self, initRestTime=False):
-        if initRestTime and self.restTime > 0:
-            self.restTime = 0
-        elif self.restTime > 0:
-            return
-        x1 = randint(520, 550)
-        y1 = randint(1530, 1560)
-        x2 = randint(520, 550)
-        y2 = randint(360, 390)
-        self.adbIns.swipe(x1, y1, x2, y2)
-        self.restTime += randint(3, 15)
-
     def openApp(self, reopen=True):
         if reopen:
             super(KSJSB, self).openApp(activity.HomeActivity)
@@ -142,10 +124,6 @@ class KSJSB(Project):
             self.randomSwipe(True)
             sleep(6)
             self.openApp(False)
-
-    def reopenApp(self):
-        self.freeMemory()
-        self.openApp()
 
     def shouldReopen(self):
         if activity.KRT1Activity in self.currentFocus:
@@ -203,7 +181,7 @@ class KSJSB(Project):
         if self.reopenAppPerHour():
             self.adbIns.keepOnline()
         try:
-            if datetime.now().hour > 8 and self.uIAIns.getDict(resourceID.red_packet_anim):
+            if datetime.now().hour > 6 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.viewAds()
                     self.watchLive()
