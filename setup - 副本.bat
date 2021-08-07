@@ -1,4 +1,5 @@
 rmdir /s /q dist
+rmdir /s /q build
 python .\setup.py bdist_wheel
 twine upload -u coco56 -p password dist/*
 pip install --upgrade pacc
