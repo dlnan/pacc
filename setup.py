@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='pacc',  # 包名
-    version='0.0.172',  # 版本
-    packages=find_packages(),  # 目录下所有文件
+    version='0.0.173',  # 版本
+    packages='',  # 目录下所有文件
     description="""Python Android Cluster Control 为在Windows上使用Python通过USB（通用串行总线）或
                     WLAN（基于IPv4的无线局域网）对Android手机集群的控制提供支持""",  # 描述信息
     long_description="""该Python模块用于通过USB或WiFi对Android集群进行控制，
