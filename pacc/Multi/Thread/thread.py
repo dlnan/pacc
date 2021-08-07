@@ -14,7 +14,9 @@ class Thread:
 		self.instances.append(self)
 
 	def __del__(self):
-		self.instances.remove(self)
+		print('__del__')
+		if self in self.instances:
+			self.instances.remove(self)
 
 	def runThread(self, delay=1):
 		sleep(delay, False, False)

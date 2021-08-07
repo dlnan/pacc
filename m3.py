@@ -1,8 +1,8 @@
-from pacc.project import KSJSB
+from pacc.multi.thread import Thread
+from time import sleep
 
-KSJSB.mainloop([
-    '301',
-    '302',
-    '303',
-    '304',
-])
+print(Thread.instances)
+ins = Thread('')
+print(Thread.instances)
+ins.__del__()
+print(Thread.instances)
