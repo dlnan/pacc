@@ -1,7 +1,7 @@
 from time import time
 from datetime import datetime
 from ..tools import sleep
-from ..Multi import runThreadsWithArgsList, threadLock
+from ..multi import runThreadsWithArgsList, threadLock
 from .project import Project
 
 

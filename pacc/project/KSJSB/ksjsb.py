@@ -3,7 +3,7 @@ from time import time
 from xml.parsers.expat import ExpatError
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
-from ...Multi import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
+from ...multi import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
 from ..project import Project
 from . import resourceID, activity, bounds
 
