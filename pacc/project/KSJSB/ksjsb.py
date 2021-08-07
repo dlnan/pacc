@@ -128,6 +128,8 @@ class KSJSB(Project):
     def shouldReopen(self):
         if activity.KRT1Activity in self.currentFocus:
             return True
+        elif activity.MiniAppActivity0 in self.currentFocus:
+            return True
         elif 'com.kuaishou.nebula' not in self.currentFocus:
             return True
         elif self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
@@ -136,7 +138,6 @@ class KSJSB(Project):
 
     def pressBackKey(self):
         activities = [
-            activity.MiniAppActivity0,
             activity.TopicDetailActivity,
             activity.UserProfileActivity,
             activity.AdYodaActivity
