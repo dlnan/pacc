@@ -1,5 +1,6 @@
 from time import time
 from datetime import datetime, timedelta
+from xml.parsers.expat import ExpatError
 from ..tools import sleep
 from ..multi import runThreadsWithArgsList, threadLock
 from .project import Project
@@ -33,7 +34,7 @@ class DYJSB(Project):
             self.adbIns.keepOnline()
         try:
             self.uIAIns.click(ResourceID.e5s)
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
         # if Activity.SplashActivity not in self.adbIns.getCurrentFocus():
         #     self.reopenApp()
