@@ -30,12 +30,14 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval, False, False)
 
-    def click(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
+    def click(self, resourceID='', text='', contentDesc='', xml='', bounds='', offset_x=0, offset_y=0):
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
         if cP and text:
             print('检测到【%s】' % text)
         if not cP:
             return False
+        x, y = cP
+        cP = x+offset_x, y+offset_y
         self.tap(cP)
         return True
 

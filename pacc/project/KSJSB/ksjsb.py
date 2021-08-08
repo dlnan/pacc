@@ -26,7 +26,11 @@ class KSJSB(Project):
                     self.watchLive()
                     return
                 if self.uIAIns.click(text='观看精彩直播得110金币'):
-                    sleep(80)
+                    sleep(20)
+                    if activity.PhotoDetailActivity not in self.adbIns.getCurrentFocus():
+                        self.watchLive()
+                        return
+                    sleep(60)
                     self.exitLive()
                 else:
                     break
@@ -37,14 +41,30 @@ class KSJSB(Project):
                 print(e)
                 self.watchLive()
 
+    def exitLive(self, currentFocus='', xml=''):
+        if not currentFocus:
+            currentFocus = self.adbIns.getCurrentFocus()
+        if activity.PhotoDetailActivity in currentFocus:
+            # 关闭5元优惠券
+            if self.uIAIns.getDict(resourceID.live_follow_guide_card_button):
+                self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
+            self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml)  # 关闭新人限时购物红包（10.99元）
+            self.adbIns.pressBackKey()
+            self.uIAIns.click(resourceID.live_exit_button)
+            self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
+
     def viewAds(self):
         self.enterWealthInterface()
         self.randomSwipe(True)
         while True:
             try:
-                if self.uIAIns.click(text='观看广告单日最高可得5000金币') or self.uIAIns.click(
+                if activity.KwaiYodaWebViewActivity not in self.adbIns.getCurrentFocus():
+                    self.viewAds()
+                    return
+                elif self.uIAIns.click(text='观看广告单日最高可得5000金币') or self.uIAIns.click(
                         text='每次100金币，每天1000金币', xml=self.uIAIns.xml):
-                    sleep(39)
+                    sleep(50)
                     self.adbIns.pressBackKey()
                 else:
                     break
@@ -56,12 +76,12 @@ class KSJSB(Project):
         if reopen:
             self.reopenApp()
         try:
-            if not self.uIAIns.click(resourceID.red_packet_anim
+            if not self.uIAIns.click(resourceID.red_packet_anim, xml=self.uIAIns.xml
                                      ) and activity.MiniAppActivity0 in self.adbIns.getCurrentFocus():
                 self.randomSwipe(True)
                 self.enterWealthInterface(False)
                 return
-            sleep(9)
+            sleep(18)
             self.uIAIns.getCurrentUIHierarchy()
             print('已进入财富界面')
             if self.uIAIns.click('', '立即领取今日现金'):
@@ -111,7 +131,7 @@ class KSJSB(Project):
     def openApp(self, reopen=True):
         if reopen:
             super(KSJSB, self).openApp(activity.HomeActivity)
-            sleep(12)
+            sleep(18)
         try:
             if self.uIAIns.click(resourceID.close):
                 self.uIAIns.xml = ''
@@ -157,14 +177,6 @@ class KSJSB(Project):
                 break
         self.exitLive(self.currentFocus, self.uIAIns.xml)
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
-
-    def exitLive(self, currentFocus='', xml=''):
-        if not currentFocus:
-            currentFocus = self.adbIns.getCurrentFocus()
-        if activity.PhotoDetailActivity in currentFocus:
-            self.adbIns.pressBackKey()
-            self.uIAIns.click(resourceID.live_exit_button, xml=xml)
-            self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)

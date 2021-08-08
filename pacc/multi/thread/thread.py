@@ -14,7 +14,6 @@ class Thread:
 		self.instances.append(self)
 
 	def __del__(self):
-		print('__del__')
 		if self in self.instances:
 			self.instances.remove(self)
 

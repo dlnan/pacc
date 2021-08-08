@@ -1,1 +1,0 @@
-adb -s 2b854268 shell "uiautomator dump && cat /sdcard/window_dump.xml"
