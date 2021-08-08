@@ -202,6 +202,7 @@ class KSJSB(Project):
                     return
             self.currentFocus = self.adbIns.getCurrentFocus()
             self.pressBackKey()
+            self.pressBackKey()
             self.initSleepTime()
             if self.shouldReopen():
                 self.reopenApp()
