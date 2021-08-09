@@ -38,7 +38,7 @@ class KSJSB(Project):
                 print(e)
                 self.watchLive()
 
-    def exitLive(self, currentFocus='', xml=''):
+    def exitLive(self, currentFocus=''):
         if not currentFocus:
             currentFocus = self.adbIns.getCurrentFocus()
         if activity.PhotoDetailActivity in currentFocus:
@@ -168,16 +168,9 @@ class KSJSB(Project):
             if a in self.currentFocus:
                 self.adbIns.pressBackKey()
                 break
-        resourcesID = [
-            resourceID.tab_text,
-            resourceID.comment_header_close,
-        ]
-        for rID in resourcesID:
-            if self.uIAIns.getDict(rID, xml=self.uIAIns.xml):
-                self.adbIns.pressBackKey()
-                self.uIAIns.xml = ''
-                break
-        self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
+        if self.uIAIns.getDict(resourceID.tab_text, xml=self.uIAIns.xml):
+            self.adbIns.pressBackKey()
+            self.uIAIns.xml = ''
         if self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
             self.adbIns.pressBackKey()
             self.randomSwipe(True)
@@ -205,9 +198,10 @@ class KSJSB(Project):
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
+            self.uIAIns.click(resourceID.button2)
             self.currentFocus = self.adbIns.getCurrentFocus()
             self.pressBackKey()
-            self.exitLive()
+            self.exitLive(self.currentFocus)
             self.initSleepTime()
             if self.shouldReopen():
                 self.reopenApp()
