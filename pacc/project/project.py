@@ -24,10 +24,10 @@ class Project:
             self.restTime = 0
         elif self.restTime > 0:
             return
-        x1 = randint(520, 550)
-        y1 = randint(1530, 1560)
-        x2 = randint(520, 550)
-        y2 = randint(360, 390)
+        x1 = randint(360, 390)
+        y1 = randint(1160, 1190)
+        x2 = randint(360, 390)
+        y2 = randint(260, 290)
         self.adbIns.swipe(x1, y1, x2, y2)
         self.restTime += randint(3, 15)
 
