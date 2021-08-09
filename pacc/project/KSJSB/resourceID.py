@@ -9,6 +9,7 @@ cycle_progress = root + 'cycle_progress'  # 金币进度
 dialog_close = root + 'dialog_close'  # 关闭电商购物优惠券
 description = root + 'description'  # 网络连接失败，请稍后重试
 left_btn = root + 'left_btn'  # 主界面左上角菜单项
+negative = 'com.kuaishou.nebula:id/negative'  # 忽略（打开推送通知，对方有更新时，第一时间获得提醒。）
 red_packet_anim = root + 'red_packet_anim'  # 主界面右上方红包图标
 gold_egg_anim = root + 'gold_egg_anim'  # 金蛋
 iv_close_common_dialog = root + 'iv_close_common_dialog'  # 主界面右上方关闭奥运夺冠瞬间界面

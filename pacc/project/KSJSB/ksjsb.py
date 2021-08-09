@@ -199,6 +199,7 @@ class KSJSB(Project):
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
             self.uIAIns.click(resourceID.button2)
+            self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
             self.currentFocus = self.adbIns.getCurrentFocus()
             self.pressBackKey()
             self.exitLive(self.currentFocus)
