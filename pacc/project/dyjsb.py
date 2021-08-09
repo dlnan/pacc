@@ -12,6 +12,7 @@ class Activity:
 
 class ResourceID:
     e5s = 'com.ss.android.ugc.aweme.lite:id/e5s'  # 我知道了（儿童/青少年模式提醒）
+    av0 = 'com.ss.android.ugc.aweme.lite:id/av0'  # 关闭（12个红包 超多现金福利）
 
 
 class DYJSB(Project):
@@ -22,6 +23,13 @@ class DYJSB(Project):
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
         sleep(12)
+        try:
+            if self.uIAIns.click(ResourceID.e5s):
+                sleep(3)
+                self.uIAIns.xml = ''
+            self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml)
+        except (FileNotFoundError, ExpatError) as e:
+            print(e)
 
     def watchVideo(self):
         if datetime.now().hour > 22 or datetime.now().hour < 7:
@@ -32,10 +40,6 @@ class DYJSB(Project):
             return
         if self.reopenAppPerHour():
             self.adbIns.keepOnline()
-        try:
-            self.uIAIns.click(ResourceID.e5s)
-        except (FileNotFoundError, ExpatError) as e:
-            print(e)
         # if Activity.SplashActivity not in self.adbIns.getCurrentFocus():
         #     self.reopenApp()
         self.restTime = self.restTime + self.lastTime - time()
