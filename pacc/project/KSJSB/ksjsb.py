@@ -34,9 +34,6 @@ class KSJSB(Project):
                     self.exitLive()
                 else:
                     break
-                if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
-                    self.watchLive()
-                    return
             except FileNotFoundError as e:
                 print(e)
                 self.watchLive()
@@ -45,14 +42,18 @@ class KSJSB(Project):
         if not currentFocus:
             currentFocus = self.adbIns.getCurrentFocus()
         if activity.PhotoDetailActivity in currentFocus:
-            # 关闭5元优惠券
+            #  关闭5元优惠券
             if self.uIAIns.getDict(resourceID.live_follow_guide_card_button):
                 self.adbIns.pressBackKey()
                 self.uIAIns.xml = ''
-            self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml)  # 关闭新人限时购物红包（10.99元）
+            if self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml):  # 关闭新人限时购物红包（10.99元）
+                self.uIAIns.xml = ''
             self.adbIns.pressBackKey()
-            self.uIAIns.click(resourceID.live_exit_button)
+            if self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
             self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
+        if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
+            self.exitLive()
 
     def viewAds(self):
         self.enterWealthInterface()
@@ -139,6 +140,9 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
             if self.uIAIns.click(resourceID.positive, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
+            if self.uIAIns.click(resourceID.tv_upgrade_now, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+                self.adbIns.pressBackKey()
         except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
@@ -156,10 +160,10 @@ class KSJSB(Project):
             return True
         return False
 
-    def pressBackKeyTwice(self):
-        if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
-            self.adbIns.pressBackKey()
-            self.adbIns.pressBackKey()
+    # def pressBackKeyTwice(self):
+    #     if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
+    #         self.adbIns.pressBackKey()
+    #         self.adbIns.pressBackKey()
 
     def pressBackKey(self):
         activities = [
@@ -174,13 +178,12 @@ class KSJSB(Project):
         resourcesID = [
             resourceID.tab_text,
             resourceID.comment_header_close,
-            resourceID.tv_upgrade_now
         ]
         for rID in resourcesID:
             if self.uIAIns.getDict(rID, xml=self.uIAIns.xml):
                 self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
                 break
-        self.exitLive(self.currentFocus, self.uIAIns.xml)
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
 
     def initSleepTime(self):
@@ -206,8 +209,9 @@ class KSJSB(Project):
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
             self.currentFocus = self.adbIns.getCurrentFocus()
-            self.pressBackKeyTwice()
+            # self.pressBackKeyTwice()
             self.pressBackKey()
+            self.exitLive()
             self.initSleepTime()
             if self.shouldReopen():
                 self.reopenApp()
