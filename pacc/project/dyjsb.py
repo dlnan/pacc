@@ -13,6 +13,7 @@ class Activity:
 class ResourceID:
     e5s = 'com.ss.android.ugc.aweme.lite:id/e5s'  # 我知道了（儿童/青少年模式提醒）
     av0 = 'com.ss.android.ugc.aweme.lite:id/av0'  # 关闭（12个红包 超多现金福利）
+    bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元）
 
 
 class DYJSB(Project):
@@ -22,12 +23,14 @@ class DYJSB(Project):
 
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
-        sleep(12)
+        sleep(30)
         try:
             if self.uIAIns.click(ResourceID.e5s):
                 sleep(3)
                 self.uIAIns.xml = ''
-            self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml)
+            if self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
         except (FileNotFoundError, ExpatError) as e:
             print(e)
 
