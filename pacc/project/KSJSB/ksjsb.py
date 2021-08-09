@@ -156,6 +156,11 @@ class KSJSB(Project):
             return True
         return False
 
+    def pressBackKeyTwice(self):
+        if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
+            self.adbIns.pressBackKey()
+            self.adbIns.pressBackKey()
+
     def pressBackKey(self):
         activities = [
             activity.TopicDetailActivity,
@@ -201,7 +206,7 @@ class KSJSB(Project):
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
             self.currentFocus = self.adbIns.getCurrentFocus()
-            self.pressBackKey()
+            self.pressBackKeyTwice()
             self.pressBackKey()
             self.initSleepTime()
             if self.shouldReopen():
