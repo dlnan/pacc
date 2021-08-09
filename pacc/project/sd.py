@@ -5,6 +5,8 @@ from xml.parsers.expat import ExpatError
 
 class ResourceID:
     button2 = 'android:id/button2'  # 确定（联机业务异常，请重新联机）、立即连接（连接异常,正在重新连接......）
+    button1 = 'android:id/button1'  # 取消
+    auto_wait_btn = 'com.dd.rclient:id/auto_wait_btn'
     mec_connect_state = 'com.dd.rclient:id/mec_connect_state'  # 正在连接服务器...
     btn_exit_app = 'com.dd.rclient:id/btn_exit_app'  # 退出程序
     icon_title = 'com.miui.home:id/icon_title'  # 桌面图标
@@ -42,7 +44,8 @@ class SD(Project):
         self.freeMemory()
         self.uIAIns.click(ResourceID.icon_title, '滴滴助手')
         sleep(12)
-        self.uIAIns.click('com.dd.rclient:id/auto_wait_btn')
+        self.uIAIns.click(ResourceID.auto_wait_btn)
+        self.uIAIns.click(ResourceID.button1)
 
     def exitApp(self):
         self.uIAIns.click(ResourceID.btn_exit_app, xml=self.uIAIns.xml)
