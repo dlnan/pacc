@@ -156,14 +156,7 @@ class KSJSB(Project):
             return True
         elif 'com.kuaishou.nebula' not in self.currentFocus:
             return True
-        elif self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
-            return True
         return False
-
-    # def pressBackKeyTwice(self):
-    #     if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
-    #         self.adbIns.pressBackKey()
-    #         self.adbIns.pressBackKey()
 
     def pressBackKey(self):
         activities = [
@@ -185,6 +178,10 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
                 break
         self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
+        if self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
+            self.adbIns.pressBackKey()
+            self.randomSwipe(True)
+            self.uIAIns.xml = ''
 
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)
@@ -209,7 +206,6 @@ class KSJSB(Project):
                     self.startDay = (datetime.now()+timedelta(days=1)).day
                     return
             self.currentFocus = self.adbIns.getCurrentFocus()
-            # self.pressBackKeyTwice()
             self.pressBackKey()
             self.exitLive()
             self.initSleepTime()
