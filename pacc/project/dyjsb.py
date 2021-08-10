@@ -13,7 +13,8 @@ class Activity:
 class ResourceID:
     e5s = 'com.ss.android.ugc.aweme.lite:id/e5s'  # 我知道了（儿童/青少年模式提醒）
     av0 = 'com.ss.android.ugc.aweme.lite:id/av0'  # 关闭（12个红包 超多现金福利）
-    bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元）
+    bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元/恭喜你被红包砸中）
+    bc1 = 'com.ss.android.ugc.aweme.lite:id/bc1'  # 开红包（恭喜你被红包砸中）
 
 
 class DYJSB(Project):
@@ -39,8 +40,13 @@ class DYJSB(Project):
             if datetime.now().hour == 23 and datetime.now().day == self.startDay:
                 self.freeMemory()
                 self.adbIns.pressPowerKey()
-                self.startDay = (datetime.now()+timedelta(days=1)).day
+                self.startDay = (datetime.now() + timedelta(days=1)).day
             return
+        try:
+            if self.uIAIns.click(ResourceID.bc1):
+                self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
+        except (FileNotFoundError, ExpatError) as e:
+            print(e)
         if self.reopenAppPerHour():
             self.adbIns.keepOnline()
         # if Activity.SplashActivity not in self.adbIns.getCurrentFocus():
