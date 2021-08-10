@@ -202,9 +202,9 @@ class KSJSB(Project):
             # self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
             self.currentFocus = self.adbIns.getCurrentFocus()
             # self.pressBackKey()
-            # if activity.PhotoDetailActivity in self.currentFocus:
-            #     self.exitLive(self.currentFocus)
-            #     self.randomSwipe(True)
+            if activity.PhotoDetailActivity in self.currentFocus:
+                self.exitLive(self.currentFocus)
+                self.randomSwipe(True)
             self.initSleepTime()
             # if self.shouldReopen():
             #     self.reopenApp()
