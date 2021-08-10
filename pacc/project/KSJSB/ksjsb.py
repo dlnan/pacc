@@ -22,15 +22,15 @@ class KSJSB(Project):
             try:
                 while self.uIAIns.getCP(text='观看精彩直播得110金币') == (0, 0):
                     self.randomSwipe(True)
-                if not self.uIAIns.getDict(text='看直播领1100金币'):
+                if not self.uIAIns.getDict(text='看直播领1100金币', xml=self.uIAIns.xml):
                     self.watchLive()
                     return
-                if self.uIAIns.click(text='观看精彩直播得110金币'):
-                    sleep(39)
+                if self.uIAIns.click(text='观看精彩直播得110金币', xml=self.uIAIns.xml):
+                    sleep(20)
                     if activity.PhotoDetailActivity not in self.adbIns.getCurrentFocus():
                         self.watchLive()
                         return
-                    sleep(69)
+                    sleep(89)
                     self.exitLive()
                 else:
                     break
@@ -44,13 +44,13 @@ class KSJSB(Project):
             return
         try:
             #  关闭5元优惠券
-            if self.uIAIns.getDict(resourceID.live_follow_guide_card_button):
-                self.adbIns.pressBackKey()
-                self.uIAIns.xml = ''
-            if self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml):  # 关闭新人限时购物红包（10.99元）
-                self.uIAIns.xml = ''
+            # if self.uIAIns.getDict(resourceID.live_follow_guide_card_button):
+            #     self.adbIns.pressBackKey()
+            #     self.uIAIns.xml = ''
+            # if self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml):  # 关闭新人限时购物红包（10.99元）
+            #     self.uIAIns.xml = ''
             # self.adbIns.pressBackKey()
-            if self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml):
+            if self.uIAIns.click(resourceID.live_exit_button):
                 self.uIAIns.xml = ''
             self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
         except (FileNotFoundError, ExpatError) as e:
@@ -136,7 +136,7 @@ class KSJSB(Project):
     def openApp(self, reopen=True):
         if reopen:
             super(KSJSB, self).openApp(activity.HomeActivity)
-            sleep(18)
+            sleep(26)
         try:
             if self.uIAIns.click(resourceID.close):
                 self.uIAIns.xml = ''
