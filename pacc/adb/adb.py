@@ -95,16 +95,15 @@ class ADB:
         system('adb -s %s tcpip 5555' % self.device.ID)
         sleep(1, False, False)
 
-    def connect(self, timeout=1):
+    def connect(self):
         """
         connect to a device via TCP/IP [default port=5555]
         :return:
         """
         self.tcpip()
         system('adb connect %s' % self.device.IP)
-        sleep(timeout, False, False)
         if self.device.IP not in getOnlineDevices():
-            self.connect(timeout + 1)
+            self.reconnect()
 
     def disconnect(self):
         """
@@ -115,6 +114,7 @@ class ADB:
         sleep(2, False, False)
 
     def reconnect(self):
+        system('adb reconnect offline')
         self.disconnect()
         self.connect()
 
