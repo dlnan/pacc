@@ -29,16 +29,12 @@ class Project:
             self.instances.remove(self)
         threadLock.release()
 
-    def randomSwipe(self, initRestTime=False):
+    def randomSwipe(self, xA, xB, xC, xD, yA, yB, yC, yD, initRestTime=False):
         if initRestTime and self.restTime > 0:
             self.restTime = 0
         elif self.restTime > 0:
             return
-        x1 = randint(360, 390)
-        y1 = randint(1160, 1190)
-        x2 = randint(360, 390)
-        y2 = randint(260, 290)
-        self.adbIns.swipe(x1, y1, x2, y2)
+        self.adbIns.swipe(randint(xA, xB), randint(yA, yB), randint(xC, xD), randint(yC, yD))
         self.restTime += randint(3, 15)
 
     def reopenAppPerHour(self):

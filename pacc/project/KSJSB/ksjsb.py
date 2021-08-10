@@ -26,32 +26,36 @@ class KSJSB(Project):
                     self.watchLive()
                     return
                 if self.uIAIns.click(text='观看精彩直播得110金币'):
-                    sleep(20)
+                    sleep(39)
                     if activity.PhotoDetailActivity not in self.adbIns.getCurrentFocus():
                         self.watchLive()
                         return
-                    sleep(60)
+                    sleep(69)
                     self.exitLive()
                 else:
                     break
-            except FileNotFoundError as e:
+            except (FileNotFoundError, ExpatError) as e:
                 print(e)
                 self.watchLive()
 
-    def exitLive(self, currentFocus=''):
-        if not currentFocus:
-            currentFocus = self.adbIns.getCurrentFocus()
-        if activity.PhotoDetailActivity in currentFocus:
+    def exitLive(self):
+        self.adbIns.pressBackKey()
+        if activity.PhotoDetailActivity not in self.adbIns.getCurrentFocus():
+            return
+        try:
             #  关闭5元优惠券
             if self.uIAIns.getDict(resourceID.live_follow_guide_card_button):
                 self.adbIns.pressBackKey()
                 self.uIAIns.xml = ''
             if self.uIAIns.click(resourceID.dialog_close, xml=self.uIAIns.xml):  # 关闭新人限时购物红包（10.99元）
                 self.uIAIns.xml = ''
-            self.adbIns.pressBackKey()
+            # self.adbIns.pressBackKey()
             if self.uIAIns.click(resourceID.live_exit_button, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             self.uIAIns.click(resourceID.exit_btn, xml=self.uIAIns.xml)
+        except (FileNotFoundError, ExpatError) as e:
+            print(e)
+            self.exitLive()
         if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
             self.exitLive()
 
@@ -69,7 +73,7 @@ class KSJSB(Project):
                     self.adbIns.pressBackKey()
                 else:
                     break
-            except FileNotFoundError as e:
+            except (FileNotFoundError, ExpatError) as e:
                 print(e)
                 self.viewAds()
 
@@ -101,7 +105,7 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
             elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.enterWealthInterface(False)
 
@@ -121,7 +125,7 @@ class KSJSB(Project):
                 UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
             if not cashCoupons == self.dbr.cashCoupons:
                 UpdateKSJSB(self.adbIns.device.SN).updateCashCoupons(cashCoupons)
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.updateWealth(False)
 
@@ -200,10 +204,10 @@ class KSJSB(Project):
                     return
             self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
             # self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
-            self.currentFocus = self.adbIns.getCurrentFocus()
+            # self.currentFocus = self.adbIns.getCurrentFocus()
             # self.pressBackKey()
-            if activity.PhotoDetailActivity in self.currentFocus:
-                self.exitLive(self.currentFocus)
+            if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
+                self.exitLive()
                 self.randomSwipe(True)
             self.initSleepTime()
             # if self.shouldReopen():
@@ -215,6 +219,9 @@ class KSJSB(Project):
         self.lastTime = time()
         self.randomSwipe()
         self.uIAIns.xml = ''
+
+    def randomSwipe(self, initRestTime=False):
+        super(KSJSB, self).randomSwipe(360, 390, 360, 390, 1160, 1190, 260, 290, initRestTime)
 
     def watchVideoMainloop(self):
         while True:

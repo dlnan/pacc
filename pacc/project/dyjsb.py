@@ -37,16 +37,7 @@ class DYJSB(Project):
             print(e)
 
     def randomSwipe(self, initRestTime=False):
-        if initRestTime and self.restTime > 0:
-            self.restTime = 0
-        elif self.restTime > 0:
-            return
-        x1 = randint(530, 560)
-        y1 = randint(1160, 1190)
-        x2 = randint(530, 560)
-        y2 = randint(360, 390)
-        self.adbIns.swipe(x1, y1, x2, y2)
-        self.restTime += randint(3, 15)
+        super(DYJSB, self).randomSwipe(530, 560, 530, 560, 1160, 1190, 360, 390, initRestTime)
 
     def watchVideo(self):
         if datetime.now().hour > 22 or datetime.now().hour < 7:
