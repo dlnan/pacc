@@ -199,12 +199,12 @@ class KSJSB(Project):
                     self.startDay = (datetime.now() + timedelta(days=1)).day
                     return
             self.uIAIns.click(resourceID.button2)
-            self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
+            # self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
             self.currentFocus = self.adbIns.getCurrentFocus()
-            self.pressBackKey()
-            if activity.PhotoDetailActivity in self.currentFocus:
-                self.exitLive(self.currentFocus)
-                self.randomSwipe(True)
+            # self.pressBackKey()
+            # if activity.PhotoDetailActivity in self.currentFocus:
+            #     self.exitLive(self.currentFocus)
+            #     self.randomSwipe(True)
             self.initSleepTime()
             if self.shouldReopen():
                 self.reopenApp()
