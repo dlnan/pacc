@@ -69,15 +69,8 @@ class DYJSB(Project):
         self.randomSwipe()
 
     @classmethod
-    def initIns(cls, deviceSN):
-        ins = cls(deviceSN)
-        threadLock.acquire()
-        cls.instances.append(ins)
-        threadLock.release()
-
-    @classmethod
     def mainloop(cls, devicesSN):
-        runThreadsWithArgsList(cls.initIns, devicesSN)
+        runThreadsWithArgsList(cls, devicesSN)
         while True:
             for i in cls.instances:
                 i.watchVideo()
