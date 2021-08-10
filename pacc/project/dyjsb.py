@@ -81,6 +81,5 @@ class DYJSB(Project):
         while True:
             for i in cls.instances:
                 i.watchVideo()
-            sleep(3)
             print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
                   sep='', end='\n\n')
