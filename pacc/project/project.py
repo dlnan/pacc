@@ -2,6 +2,7 @@ from datetime import datetime
 from random import randint
 from time import time
 from ..adb import ADB, UIAutomator
+from pacc.multi import threadLock
 
 
 class ResourceID:
@@ -18,6 +19,15 @@ class Project:
         self.lastReopenHour = -1
         self.restTime = 0
         self.lastTime = time()
+        threadLock.acquire()
+        self.instances.append(self)
+        threadLock.release()
+
+    def __del__(self):
+        threadLock.acquire()
+        if self in self.instances:
+            self.instances.remove(self)
+        threadLock.release()
 
     def randomSwipe(self, initRestTime=False):
         if initRestTime and self.restTime > 0:

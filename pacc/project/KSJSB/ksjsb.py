@@ -3,7 +3,7 @@ from time import time
 from xml.parsers.expat import ExpatError
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
-from pacc.multi import runThreadsWithArgsList, runThreadsWithFunctions, threadLock
+from pacc.multi import runThreadsWithArgsList, runThreadsWithFunctions
 from ..project import Project
 from . import resourceID, activity, bounds
 
@@ -196,7 +196,7 @@ class KSJSB(Project):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
-                    self.startDay = (datetime.now()+timedelta(days=1)).day
+                    self.startDay = (datetime.now() + timedelta(days=1)).day
                     return
             self.uIAIns.click(resourceID.button2)
             self.uIAIns.click(resourceID.negative, xml=self.uIAIns.xml)
@@ -216,29 +216,14 @@ class KSJSB(Project):
         self.randomSwipe()
         self.uIAIns.xml = ''
 
-    @classmethod
-    def initIns(cls, deviceSN):
-        ins = cls(deviceSN)
-        threadLock.acquire()
-        cls.instances.append(ins)
-        threadLock.release()
+    def watchVideoMainloop(self):
+        while True:
+            if datetime.now().day == self.startDay:
+                self.watchVideo()
+            else:
+                sleep(1200)
 
     @classmethod
-    def mainloop(cls, devicesSN, thread=True):
-        runThreadsWithArgsList(cls.initIns, devicesSN)
-        while True:
-            functions = []
-            for i in cls.instances:
-                if not datetime.now().day == i.startDay:
-                    continue
-                elif thread:
-                    functions.append(i.watchVideo)
-                else:
-                    i.watchVideo()
-            if thread:
-                if functions:
-                    runThreadsWithFunctions(functions)
-                else:
-                    sleep(1200)
-            print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
-                  sep='', end='\n\n')
+    def mainloop(cls, devicesSN):
+        runThreadsWithArgsList(cls, devicesSN)
+        runThreadsWithFunctions([i.watchVideoMainloop for i in cls.instances])
