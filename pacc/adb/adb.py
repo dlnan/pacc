@@ -145,10 +145,10 @@ class ADB:
         :return:
         """
         if duration == -1:
-            duration = randint(600, 800)
+            duration = randint(800, 900)
         cmd = self.cmd + 'shell input swipe %d %d %d %d %d' % (x1, y1, x2, y2, duration)
         system(cmd)
-        print(cmd)
+        print(self.device.SN, cmd)
 
     def longPress(self, x, y, duration=-1):
         """
