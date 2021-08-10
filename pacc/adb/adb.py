@@ -145,7 +145,7 @@ class ADB:
         :return:
         """
         if duration == -1:
-            duration = randint(800, 900)
+            duration = randint(500, 600)
         cmd = self.cmd + 'shell input swipe %d %d %d %d %d' % (x1, y1, x2, y2, duration)
         system(cmd)
         print(self.device.SN, cmd)
