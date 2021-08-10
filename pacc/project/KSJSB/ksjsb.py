@@ -206,8 +206,8 @@ class KSJSB(Project):
             #     self.exitLive(self.currentFocus)
             #     self.randomSwipe(True)
             self.initSleepTime()
-            if self.shouldReopen():
-                self.reopenApp()
+            # if self.shouldReopen():
+            #     self.reopenApp()
         except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
