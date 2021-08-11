@@ -14,6 +14,7 @@ class ResourceID:
 
 class Activity:
     MainActivity = 'com.dd.rclient/com.dd.rclient.ui.activity.MainActivity'
+    LoginActivity = 'com.dd.rclient/com.dd.rclient.ui.activity.LoginActivity'
 
 
 class SD(Project):

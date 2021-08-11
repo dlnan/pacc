@@ -1,7 +1,6 @@
 from time import time
 from datetime import datetime, timedelta
 from xml.parsers.expat import ExpatError
-from random import randint
 from ..tools import sleep
 from ..multi import runThreadsWithArgsList, threadLock
 from .project import Project

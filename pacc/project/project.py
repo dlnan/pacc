@@ -2,7 +2,7 @@ from datetime import datetime
 from random import randint
 from time import time
 from ..adb import ADB, UIAutomator
-from pacc.multi import threadLock
+from ..multi import threadLock
 
 
 class ResourceID:
@@ -13,15 +13,16 @@ class Project:
     instances = []
     startTime = datetime.now()
 
-    def __init__(self, deviceSN):
+    def __init__(self, deviceSN, add=True):
         self.adbIns = ADB(deviceSN)
         self.uIAIns = UIAutomator(deviceSN)
         self.lastReopenHour = -1
         self.restTime = 0
         self.lastTime = time()
-        threadLock.acquire()
-        self.instances.append(self)
-        threadLock.release()
+        if add:
+            threadLock.acquire()
+            self.instances.append(self)
+            threadLock.release()
 
     def __del__(self):
         threadLock.acquire()
@@ -53,6 +54,7 @@ class Project:
         self.openApp()
 
     def openApp(self, activity):
+        self.adbIns.pressHomeKey()
         self.adbIns.start(activity)
 
     def freeMemory(self):

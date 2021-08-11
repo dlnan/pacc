@@ -1,4 +1,5 @@
 import xmltodict
+from html import unescape
 from os import system, remove
 from os.path import exists
 from collections import OrderedDict
@@ -20,6 +21,7 @@ class UIAutomator:
         self.cmd = 'adb -s %s ' % self.device.IP
         self.node = Node()
         self.xml = ''
+        self.dicts = []
 
     def getScreen(self):
         system(self.cmd + 'exec-out screencap -p > CurrentUIHierarchy/%s.png' % self.device.SN)
@@ -62,7 +64,19 @@ class UIAutomator:
             self.xml = xml
         else:
             self.xml = self.getCurrentUIHierarchy()
-        return self.depthFirstSearch(xmltodict.parse(self.xml))
+        dic = dict(self.depthFirstSearch(xmltodict.parse(self.xml)))
+        dic.update({'@text': unescape(dic['@text'])})
+        return dic
+
+    def getDicts(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
+        self.dicts = []
+        self.node = Node(resourceID, text, contentDesc, bounds)
+        if xml:
+            self.xml = xml
+        else:
+            self.xml = self.getCurrentUIHierarchy()
+        self.depthFirstSearchDicts(xmltodict.parse(self.xml))
+        return self.dicts
 
     def isTargetNode(self, dic):
         if type(dic) in (str, list):
@@ -72,16 +86,16 @@ class UIAutomator:
         if self.node.resourceID:
             if dic['@resource-id'] == self.node.resourceID:
                 if self.node.text:
-                    if self.node.text in dic['@text']:
+                    if self.node.text in unescape(dic['@text']):
                         return True
                     return False
                 elif self.node.contentDesc:
-                    if dic['@content-desc'] == self.node.contentDesc:
+                    if unescape(dic['@content-desc']) == self.node.contentDesc:
                         return True
                     return False
                 return True
         elif self.node.text:
-            if self.node.text in dic['@text']:
+            if self.node.text in unescape(dic['@text']):
                 return True
             return False
         elif self.node.bounds:
@@ -111,6 +125,22 @@ class UIAutomator:
                 res = self.depthFirstSearch(i)
                 if res:
                     return res
+
+    def depthFirstSearchDicts(self, dic):
+        if type(dic) == OrderedDict:
+            if self.isTargetNode(dic):
+                self.dicts.append(dic)
+            for i in dic.keys():
+                if self.isTargetNode(dic[i]):
+                    self.dicts.append(dic[i])
+                res = self.depthFirstSearchDicts(dic[i])
+                if res:
+                    return res
+        elif type(dic) == list:
+            for i in dic:
+                res = self.depthFirstSearchDicts(i)
+                if res:
+                    self.dicts.append(res)
 
     def getCurrentUIHierarchy(self):
         system(self.cmd + 'shell rm /sdcard/window_dump.xml')

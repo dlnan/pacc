@@ -95,12 +95,12 @@ class KSJSB(Project):
                 return
             if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):  # 需要授权
-                self.uIAIns.xml = ''
-            elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
-                sleep(60)
-                self.adbIns.pressBackKey()
-                self.uIAIns.xml = ''
+                if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):  # 需要授权
+                    self.uIAIns.xml = ''
+                elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
+                    sleep(60)
+                    self.adbIns.pressBackKey()
+                    self.uIAIns.xml = ''
             if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
