@@ -64,8 +64,9 @@ class UIAutomator:
             self.xml = xml
         else:
             self.xml = self.getCurrentUIHierarchy()
-        dic = dict(self.depthFirstSearch(xmltodict.parse(self.xml)))
-        dic.update({'@text': unescape(dic['@text'])})
+        dic = self.depthFirstSearch(xmltodict.parse(self.xml))
+        if dic:
+            dic.update({'@text': unescape(dic['@text'])})
         return dic
 
     def getDicts(self, resourceID='', text='', contentDesc='', xml='', bounds=''):
