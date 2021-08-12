@@ -10,8 +10,11 @@ class Activity:
     SplashActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity'  # 抖音极速版程序入口
 
 
+class Text:
+    iKnow = '我知道了'  # 儿童/青少年模式提醒
+
+
 class ResourceID:
-    e5s = 'com.ss.android.ugc.aweme.lite:id/e5s'  # 我知道了（儿童/青少年模式提醒）
     av0 = 'com.ss.android.ugc.aweme.lite:id/av0'  # 关闭（12个红包 超多现金福利）
     bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元/恭喜你被红包砸中）
     bc1 = 'com.ss.android.ugc.aweme.lite:id/bc1'  # 开红包（恭喜你被红包砸中）
@@ -26,7 +29,7 @@ class DYJSB(Project):
         super(DYJSB, self).openApp(Activity.SplashActivity)
         sleep(30)
         try:
-            if self.uIAIns.click(ResourceID.e5s):
+            if self.uIAIns.click(text=Text.iKnow):
                 sleep(3)
                 self.uIAIns.xml = ''
             if self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml):

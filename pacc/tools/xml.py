@@ -2,6 +2,9 @@ from xml.dom import minidom
 from html import unescape
 
 
+def getXML(filePath): return open(filePath, 'r', encoding='utf-8').read()
+
+
 def prettyXML(filePath):
     xml = open(filePath, 'r', encoding='utf-8').read()
     # xml = minidom.parseString(xml)

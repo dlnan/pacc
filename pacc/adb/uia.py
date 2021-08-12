@@ -4,7 +4,7 @@ from os import system, remove
 from os.path import exists
 from collections import OrderedDict
 from ..mysql import RetrieveBaseInfo
-from ..tools import createDir, prettyXML, sleep, findAllNumsWithRe, average
+from ..tools import createDir, prettyXML, getXML, sleep, findAllNumsWithRe, average
 
 
 class Node:
@@ -153,4 +153,4 @@ class UIAutomator:
         if exists(currentUIHierarchyFilePath):
             remove(currentUIHierarchyFilePath)
         system('%spull /sdcard/window_dump.xml %s' % (self.cmd, currentUIHierarchyFilePath))
-        return prettyXML(currentUIHierarchyFilePath)
+        return getXML(currentUIHierarchyFilePath)
