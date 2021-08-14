@@ -18,6 +18,7 @@ class ResourceID:
     av0 = 'com.ss.android.ugc.aweme.lite:id/av0'  # 关闭（12个红包 超多现金福利）
     bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元/恭喜你被红包砸中）
     bc1 = 'com.ss.android.ugc.aweme.lite:id/bc1'  # 开红包（恭喜你被红包砸中）
+    e0p = 'com.ss.android.ugc.aweme.lite:id/e0p'  # 暂时不要（发现通讯录好友）
 
 
 class DYJSB(Project):
@@ -34,7 +35,9 @@ class DYJSB(Project):
                 self.uIAIns.xml = ''
             if self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
+            if self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            self.uIAIns.click(ResourceID.e0p, xml=self.uIAIns.xml)
         except (FileNotFoundError, ExpatError) as e:
             print(e)
 
