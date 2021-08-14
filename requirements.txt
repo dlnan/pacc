@@ -2,5 +2,6 @@ PyMySQL
 setuptools
 mysql-connector-python
 easyocr
-uiautomator
 xmltodict
+pacc
+urlextract

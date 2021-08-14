@@ -4,6 +4,7 @@ from .email import EMail
 from .dir import createDir
 from .xml import prettyXML, getXML
 from .math import average
+from .url import getURLsFromString
 
 __all__ = [
     "findAllWithRe",
@@ -13,5 +14,6 @@ __all__ = [
     'createDir',
     'prettyXML',
     'getXML',
-    'average'
+    'average',
+    'getURLsFromString'
 ]

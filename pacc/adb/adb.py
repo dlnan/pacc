@@ -47,6 +47,11 @@ class ADB:
             if self.device.Model == 'M2007J22C':
                 self.pressBackKey()
 
+    def inputText(self, text):
+        cmd = self.cmd + 'shell input text "%s"' % text
+        print(cmd)
+        system(cmd)
+
     def getModel(self):
         res = popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
         while res[-1] == '\n':
@@ -103,7 +108,7 @@ class ADB:
         self.tcpip()
         system('adb connect %s' % self.device.IP)
         if self.device.IP not in getOnlineDevices():
-            self.reconnect()
+            self.rebootByID()
 
     def disconnect(self):
         """
@@ -169,6 +174,9 @@ class ADB:
         print('已向设备%s下达重启指令' % self.device.SN)
         sleep(69)
         self.__init__(self.device.SN)
+
+    def rebootByID(self):
+        self.rebootByCMD('adb -s ' + self.device.ID + ' reboot')
 
     def rebootByIP(self):
         if self.device.IP not in getOnlineDevices():

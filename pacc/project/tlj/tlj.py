@@ -6,5 +6,5 @@ from .tb import TB
 class TLJ:
     def __init__(self, deviceSN):
         # QQ(deviceSN).getUnreadMsg()
-        MM(deviceSN).getLatestURL()
+        MM(deviceSN).sendURL()
         # TB(deviceSN).reopenApp()
