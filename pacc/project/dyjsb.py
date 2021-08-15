@@ -48,11 +48,10 @@ class DYJSB(Project):
         super(DYJSB, self).randomSwipe(530, 560, 530, 560, 1160, 1190, 360, 390, initRestTime)
 
     def watchVideo(self):
-        if datetime.now().hour > 22 or datetime.now().hour < 7:
-            if datetime.now().hour == 23 and datetime.now().day == self.startDay:
-                self.freeMemory()
-                self.adbIns.pressPowerKey()
-                self.startDay = (datetime.now() + timedelta(days=1)).day
+        if datetime.now().hour == 0 and datetime.now().day == self.startDay:
+            self.freeMemory()
+            self.adbIns.pressPowerKey()
+            self.startDay = (datetime.now() + timedelta(days=1)).day
             return
         try:
             if self.uIAIns.click(ResourceID.bc1):
@@ -71,6 +70,9 @@ class DYJSB(Project):
         if not self.adbIns.device.SN == '301':
             return
         while True:
-            self.watchVideo()
+            if datetime.now().day == self.startDay:
+                self.watchVideo()
+            else:
+                break
             # print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
             #       sep='', end='\n\n')
