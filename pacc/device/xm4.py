@@ -9,21 +9,6 @@ class XM4(Device):
         super(XM4, self).__init__()
 
     @classmethod
-    def viewAds(cls):
-        for sN in cls.sNs:
-            KSJSB(sN).viewAds()
-
-    @classmethod
-    def watchLive(cls):
-        for sN in cls.sNs:
-            KSJSB(sN).watchLive()
-
-    @classmethod
-    def updateWealth(cls):
-        for sN in cls.sNs:
-            KSJSB(sN).updateWealth()
-
-    @classmethod
     def watchVideo(cls):
         # KSJSB.updateWealthWithMulti([
         #     '301',

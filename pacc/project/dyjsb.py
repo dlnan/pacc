@@ -26,6 +26,11 @@ class DYJSB(Project):
         super(DYJSB, self).__init__(deviceSN)
         self.startDay = datetime.now().day
 
+    def enterWealthInterface(self):
+        self.reopenApp()
+        self.uIAIns.tap([556, 1836])
+        sleep(30)
+
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
         sleep(30)

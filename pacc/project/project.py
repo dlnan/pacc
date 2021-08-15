@@ -66,6 +66,3 @@ class Project:
         except FileNotFoundError as e:
             print(e)
             self.freeMemory()
-
-    def mainloop(self):
-        pass
