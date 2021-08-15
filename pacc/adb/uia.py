@@ -3,6 +3,7 @@ from html import unescape
 from os import system, remove
 from os.path import exists
 from collections import OrderedDict
+from ..config import Config
 from ..mysql import RetrieveBaseInfo
 from ..tools import createDir, prettyXML, getXML, sleep, findAllNumsWithRe, average
 
@@ -30,7 +31,7 @@ class UIAutomator:
         x, y = cP
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
-        sleep(interval, False, False)
+        sleep(interval, Config.debug, Config.debug)
 
     def click(self, resourceID='', text='', contentDesc='', xml='', bounds='', offset_x=0, offset_y=0):
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
@@ -145,7 +146,10 @@ class UIAutomator:
 
     def getCurrentUIHierarchy(self, pretty=False):
         system(self.cmd + 'shell rm /sdcard/window_dump.xml')
-        system(self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml')
+        cmd = self.cmd + 'shell uiautomator dump /sdcard/window_dump.xml'
+        if Config.debug:
+            print(cmd)
+        system(cmd)
         dirName = 'CurrentUIHierarchy'
         createDir(dirName)
         filePath = '%s/%s.xml' % (dirName, self.device.SN)

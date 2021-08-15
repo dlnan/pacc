@@ -1,6 +1,7 @@
 from os import popen, system
 from random import randint
 from datetime import datetime
+from ..config import Config
 from ..tools import findAllWithRe, sleep, EMail
 from ..mysql import RetrieveBaseInfo, UpdateBaseInfo
 from .uia import UIAutomator
@@ -37,7 +38,8 @@ class ADB:
         if not self.getIPv4Address() == self.device.IP:
             UpdateBaseInfo(deviceSN).updateIP(self.getIPv4Address())
             self.device = RetrieveBaseInfo(deviceSN)
-        self.reconnect()
+        if not Config.debug:
+            self.reconnect()
         self.cmd = 'adb -s %s ' % self.device.IP
         self.uIA = UIAutomator(deviceSN)
         if not self.getModel() == self.device.Model:

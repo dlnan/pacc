@@ -128,7 +128,7 @@ class KSJSB(Project):
     def openApp(self, reopen=True):
         if reopen:
             super(KSJSB, self).openApp(activity.HomeActivity)
-            sleep(26)
+            sleep(30)
         try:
             if self.uIAIns.click(resourceID.close):
                 self.uIAIns.xml = ''
