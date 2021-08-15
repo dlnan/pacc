@@ -1,8 +1,6 @@
 from time import time
 from datetime import datetime, timedelta
-from xml.parsers.expat import ExpatError
 from ..tools import sleep
-from ..multi import runThreadsWithArgsList, threadLock
 from .project import Project
 
 
@@ -43,7 +41,7 @@ class DYJSB(Project):
             if self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
             self.uIAIns.click(ResourceID.e0p, xml=self.uIAIns.xml)
-        except (FileNotFoundError, ExpatError) as e:
+        except FileNotFoundError as e:
             print(e)
 
     def randomSwipe(self, initRestTime=False):
@@ -59,7 +57,7 @@ class DYJSB(Project):
         try:
             if self.uIAIns.click(ResourceID.bc1):
                 self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
-        except (FileNotFoundError, ExpatError) as e:
+        except FileNotFoundError as e:
             print(e)
         if self.reopenAppPerHour():
             self.adbIns.keepOnline()
@@ -69,14 +67,10 @@ class DYJSB(Project):
         self.lastTime = time()
         self.randomSwipe()
 
-    # @classmethod
     def mainloop(self):
         if not self.adbIns.device.SN == '301':
             return
-        # runThreadsWithArgsList(cls, devicesSN)
         while True:
             self.watchVideo()
-            # for i in cls.instances:
-            #     i.watchVideo()
             # print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
             #       sep='', end='\n\n')
