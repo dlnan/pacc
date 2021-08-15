@@ -1,7 +1,7 @@
 class Device:
     instances = []
 
-    def __init__(self, SN):
+    def __init__(self):
         self.instances.append(self)
 
     def __del__(self):

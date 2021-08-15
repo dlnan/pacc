@@ -1,5 +1,8 @@
 from pacc.device import XM4
 
-XM4.viewAds()
-XM4.watchLive()
-XM4.updateWealth()
+XM4.mainloop([
+    '301',
+    '302',
+    '303',
+    '304',
+])
