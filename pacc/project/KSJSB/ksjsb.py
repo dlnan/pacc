@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from time import time
+from xml.parsers.expat import ExpatError
 from ...tools import sleep
 from ...mysql import RetrieveKSJSB, UpdateKSJSB
 from ...multi import runThreadsWithArgsList, runThreadsWithFunctions
@@ -206,7 +207,7 @@ class KSJSB(Project):
             self.initSleepTime()
             # if self.shouldReopen():
             #     self.reopenApp()
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
         self.restTime = self.restTime + self.lastTime - time()
