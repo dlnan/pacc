@@ -222,9 +222,9 @@ class KSJSB(Project):
             if datetime.now().day == self.startDay:
                 self.watchVideo()
             else:
-                sleep(1200)
+                break
 
-    @classmethod
-    def mainloop(cls, devicesSN):
-        runThreadsWithArgsList(cls, devicesSN)
-        runThreadsWithFunctions([i.watchVideoMainloop for i in cls.instances])
+    # @classmethod
+    # def mainloop(cls, devicesSN):
+    #     runThreadsWithArgsList(cls, devicesSN)
+    #     runThreadsWithFunctions([i.watchVideoMainloop for i in cls.instances])

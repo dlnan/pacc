@@ -1,19 +1,22 @@
+from ..multi import runThreadsWithArgsList, runThreadsWithFunctions
 from ..project import KSJSB
+from ..tools import sleep
 from .device import Device
 
 
 class XM4(Device):
-    sNs = ['301', '302', '303', '304']
-
-    def __init__(self):
+    def __init__(self, SN):
         super(XM4, self).__init__()
+        self.ksjsbIns = KSJSB(SN)
+
+    def mainloopOneByOne(self):
+        while True:
+            self.ksjsbIns.watchVideoMainloop()
+            sleep(1200)
 
     @classmethod
-    def watchVideo(cls):
-        # KSJSB.updateWealthWithMulti([
-        #     '301',
-        #     '302',
-        #     '303',
-        #     '304'
-        # ])
-        pass
+    def mainloop(cls, devicesSN):
+        runThreadsWithArgsList(cls, devicesSN)
+        runThreadsWithFunctions([i.mainloopOneByOne for i in cls.instances])
+
+
