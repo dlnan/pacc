@@ -217,14 +217,9 @@ class KSJSB(Project):
     def randomSwipe(self, initRestTime=False):
         super(KSJSB, self).randomSwipe(360, 390, 360, 390, 1160, 1190, 260, 290, initRestTime)
 
-    def watchVideoMainloop(self):
+    def mainloop(self):
         while True:
             if datetime.now().day == self.startDay:
                 self.watchVideo()
             else:
                 break
-
-    # @classmethod
-    # def mainloop(cls, devicesSN):
-    #     runThreadsWithArgsList(cls, devicesSN)
-    #     runThreadsWithFunctions([i.watchVideoMainloop for i in cls.instances])

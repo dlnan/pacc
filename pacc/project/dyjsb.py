@@ -69,11 +69,14 @@ class DYJSB(Project):
         self.lastTime = time()
         self.randomSwipe()
 
-    @classmethod
-    def mainloop(cls, devicesSN):
-        runThreadsWithArgsList(cls, devicesSN)
+    # @classmethod
+    def mainloop(self):
+        if not self.adbIns.device.SN == '301':
+            return
+        # runThreadsWithArgsList(cls, devicesSN)
         while True:
-            for i in cls.instances:
-                i.watchVideo()
-            print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
-                  sep='', end='\n\n')
+            self.watchVideo()
+            # for i in cls.instances:
+            #     i.watchVideo()
+            # print('现在是', datetime.now(), '，已运行：', datetime.now() - cls.startTime,
+            #       sep='', end='\n\n')

@@ -1,5 +1,5 @@
 from ..multi import runThreadsWithArgsList, runThreadsWithFunctions
-from ..project import KSJSB
+from ..project import KSJSB, DYJSB
 from ..tools import sleep
 from .device import Device
 
@@ -8,10 +8,12 @@ class XM4(Device):
     def __init__(self, SN):
         super(XM4, self).__init__()
         self.ksjsbIns = KSJSB(SN)
+        self.dyjsbIns = DYJSB(SN)
 
     def mainloopOneByOne(self):
         while True:
-            self.ksjsbIns.watchVideoMainloop()
+            self.ksjsbIns.mainloop()
+            self.dyjsbIns.mainloop()
             sleep(1200)
 
     @classmethod
