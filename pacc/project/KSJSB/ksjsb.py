@@ -140,13 +140,14 @@ class KSJSB(Project):
             if self.uIAIns.click(resourceID.tv_upgrade_now, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
                 self.adbIns.pressBackKey()
+            while not self.uIAIns.getDict(resourceID.red_packet_anim, xml=self.uIAIns.xml):
+                self.randomSwipe(True)
+                self.uIAIns.xml = ''
         except FileNotFoundError as e:
             print(e)
             self.randomSwipe(True)
             sleep(6)
             self.openApp(False)
-        while not self.uIAIns.getDict(resourceID.red_packet_anim):
-            self.randomSwipe(True)
 
     # def shouldReopen(self):
     #     if activity.KRT1Activity in self.currentFocus:

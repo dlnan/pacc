@@ -1,5 +1,5 @@
 from pacc.device import XM4
 
 XM4.mainloop([
-    '003001001',
+    '003001005',
 ])
