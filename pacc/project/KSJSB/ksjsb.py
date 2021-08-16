@@ -145,6 +145,8 @@ class KSJSB(Project):
             self.randomSwipe(True)
             sleep(6)
             self.openApp(False)
+        while not self.uIAIns.getDict(resourceID.red_packet_anim):
+            self.randomSwipe(True)
 
     # def shouldReopen(self):
     #     if activity.KRT1Activity in self.currentFocus:

@@ -1,4 +1,5 @@
 root = 'com.kuaishou.nebula/com.'
+
 HomeActivity = root + 'yxcorp.gifshow.HomeActivity'  # 主界面
 PhotoDetailActivity = root + 'yxcorp.gifshow.detail.PhotoDetailActivity'  # 直播
 UserProfileActivity = root + 'yxcorp.gifshow.profile.activity.UserProfileActivity'  # 用户主页

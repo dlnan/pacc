@@ -6,6 +6,7 @@ from .project import Project
 
 class Activity:
     SplashActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity'  # 抖音极速版程序入口
+    ExcitingVideoActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.excitingvideo.ExcitingVideoActivity'
 
 
 class Text:
@@ -28,6 +29,13 @@ class DYJSB(Project):
         self.reopenApp()
         self.uIAIns.tap([556, 1836])
         sleep(30)
+        self.uIAIns.click(contentDesc='立即签到')
+        self.uIAIns.click(contentDesc='看广告视频再赚')
+        sleep(60)
+        self.adbIns.pressBackKey()
+        self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
+        sleep(90)
+        self.adbIns.pressBackKey()  # SplashActivity
 
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)

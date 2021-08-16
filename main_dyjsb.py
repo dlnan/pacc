@@ -1,3 +1,5 @@
+from pacc.config import Config
 from pacc.project import DYJSB
 
-DYJSB('301').enterWealthInterface()
+Config.setDebug(True)
+DYJSB('003001001').enterWealthInterface()

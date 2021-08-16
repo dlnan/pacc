@@ -104,6 +104,10 @@ class UIAutomator:
             if self.isTargetBounds(self.node.bounds, dic['@bounds']):
                 return True
             return False
+        elif self.node.contentDesc:
+            if self.node.contentDesc in unescape(dic['@content-desc']):
+                return True
+            return False
         return False
 
     @classmethod
