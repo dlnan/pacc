@@ -67,7 +67,7 @@ class DYJSB(Project):
         self.randomSwipe()
 
     def mainloop(self):
-        if not self.adbIns.device.SN == '301':
+        if not self.adbIns.device.SN == '003001001':
             return
         while True:
             if datetime.now().day == self.startDay:
