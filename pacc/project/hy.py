@@ -31,9 +31,11 @@ class HY(Project):
         if reopen:
             self.reopenApp()
         try:
-            if self.uIAIns.click(ResourceID.iv_tippopu_close):
-                self.uIAIns.xml = ''
-            if self.uIAIns.click(text=Text.toMakeFriendsDeclaration, xml=self.uIAIns.xml):
+            # if self.uIAIns.click(ResourceID.iv_tippopu_close):
+            #     self.uIAIns.xml = ''
+            # if self.uIAIns.click(text=Text.toMakeFriendsDeclaration):
+            #      = ''
+            if self.uIAIns.click(text='恭喜获得'):
                 self.uIAIns.xml = ''
             self.uIAIns.click(ResourceID.atv_right, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
