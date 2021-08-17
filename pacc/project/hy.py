@@ -30,6 +30,10 @@ class HY(Project):
         self.uIAIns.tap([56, 126])
         if reopen:
             self.reopenApp()
+        if 'com.sh.shuihulu.kiwi' not in self.adbIns.getCurrentFocus():
+            self.uIAIns.tap([56, 126])
+            self.mainloop(True)
+            return
         try:
             # if self.uIAIns.click(ResourceID.iv_tippopu_close):
             #     self.uIAIns.xml = ''
@@ -42,7 +46,5 @@ class HY(Project):
             print(e)
             self.uIAIns.tap([56, 126])
             self.mainloop(True)
-        if 'com.sh.shuihulu.kiwi' not in self.adbIns.getCurrentFocus():
-            self.uIAIns.tap([56, 126])
-            self.mainloop(True)
-
+            return
+        self.uIAIns.tap([56, 126])
