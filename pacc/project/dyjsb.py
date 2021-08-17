@@ -49,8 +49,6 @@ class DYJSB(Project):
                 self.uIAIns.xml = ''
             if self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            if self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
             self.uIAIns.click(ResourceID.e0p, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
             print(e)
@@ -65,8 +63,8 @@ class DYJSB(Project):
             self.startDay = (datetime.now() + timedelta(days=1)).day
             return
         try:
-            if self.uIAIns.click(ResourceID.bc1):
-                self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
+            self.uIAIns.click(ResourceID.bc1)
+            self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
             print(e)
         if self.reopenAppPerHour():
