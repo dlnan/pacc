@@ -48,6 +48,8 @@ class Project:
     def tapFreeButton(self):
         if 'MI 4' in self.adbIns.device.Model:
             self.uIAIns.click(ResourceID.clearAnimView)
+        elif 'MI 5' in self.adbIns.device.Model:
+            self.uIAIns.click(ResourceID.clearAnimView)
 
     def reopenApp(self):
         self.freeMemory()

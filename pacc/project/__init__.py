@@ -5,6 +5,7 @@ from .iq import IQ
 from .sd import SD
 from .dyjsb import DYJSB
 from .tlj import TLJ
+from .hy import HY
 
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     'DYFD',
     'IQ',
     'SD',
-    'TLJ'
+    'TLJ',
+    'HY'
 ]

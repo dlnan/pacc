@@ -28,18 +28,21 @@ class DYJSB(Project):
     def enterWealthInterface(self):
         self.reopenApp()
         self.uIAIns.tap([556, 1836])
-        sleep(30)
+        sleep(20)
+        self.uIAIns.getCurrentUIHierarchy()
+        print('已进入财富界面')
+        print(self.uIAIns.getDict(contentDesc='立即签到'))
         self.uIAIns.click(contentDesc='立即签到')
         self.uIAIns.click(contentDesc='看广告视频再赚')
         sleep(60)
         self.adbIns.pressBackKey()
         self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
-        sleep(90)
+        sleep(60)
         self.adbIns.pressBackKey()  # SplashActivity
 
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
-        sleep(30)
+        sleep(20)
         try:
             if self.uIAIns.click(text=Text.iKnow):
                 sleep(3)

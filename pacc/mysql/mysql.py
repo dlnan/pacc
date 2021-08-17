@@ -1,5 +1,6 @@
 from pymysql import connect, OperationalError
 import os
+from ..multi import threadLock
 from ..tools import sleep
 
 
@@ -18,16 +19,19 @@ Config()
 
 
 def query(cmd):
+    threadLock.acquire()
     try:
         Config.cs.execute(cmd)
         res = Config.cs.fetchall()
     except OperationalError as e:
+        threadLock.release()
         print('query', e)
         sleep(30)
         Config()
         return query(cmd)
     if len(res) == 1:
         res = res[0]
+    threadLock.release()
     return res
 
 
