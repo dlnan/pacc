@@ -7,6 +7,7 @@ class Activity:
     AccessibilitySettingsActivity = 'u0 com.android.settings/com.android.settings' \
                                     '.Settings$AccessibilitySettingsActivity'
     MainActivity = 'com.sh.shuihulu.kiwi/com.yicheng.assemble.activity.MainActivity'
+    KiwiPicturePreviewActivity = 'com.sh.shuihulu.kiwi/k.i.w.i.m.assemble.activity.KiwiPicturePreviewActivity'
 
 
 class ResourceID:
@@ -30,10 +31,13 @@ class HY(Project):
         self.uIAIns.tap([56, 126])
         if reopen:
             self.reopenApp()
-        if 'com.sh.shuihulu.kiwi' not in self.adbIns.getCurrentFocus():
+        currentFocus = self.adbIns.getCurrentFocus()
+        if 'com.sh.shuihulu.kiwi' not in currentFocus:
             self.uIAIns.tap([56, 126])
             self.mainloop(True)
             return
+        elif Activity.KiwiPicturePreviewActivity in currentFocus:
+            self.adbIns.pressBackKey()
         try:
             # if self.uIAIns.click(ResourceID.iv_tippopu_close):
             #     self.uIAIns.xml = ''
