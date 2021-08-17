@@ -27,6 +27,7 @@ class HY(Project):
         sleep(6)
 
     def mainloop(self, reopen=False):
+        sleep(1)
         self.uIAIns.tap([56, 126])
         if reopen:
             self.reopenApp()
@@ -43,4 +44,5 @@ class HY(Project):
             self.mainloop(True)
         if 'com.sh.shuihulu.kiwi' not in self.adbIns.getCurrentFocus():
             self.mainloop(True)
+        sleep(1)
         self.uIAIns.tap([56, 126])
