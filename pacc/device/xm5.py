@@ -12,7 +12,7 @@ class XM5(Device):
     def mainloopOneByOne(self):
         while True:
             self.hyIns.mainloop()
-            sleep(1200)
+            sleep(600)
 
     @classmethod
     def mainloop(cls, devicesSN):
