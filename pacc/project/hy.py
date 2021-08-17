@@ -11,6 +11,7 @@ class Activity:
 
 class ResourceID:
     iv_tippopu_close = 'com.sh.shuihulu.kiwi:id/iv_tippopu_close'  # 回复男生搭讪需先录制交友宣言和真人认证，认证后可以继续领取搭讪红包哦
+    atv_right = 'com.sh.shuihulu.kiwi:id/atv_right'  # 我知道了（对方余额不足，可能导致通话结束,提醒一下对方充值哦～）
 
 
 class Text:
@@ -32,7 +33,9 @@ class HY(Project):
         try:
             if self.uIAIns.click(ResourceID.iv_tippopu_close):
                 self.uIAIns.xml = ''
-            self.uIAIns.click(text=Text.toMakeFriendsDeclaration, xml=self.uIAIns.xml)
+            if self.uIAIns.click(text=Text.toMakeFriendsDeclaration, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            self.uIAIns.click(ResourceID.atv_right, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
             print(e)
             self.mainloop(True)
