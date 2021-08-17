@@ -1,5 +1,6 @@
 from time import time
 from datetime import datetime, timedelta
+from xml.parsers.expat import ExpatError
 from ..tools import sleep
 from .project import Project
 
@@ -65,7 +66,7 @@ class DYJSB(Project):
         try:
             self.uIAIns.click(ResourceID.bc1)
             self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
         if self.reopenAppPerHour():
             self.adbIns.keepOnline()
