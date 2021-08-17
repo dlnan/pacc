@@ -27,7 +27,6 @@ class HY(Project):
         sleep(6)
 
     def mainloop(self, reopen=False):
-        sleep(1)
         self.uIAIns.tap([56, 126])
         if reopen:
             self.reopenApp()
@@ -41,8 +40,9 @@ class HY(Project):
             self.uIAIns.click(ResourceID.atv_right, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
             print(e)
+            self.uIAIns.tap([56, 126])
             self.mainloop(True)
         if 'com.sh.shuihulu.kiwi' not in self.adbIns.getCurrentFocus():
+            self.uIAIns.tap([56, 126])
             self.mainloop(True)
-        sleep(1)
-        self.uIAIns.tap([56, 126])
+
