@@ -79,7 +79,7 @@ class KSJSB(Project):
                 self.randomSwipe(True)
                 self.enterWealthInterface(False)
                 return
-            sleep(18)
+            sleep(13)
             self.uIAIns.getCurrentUIHierarchy()
             print('已进入财富界面')
             if self.uIAIns.click('', '立即领取今日现金'):
@@ -110,8 +110,13 @@ class KSJSB(Project):
             functions.append(i.updateWealth)
         runThreadsWithFunctions(functions)
 
-    def updateWealth(self, reopen=True):
+    def enterMyWealthInterface(self, reopen=True):
         self.enterWealthInterface(reopen)
+        self.uIAIns.click(text='可用抵用金（张）')
+        sleep(9)
+
+    def updateWealth(self, reopen=True):
+        self.enterMyWealthInterface(reopen)
         try:
             goldCoins, cashCoupons = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
@@ -123,13 +128,13 @@ class KSJSB(Project):
             self.updateWealth(False)
 
     def getWealth(self):
-        return float(self.uIAIns.getDict(bounds=bounds.goldCoins, xml=self.uIAIns.xml)['@text']),\
+        return float(self.uIAIns.getDict(bounds=bounds.goldCoins)['@text']),\
                float(self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)['@text'])
 
     def openApp(self, reopen=True):
         if reopen:
             super(KSJSB, self).openApp(activity.HomeActivity)
-            sleep(30)
+            sleep(16)
         try:
             if self.uIAIns.click(resourceID.close):
                 self.uIAIns.xml = ''
