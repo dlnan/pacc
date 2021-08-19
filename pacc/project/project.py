@@ -9,6 +9,10 @@ class ResourceID:
     clearAnimView = 'com.android.systemui:id/clearAnimView'  # 内存清理图标
 
 
+class Activity:
+    Launcher = 'com.miui.home/com.miui.home.launcher.Launcher'
+
+
 class Project:
     instances = []
     startTime = datetime.now()
@@ -67,4 +71,7 @@ class Project:
             self.tapFreeButton()
         except FileNotFoundError as e:
             print(e)
+            self.freeMemory()
+        if Activity.Launcher not in self.adbIns.getCurrentFocus():
+            self.adbIns.reboot()
             self.freeMemory()
