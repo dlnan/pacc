@@ -14,6 +14,16 @@ class KSJSB(Project):
         self.startDay = datetime.now().day
         self.dbr = RetrieveKSJSB(deviceSN)
         self.currentFocus = ''
+        self.openTreasureBoxCnt = 0
+
+    def openTreasureBox(self):
+        # 60*5, 60*9
+        self.enterWealthInterface()
+        if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
+            if self.uIAIns.click(text='看精彩视频赚更多'):
+                sleep(50)
+                self.adbIns.pressBackKey()
+            self.uIAIns.xml = ''
 
     def watchLive(self):
         self.enterWealthInterface()
@@ -98,12 +108,6 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
             elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            # if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
-            #     if self.uIAIns.click(text='看精彩视频赚更多'):
-            #         sleep(50)
-            #         self.adbIns.pressBackKey()
-            #     self.uIAIns.xml = ''
-
         except FileNotFoundError as e:
             print(e)
             self.enterWealthInterface(False)
@@ -184,6 +188,7 @@ class KSJSB(Project):
                     # self.viewAds()
                     # self.watchLive()
                     self.updateWealth()
+                    # self.openTreasureBox()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
@@ -209,4 +214,5 @@ class KSJSB(Project):
             if datetime.now().day == self.startDay:
                 self.watchVideo()
             else:
+                self.openTreasureBox()
                 break
