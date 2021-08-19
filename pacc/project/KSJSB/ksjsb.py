@@ -14,10 +14,9 @@ class KSJSB(Project):
         self.startDay = datetime.now().day
         self.dbr = RetrieveKSJSB(deviceSN)
         self.currentFocus = ''
-        self.openTreasureBoxCnt = 0
 
     def openTreasureBox(self):
-        # 60*5, 60*9
+        # 60*5, 60*9, 1200
         self.enterWealthInterface()
         if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
             if self.uIAIns.click(text='看精彩视频赚更多'):
@@ -180,8 +179,10 @@ class KSJSB(Project):
         self.restTime = 0
 
     def watchVideo(self):
-        if self.reopenAppPerHour():
+        if self.reopenAppPerHour(False):
             self.adbIns.keepOnline()
+            self.openTreasureBox()
+            self.reopenApp()
         try:
             if datetime.now().hour > 5 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):

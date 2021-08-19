@@ -42,11 +42,12 @@ class Project:
         self.adbIns.swipe(randint(xA, xB), randint(yA, yB), randint(xC, xD), randint(yC, yD))
         self.restTime += randint(3, 15)
 
-    def reopenAppPerHour(self):
+    def reopenAppPerHour(self, execute=True):
         if self.lastReopenHour == datetime.now().hour:
             return False
         self.lastReopenHour = datetime.now().hour
-        self.reopenApp()
+        if execute:
+            self.reopenApp()
         return True
 
     def tapFreeButton(self):
