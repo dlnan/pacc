@@ -188,10 +188,10 @@ class KSJSB(Project):
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
                     return
-            self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
             if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
                 self.exitLive()
                 self.randomSwipe(True)
+            self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
             self.initSleepTime()
         except (FileNotFoundError, ExpatError) as e:
             print(e)
