@@ -98,6 +98,12 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
             elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
+            # if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
+            #     if self.uIAIns.click(text='看精彩视频赚更多'):
+            #         sleep(50)
+            #         self.adbIns.pressBackKey()
+            #     self.uIAIns.xml = ''
+
         except FileNotFoundError as e:
             print(e)
             self.enterWealthInterface(False)
@@ -118,7 +124,7 @@ class KSJSB(Project):
     def updateWealth(self, reopen=True):
         self.enterMyWealthInterface(reopen)
         try:
-            goldCoins, cashCoupons = self.getWealth()
+            cashCoupons, goldCoins = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
                 UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
             if not cashCoupons == self.dbr.cashCoupons:
@@ -128,8 +134,11 @@ class KSJSB(Project):
             self.updateWealth(False)
 
     def getWealth(self):
-        return float(self.uIAIns.getDict(bounds=bounds.goldCoins)['@text']),\
-               float(self.uIAIns.getDict(bounds=bounds.cashCoupons, xml=self.uIAIns.xml)['@text'])
+        cashCoupons = float(self.uIAIns.getDict(bounds=bounds.cashCoupons)['@text'])
+        goldCoins = self.uIAIns.getDict(bounds=bounds.goldCoins, xml=self.uIAIns.xml)['@text']
+        if 'w' in goldCoins:
+            goldCoins = 10000 * float(goldCoins[:-1])
+        return cashCoupons, goldCoins
 
     def openApp(self, reopen=True):
         if reopen:
@@ -154,33 +163,6 @@ class KSJSB(Project):
             sleep(6)
             self.openApp(False)
 
-    # def shouldReopen(self):
-    #     if activity.KRT1Activity in self.currentFocus:
-    #         return True
-    #     elif activity.MiniAppActivity0 in self.currentFocus:
-    #         return True
-    #     elif 'com.kuaishou.nebula' not in self.currentFocus:
-    #         return True
-    #     return False
-
-    # def pressBackKey(self):
-    #     activities = [
-    #         activity.TopicDetailActivity,
-    #         activity.UserProfileActivity,
-    #         activity.AdYodaActivity
-    #     ]
-    #     for a in activities:
-    #         if a in self.currentFocus:
-    #             self.adbIns.pressBackKey()
-    #             break
-    #     if self.uIAIns.getDict(resourceID.tab_text, xml=self.uIAIns.xml):
-    #         self.adbIns.pressBackKey()
-    #         self.uIAIns.xml = ''
-    #     if self.uIAIns.getDict(resourceID.choose_tv, xml=self.uIAIns.xml):
-    #         self.adbIns.pressBackKey()
-    #         self.randomSwipe(True)
-    #         self.uIAIns.xml = ''
-
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)
         if self.restTime <= 0:
@@ -199,22 +181,18 @@ class KSJSB(Project):
         try:
             if datetime.now().hour > 5 and self.uIAIns.getDict(resourceID.red_packet_anim):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
-                    self.viewAds()
-                    self.watchLive()
+                    # self.viewAds()
+                    # self.watchLive()
                     self.updateWealth()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
                     return
             self.uIAIns.click(resourceID.button2, xml=self.uIAIns.xml)
-            # self.currentFocus = self.adbIns.getCurrentFocus()
-            # self.pressBackKey()
             if activity.PhotoDetailActivity in self.adbIns.getCurrentFocus():
                 self.exitLive()
                 self.randomSwipe(True)
             self.initSleepTime()
-            # if self.shouldReopen():
-            #     self.reopenApp()
         except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
