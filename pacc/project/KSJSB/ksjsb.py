@@ -188,7 +188,7 @@ class KSJSB(Project):
                     # self.viewAds()
                     # self.watchLive()
                     self.updateWealth()
-                    # self.openTreasureBox()
+                    self.openTreasureBox()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
