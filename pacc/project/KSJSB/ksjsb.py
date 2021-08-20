@@ -79,6 +79,29 @@ class KSJSB(Project):
                 print(e)
                 self.viewAds()
 
+    def signIn(self):
+        self.enterWealthInterface()
+        if not self.uIAIns.getDict(text='今天签到可领'):
+            return
+        try:
+            while self.uIAIns.getCP(text='今天签到可领') == (0, 0):
+                self.randomSwipe(True)
+            self.uIAIns.click(text='今天签到可领')
+            self.afterSignIn()
+        except FileNotFoundError as e:
+            print(e)
+            self.signIn()
+
+    def afterSignIn(self):
+        if self.uIAIns.click('', '打开签到提醒'):  # 需要授权
+            self.uIAIns.xml = ''
+        elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
+            sleep(60)
+            self.adbIns.pressBackKey()
+            self.uIAIns.xml = ''
+        if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
+            self.uIAIns.xml = ''
+
     def enterWealthInterface(self, reopen=True):
         if reopen:
             self.reopenApp()
@@ -97,15 +120,10 @@ class KSJSB(Project):
                 return
             if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-                if self.uIAIns.click('', '打开签到提醒', xml=self.uIAIns.xml):  # 需要授权
-                    self.uIAIns.xml = ''
-                elif self.uIAIns.click('', '看广告再得', xml=self.uIAIns.xml):
-                    sleep(60)
-                    self.adbIns.pressBackKey()
-                    self.uIAIns.xml = ''
-            if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
-                self.uIAIns.xml = ''
-            elif self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
+                self.afterSignIn()
+            # if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
+            #     self.uIAIns.xml = ''
+            if self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
         except FileNotFoundError as e:
             print(e)
@@ -190,6 +208,7 @@ class KSJSB(Project):
                     # self.watchLive()
                     self.updateWealth()
                     self.openTreasureBox()
+                    self.signIn()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
