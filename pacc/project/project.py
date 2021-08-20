@@ -11,6 +11,7 @@ class ResourceID:
 
 class Activity:
     Launcher = 'com.miui.home/com.miui.home.launcher.Launcher'
+    RecentsActivity = 'com.android.systemui/com.android.systemui.recents.RecentsActivity'
 
 
 class Project:
@@ -73,6 +74,7 @@ class Project:
         except FileNotFoundError as e:
             print(e)
             self.freeMemory()
-        if Activity.Launcher not in self.adbIns.getCurrentFocus():
+        currentFocus = self.adbIns.getCurrentFocus()
+        if Activity.Launcher not in currentFocus and Activity.RecentsActivity not in currentFocus:
             self.adbIns.reboot()
             self.freeMemory()
