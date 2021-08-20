@@ -206,9 +206,9 @@ class KSJSB(Project):
                 if not self.uIAIns.getDict(resourceID.cycle_progress, xml=self.uIAIns.xml):
                     self.viewAds()
                     self.watchLive()
-                    self.updateWealth()
                     self.openTreasureBox()
                     self.signIn()
+                    self.updateWealth()
                     self.freeMemory()
                     self.adbIns.pressPowerKey()
                     self.startDay = (datetime.now() + timedelta(days=1)).day
