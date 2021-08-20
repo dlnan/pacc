@@ -75,6 +75,9 @@ class Project:
             print(e)
             self.freeMemory()
         currentFocus = self.adbIns.getCurrentFocus()
-        if Activity.Launcher not in currentFocus and Activity.RecentsActivity not in currentFocus:
+        if Activity.RecentsActivity in currentFocus:
+            self.adbIns.pressHomeKey()
+            currentFocus = self.adbIns.getCurrentFocus()
+        if Activity.Launcher not in currentFocus:
             self.adbIns.reboot()
             self.freeMemory()
