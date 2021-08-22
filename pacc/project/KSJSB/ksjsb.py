@@ -160,6 +160,8 @@ class KSJSB(Project):
         goldCoins = dics[0]['@text']
         if 'w' in goldCoins:
             goldCoins = 10000 * float(goldCoins[:-1])
+        else:
+            goldCoins = float(goldCoins)
         cashCoupons = float(dics[1]['@text'])
         # print(goldCoins, cashCoupons)
         return goldCoins, cashCoupons
