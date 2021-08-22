@@ -145,7 +145,7 @@ class KSJSB(Project):
     def updateWealth(self, reopen=True):
         self.enterMyWealthInterface(reopen)
         try:
-            cashCoupons, goldCoins = self.getWealth()
+            goldCoins, cashCoupons = self.getWealth()
             if not goldCoins == self.dbr.goldCoins:
                 UpdateKSJSB(self.adbIns.device.SN).updateGoldCoins(goldCoins)
             if not cashCoupons == self.dbr.cashCoupons:
@@ -155,11 +155,14 @@ class KSJSB(Project):
             self.updateWealth(False)
 
     def getWealth(self):
-        cashCoupons = float(self.uIAIns.getDict(bounds=bounds.cashCoupons)['@text'])
-        goldCoins = self.uIAIns.getDict(bounds=bounds.goldCoins, xml=self.uIAIns.xml)['@text']
+        dics = self.uIAIns.getDicts(bounds='[-1,351][-1,459]')
+        # print(dics)
+        goldCoins = dics[0]['@text']
         if 'w' in goldCoins:
             goldCoins = 10000 * float(goldCoins[:-1])
-        return cashCoupons, goldCoins
+        cashCoupons = float(dics[1]['@text'])
+        # print(goldCoins, cashCoupons)
+        return goldCoins, cashCoupons
 
     def openApp(self, reopen=True):
         if reopen:

@@ -19,6 +19,11 @@ class ResourceID:
     bai = 'com.ss.android.ugc.aweme.lite:id/bai'  # 关闭（邀请5个好友必赚136元/恭喜你被红包砸中）
     bc1 = 'com.ss.android.ugc.aweme.lite:id/bc1'  # 开红包（恭喜你被红包砸中）
     e0p = 'com.ss.android.ugc.aweme.lite:id/e0p'  # 暂时不要（发现通讯录好友）
+    c1m = 'com.ss.android.ugc.aweme.lite:id/c1m'  # 开宝箱（财富界面）
+
+
+class Bounds:
+    WatchAdsToEarnGoldCoins = '[206,1201][874,1316]'
 
 
 class DYJSB(Project):
@@ -32,14 +37,18 @@ class DYJSB(Project):
         sleep(20)
         self.uIAIns.getCurrentUIHierarchy()
         print('已进入财富界面')
-        # print(self.uIAIns.getDict(contentDesc='立即签到'))
         self.uIAIns.click(contentDesc='立即签到')
-        if self.uIAIns.click(contentDesc='看广告视频再赚'):
-            sleep(60)
-            self.adbIns.pressBackKey()
-            self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
-            sleep(60)
-            self.adbIns.pressBackKey()  # SplashActivity
+        if self.uIAIns.click(bounds=Bounds.WatchAdsToEarnGoldCoins):
+            self.afterEnterAdsInterface()
+        if self.uIAIns.click(ResourceID.c1m):
+            self.afterEnterAdsInterface()
+
+    def afterEnterAdsInterface(self):
+        sleep(60)
+        self.adbIns.pressBackKey()
+        self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
+        sleep(60)
+        self.adbIns.pressBackKey()
 
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
