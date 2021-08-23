@@ -18,11 +18,14 @@ class KSJSB(Project):
     def openTreasureBox(self):
         # 60*5, 60*9, 1200
         self.enterWealthInterface()
-        if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
-            if self.uIAIns.click(text='看精彩视频赚更多'):
-                sleep(50)
-                self.adbIns.pressBackKey()
-            self.uIAIns.xml = ''
+        try:
+            if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
+                if self.uIAIns.click(text='看精彩视频赚更多'):
+                    sleep(50)
+                    self.adbIns.pressBackKey()
+                self.uIAIns.xml = ''
+        except FileNotFoundError:
+            self.openTreasureBox()
 
     def watchLive(self):
         self.enterWealthInterface()
@@ -121,8 +124,6 @@ class KSJSB(Project):
             if self.uIAIns.click('', '立即签到', xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
                 self.afterSignIn()
-            # if self.uIAIns.click(bounds=bounds.closeInviteFriendsToMakeMoney, xml=self.uIAIns.xml):
-            #     self.uIAIns.xml = ''
             if self.uIAIns.click(bounds=bounds.closeCongratulations, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
         except FileNotFoundError as e:
