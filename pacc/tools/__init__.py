@@ -5,6 +5,7 @@ from .dir import createDir
 from .xml import prettyXML, getXML
 from .math import average
 from .url import getURLsFromString
+from .ocr import getTextsFromPic
 
 __all__ = [
     "findAllWithRe",
@@ -15,5 +16,6 @@ __all__ = [
     'prettyXML',
     'getXML',
     'average',
-    'getURLsFromString'
+    'getURLsFromString',
+    'getTextsFromPic'
 ]

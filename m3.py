@@ -1,8 +1,4 @@
-from pacc.multi.thread import Thread
-from time import sleep
+import torch
 
-print(Thread.instances)
-ins = Thread('')
-print(Thread.instances)
-ins.__del__()
-print(Thread.instances)
+print(torch.__version__)
+print(torch.cuda.is_available())

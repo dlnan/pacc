@@ -35,19 +35,19 @@ class DYJSB(Project):
         self.reopenApp()
         self.uIAIns.tap([556, 1836])
         sleep(20)
-        self.uIAIns.getCurrentUIHierarchy()
         print('已进入财富界面')
-        self.uIAIns.click(contentDesc='立即签到')
-        if self.uIAIns.click(bounds=Bounds.WatchAdsToEarnGoldCoins):
+        self.uIAIns.clickByScreenText('立即签到')
+        if self.uIAIns.clickByScreenText('看广告视频再赚'):
             self.afterEnterAdsInterface()
-        if self.uIAIns.click(ResourceID.c1m):
+        if self.uIAIns.clickByScreenText('开宝箱得金币'):
+            self.uIAIns.clickByScreenText('看广告视频再赚')
             self.afterEnterAdsInterface()
 
     def afterEnterAdsInterface(self):
-        sleep(60)
+        sleep(69)
         self.adbIns.pressBackKey()
         self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
-        sleep(60)
+        sleep(69)
         self.adbIns.pressBackKey()
 
     def openApp(self):

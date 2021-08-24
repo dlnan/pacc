@@ -5,7 +5,7 @@ from os.path import exists
 from collections import OrderedDict
 from ..config import Config
 from ..mysql import RetrieveBaseInfo
-from ..tools import createDir, prettyXML, getXML, sleep, findAllNumsWithRe, average
+from ..tools import createDir, prettyXML, getXML, sleep, findAllNumsWithRe, average, getTextsFromPic
 
 
 class Node:
@@ -25,13 +25,42 @@ class UIAutomator:
         self.dicts = []
 
     def getScreen(self):
-        system(self.cmd + 'exec-out screencap -p > CurrentUIHierarchy/%s.png' % self.device.SN)
+        pngPath = 'CurrentUIHierarchy/%s.png' % self.device.SN
+        system(self.cmd + 'exec-out screencap -p > %s' % pngPath)
+        return pngPath
 
     def tap(self, cP, interval=1):
         x, y = cP
         print('正在让%s点击(%d,%d)' % (self.device.SN, x, y))
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval, Config.debug, Config.debug)
+
+    def clickByScreenText(self, text):
+        cP = self.getCPByScreenText(text)
+        if cP:
+            print('检测到【%s】' % text)
+            self.tap(cP)
+            return True
+
+    def getCPByScreenText(self, text):
+        ts = getTextsFromPic(self.getScreen())
+        li = []
+        for t in ts:
+            if text in t[1]:
+                li = t[0]
+                if Config.debug:
+                    print(t)
+                break
+        if not len(li) == 4:
+            return
+        return self.getCPFromTPs(li[0] + li[2])
+
+    @classmethod
+    def getCPFromTPs(cls, li):
+        x1, y1, x2, y2 = li
+        x = average(x1, x2)
+        y = average(y1, y2)
+        return x, y
 
     def click(self, resourceID='', text='', contentDesc='', xml='', bounds='', offset_x=0, offset_y=0):
         cP = self.getCP(resourceID, text, contentDesc, xml, bounds)
@@ -48,10 +77,7 @@ class UIAutomator:
         bounds = self.getBounds(resourceID, text, contentDesc, xml, bounds)
         if not bounds:
             return False
-        x1, y1, x2, y2 = findAllNumsWithRe(bounds)
-        x = average(x1, x2)
-        y = average(y1, y2)
-        return x, y
+        return self.getCPFromTPs(findAllNumsWithRe(bounds))
 
     def getBounds(self, resourceID, text='', contentDesc='', xml='', bounds=''):
         dic = self.getDict(resourceID, text, contentDesc, xml, bounds)
