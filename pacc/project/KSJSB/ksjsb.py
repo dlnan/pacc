@@ -72,7 +72,7 @@ class KSJSB(Project):
                 if activity.KwaiYodaWebViewActivity not in self.adbIns.getCurrentFocus():
                     self.viewAds()
                     return
-                elif self.uIAIns.click(text='观看广告单日最高可得5000金币') or self.uIAIns.click(
+                elif self.uIAIns.click(text='观看广告单日最高可得') or self.uIAIns.click(
                         text='每次100金币，每天1000金币', xml=self.uIAIns.xml):
                     sleep(50)
                     self.adbIns.pressBackKey()
