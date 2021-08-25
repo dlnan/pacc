@@ -182,6 +182,9 @@ class KSJSB(Project):
                 self.uIAIns.xml = ''
                 self.adbIns.pressBackKey()
             while not self.uIAIns.getDict(resourceID.red_packet_anim, xml=self.uIAIns.xml):
+                if activity.HomeActivity not in self.adbIns.getCurrentFocus():
+                    self.openApp()
+                    return
                 self.randomSwipe(True)
                 self.uIAIns.xml = ''
         except FileNotFoundError as e:

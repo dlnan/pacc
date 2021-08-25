@@ -56,6 +56,10 @@ class ADB:
 
     def getModel(self):
         res = popen(self.cmd + 'shell getprop ro.product.model').read()[:-1]
+        if not res:
+            self.reconnect()
+            self.__init__(self.device.SN)
+            return
         while res[-1] == '\n':
             res = res[:-1]
         return res
