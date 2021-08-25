@@ -5,3 +5,5 @@ easyocr
 xmltodict
 pacc
 urlextract
+Pillow
+torch

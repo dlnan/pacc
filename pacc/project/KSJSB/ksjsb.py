@@ -187,7 +187,7 @@ class KSJSB(Project):
                     return
                 self.randomSwipe(True)
                 self.uIAIns.xml = ''
-        except FileNotFoundError as e:
+        except (FileNotFoundError, ExpatError) as e:
             print(e)
             self.randomSwipe(True)
             sleep(6)

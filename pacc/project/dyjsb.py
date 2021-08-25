@@ -44,10 +44,10 @@ class DYJSB(Project):
             self.afterEnterAdsInterface()
 
     def afterEnterAdsInterface(self):
-        sleep(69)
+        sleep(80)
         self.adbIns.pressBackKey()
         self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
-        sleep(69)
+        sleep(80)
         self.adbIns.pressBackKey()
 
     def openApp(self):

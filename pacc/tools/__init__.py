@@ -6,6 +6,7 @@ from .xml import prettyXML, getXML
 from .math import average
 from .url import getURLsFromString
 from .ocr import getTextsFromPic
+from .picture import optimizePic
 
 __all__ = [
     "findAllWithRe",
@@ -17,5 +18,6 @@ __all__ = [
     'getXML',
     'average',
     'getURLsFromString',
-    'getTextsFromPic'
+    'getTextsFromPic',
+    'optimizePic'
 ]
