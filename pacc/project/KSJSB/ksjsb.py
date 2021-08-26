@@ -183,7 +183,7 @@ class KSJSB(Project):
                 self.adbIns.pressBackKey()
             while not self.uIAIns.getDict(resourceID.red_packet_anim, xml=self.uIAIns.xml):
                 if activity.HomeActivity not in self.adbIns.getCurrentFocus():
-                    self.openApp()
+                    self.reopenApp()
                     return
                 self.randomSwipe(True)
                 self.uIAIns.xml = ''
@@ -191,7 +191,7 @@ class KSJSB(Project):
             print(e)
             self.randomSwipe(True)
             sleep(6)
-            self.openApp(False)
+            self.reopenApp()
 
     def initSleepTime(self):
         print('restTime=%s' % self.restTime)
