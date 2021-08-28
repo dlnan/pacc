@@ -22,6 +22,7 @@ class UIAutomator:
         self.cmd = 'adb -s %s ' % self.device.IP
         self.node = Node()
         self.xml = ''
+        self.txt = ''
         self.dicts = []
 
     def getScreen(self):
@@ -35,21 +36,22 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval, Config.debug, Config.debug)
 
-    def clickByScreenText(self, text):
-        cP = self.getCPByScreenText(text)
+    def clickByScreenText(self, text, txt=''):
+        cP = self.getCPByScreenText(text, txt)
         if cP:
             print('检测到【%s】' % text)
             self.tap(cP)
             return True
 
-    def getCPByScreenText(self, text):
-        ts = getTextsFromPic(self.getScreen())
+    def getCPByScreenText(self, text, txt=''):
+        if txt:
+            self.txt = txt
+        else:
+            self.txt = getTextsFromPic(self.getScreen())
         li = []
-        for t in ts:
+        for t in self.txt:
             if text in t[1]:
                 li = t[0]
-                if Config.debug:
-                    print(t)
                 break
         if not len(li) == 4:
             return

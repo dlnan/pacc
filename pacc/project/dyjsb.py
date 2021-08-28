@@ -1,13 +1,13 @@
 from time import time
 from datetime import datetime, timedelta
 from xml.parsers.expat import ExpatError
-from ..tools import sleep
 from .project import Project
+from ..tools import sleep
 
 
 class Activity:
     SplashActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity'  # 抖音极速版程序入口
-    ExcitingVideoActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.excitingvideo.ExcitingVideoActivity'
+    ExcitingVideoActivity = 'com.ss.android.ugc.aweme.lite/com.ss.android.excitingvideo.ExcitingVideoActivity'  # 广告界面
 
 
 class Text:
@@ -36,19 +36,25 @@ class DYJSB(Project):
         self.uIAIns.tap([556, 1836])
         sleep(20)
         print('已进入财富界面')
-        self.uIAIns.clickByScreenText('立即签到')
-        if self.uIAIns.clickByScreenText('看广告视频再赚'):
-            self.afterEnterAdsInterface()
-        if self.uIAIns.clickByScreenText('开宝箱得金币'):
+        if self.uIAIns.clickByScreenText('立即签到'):
+            if self.uIAIns.clickByScreenText('看广告视频再赚'):
+                self.afterEnterAdsInterface()
+            self.uIAIns.txt = ''
+
+    def openTreasureBox(self):
+        self.enterWealthInterface()
+        if self.uIAIns.clickByScreenText('开宝箱得金币', txt=self.uIAIns.txt):
             self.uIAIns.clickByScreenText('看广告视频再赚')
             self.afterEnterAdsInterface()
 
     def afterEnterAdsInterface(self):
-        sleep(80)
-        self.adbIns.pressBackKey()
-        self.uIAIns.click(contentDesc='再看一个获取')  # ExcitingVideoActivity
-        sleep(80)
-        self.adbIns.pressBackKey()
+        if Activity.ExcitingVideoActivity in self.adbIns.getCurrentFocus():
+            sleep(80)
+            self.adbIns.pressBackKey()
+        if Activity.ExcitingVideoActivity in self.adbIns.getCurrentFocus() and self.uIAIns.click(
+                contentDesc='再看一个获取'):
+            sleep(80)
+            self.adbIns.pressBackKey()
 
     def openApp(self):
         super(DYJSB, self).openApp(Activity.SplashActivity)
@@ -59,7 +65,9 @@ class DYJSB(Project):
                 self.uIAIns.xml = ''
             if self.uIAIns.click(ResourceID.av0, xml=self.uIAIns.xml):
                 self.uIAIns.xml = ''
-            self.uIAIns.click(ResourceID.e0p, xml=self.uIAIns.xml)
+            if self.uIAIns.click(ResourceID.e0p, xml=self.uIAIns.xml):
+                self.uIAIns.xml = ''
+            self.uIAIns.click(ResourceID.bai, xml=self.uIAIns.xml)
         except FileNotFoundError as e:
             print(e)
 
