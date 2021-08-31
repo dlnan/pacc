@@ -33,7 +33,9 @@ class DYJSB(Project):
 
     def enterWealthInterface(self):
         self.reopenApp()
-        self.uIAIns.tap([556, 1836])
+        if not self.uIAIns.clickByScreenTexts(['来赚钱', '金币']):
+            self.enterWealthInterface()
+            return
         sleep(20)
         print('已进入财富界面')
         if self.uIAIns.clickByScreenText('立即签到'):
@@ -47,13 +49,20 @@ class DYJSB(Project):
             self.uIAIns.clickByScreenText('看广告视频再赚')
             self.afterEnterAdsInterface()
 
+    def viewAds(self):
+        self.enterWealthInterface()
+        if self.uIAIns.clickByScreenText('看广告赚金币', txt=self.uIAIns.txt):
+            self.uIAIns.clickByScreenText('看广告视频再赚')
+            self.afterEnterAdsInterface()
+
     def afterEnterAdsInterface(self):
+        sleep(20)
         if Activity.ExcitingVideoActivity in self.adbIns.getCurrentFocus():
-            sleep(80)
+            sleep(60)
             self.adbIns.pressBackKey()
         if Activity.ExcitingVideoActivity in self.adbIns.getCurrentFocus() and self.uIAIns.click(
                 contentDesc='再看一个获取'):
-            sleep(80)
+            sleep(60)
             self.adbIns.pressBackKey()
 
     def openApp(self):
@@ -75,7 +84,7 @@ class DYJSB(Project):
         super(DYJSB, self).randomSwipe(530, 560, 530, 560, 1160, 1190, 360, 390, initRestTime)
 
     def watchVideo(self):
-        if datetime.now().hour == 0 and datetime.now().day == self.startDay:
+        if datetime.now().hour == 23 and datetime.now().day == self.startDay:
             self.freeMemory()
             self.adbIns.pressPowerKey()
             self.startDay = (datetime.now() + timedelta(days=1)).day

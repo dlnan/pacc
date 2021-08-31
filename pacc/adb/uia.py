@@ -36,12 +36,20 @@ class UIAutomator:
         system(self.cmd + 'shell input tap %d %d' % (x, y))
         sleep(interval, Config.debug, Config.debug)
 
+    def clickByScreenTexts(self, texts, txt=''):
+        self.txt = txt
+        for text in texts:
+            if self.clickByScreenText(text, self.txt):
+                return True
+
     def clickByScreenText(self, text, txt=''):
         cP = self.getCPByScreenText(text, txt)
         if cP:
             print('检测到【%s】' % text)
             self.tap(cP)
             return True
+        else:
+            print('未找到【%s】' % text)
 
     def getCPByScreenText(self, text, txt=''):
         if txt:
