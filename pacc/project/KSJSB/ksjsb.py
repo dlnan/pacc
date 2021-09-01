@@ -20,7 +20,7 @@ class KSJSB(Project):
         self.enterWealthInterface()
         try:
             if self.uIAIns.click(text='开宝箱得金币', xml=self.uIAIns.xml):
-                if self.uIAIns.click(text='看精彩视频赚更多'):
+                if self.uIAIns.click(text='去看视频再赚'):  # |看精彩视频赚更多
                     sleep(50)
                     self.adbIns.pressBackKey()
                 self.uIAIns.xml = ''
